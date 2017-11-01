@@ -1,3 +1,26 @@
 <template>
-  <button click.delegate="getAllPeople()"> Hoi</button>
+  <require from="./group-page.css"></require>
+
+  <span>
+    <br/>
+    <h3>Clients</h3>
+  </span>
+  <div class="list-grid border border--round">
+    <div class="list-grid__header">
+      <div class="list-grid__column">Name</div>
+      <div class="list-grid__column">Age</div>
+      <div class="list-grid__column">Job Title</div>
+      <button click.delegate="addPerson()" class="addButton">Add new Person</button>
+    </div>
+    <div class="list-grid__body">
+      <div repeat.for="dude of people" class="list-item">
+        <div class="list-grid__column">${dude.name}</div>
+        <div class="list-grid__column">${dude.age}</div>
+        <div class="list-grid__column">${dude.jobTitle}</div>
+        <button click.delegate="editPerson(dude)">Edit</button>
+        <button click.delegate="deletePerson(dude)">Delete</button>
+        <br><br>
+      </div>
+    </div>
+  </div>
 </template>

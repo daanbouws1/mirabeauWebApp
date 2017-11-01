@@ -8,4 +8,5 @@ export class PeopleApi extends baseApi {
     this.servicePath += "mirabeaugroup_mobile/persons?";
     return this._get(this.servicePath);
   }
+
 }

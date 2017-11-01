@@ -66,6 +66,11 @@
           "aurelia-fetch-client",
           "jquery",
           {
+            "name": "aurelia-dialog",
+            "path": "../node_modules/aurelia-dialog/dist/amd",
+            "main": "aurelia-dialog"
+          },
+          {
             "name": "aurelia-templating-resources",
             "path": "../node_modules/aurelia-templating-resources/dist/amd",
             "main": "aurelia-templating-resources"

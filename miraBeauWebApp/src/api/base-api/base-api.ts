@@ -7,7 +7,7 @@ import {HttpError} from "./http-error";
 @autoinject
 export class baseApi {
 
-  basePath:string = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/";
+  basePath: string = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/";
 
   constructor(private http: HttpClient) {
     http.configure(config => config.rejectErrorResponses());
@@ -90,7 +90,7 @@ export class baseApi {
 
   private defaultErrorHandling(error) {
     if (error.status === HTTP_STATUS_CODE.UNAUTHORIZED) {
-      this.ecoSystem.redirectToClientLoginPage();
+      // this.ecoSystem.redirectToClientLoginPage();
     } else {
       return error.json().then(errorResponse => {
         return Promise.reject(errorResponse);
@@ -100,7 +100,7 @@ export class baseApi {
 
   private responseErrorHandling(error) {
     if (error.errorcode === HTTP_STATUS_CODE.UNAUTHORIZED) {
-      this.ecoSystem.redirectToClientLoginPage();
+      // this.ecoSystem.redirectToClientLoginPage();
     } else {
       throw new HttpError(error.message, error.errorcode);
     }

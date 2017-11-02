@@ -1,9 +1,11 @@
 import {autoinject} from "aurelia-framework";
 import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
+import {DeleteDialog} from "../../widgets/dialog/delete-dialog";
 
 @autoinject
 export class groupPage {
+
   private people: Person[] = [];
 
   constructor(private peopleApi: PeopleApi,
@@ -19,7 +21,8 @@ export class groupPage {
       for(let item in result) {
         let age = result[item].userData.split(",")[0];
         let jobTitle = result[item].userData.split(",")[1];
-        let guy: Person = new Person(result[item].name,age,jobTitle);
+        let id = result[item].personId;
+        let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
     });
@@ -31,7 +34,14 @@ export class groupPage {
 
   private deletePerson(dude: Person) {
     console.log("delete this duuwwduru " + dude.name);
-    this.dialogService.open()
+    this.dialogService.open({
+      viewModel: DeleteDialog,
+      model: "Are you sure you want to delete this person?"
+    }).whenClosed(response => {
+      if (!response.wasCancelled) {
+        console.log("delete the mothafucktard");
+      }
+    });
   }
 
   private addPerson() {
@@ -41,14 +51,26 @@ export class groupPage {
 
 
 class Person {
+
+  private _id: string;
   private _name: string;
   private _age: string;
   private _jobTitle: string;
 
-  constructor(name: string, age: string, jobTitle: string) {
+  constructor(id: string, name: string, age: string, jobTitle: string) {
+    this._id = id;
     this._name = name;
     this._age = age;
     this._jobTitle = jobTitle;
+  }
+
+
+  get id(): string {
+    return this._id;
+  }
+
+  set id(value: string) {
+    this._id = value;
   }
 
   get name(): string {

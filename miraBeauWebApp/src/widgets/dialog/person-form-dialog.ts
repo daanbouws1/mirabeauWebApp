@@ -26,8 +26,9 @@ export class PersonFormDialog {
           event.detail.file.name.toString().lastIndexOf(".") + 1,
           event.detail.file.name.toString().length) ||
           event.detail.file.name.toString();
-          console.warn("ext", ext);
-      if (ext != "png" || ext != "jpg") {
+          console.warn("ext", ext === "png");
+      if (!(ext === "png" || ext === "jpg")) {
+      	console.warn("a");
         this.dialogService.open({
           viewModel: InvalidFileDialog,
           model: {
@@ -39,7 +40,9 @@ export class PersonFormDialog {
           }
         });
         return;
-      }
+      }else{
+      console.log("aaaa");
+  	}
       this.csrfile = event.detail.file;
       this.csrfilename = event.detail.file.name.toString();
     } else {

@@ -10,6 +10,9 @@ export class PersonFormDialog {
 
   message: string;
   private addForm: AddForm = new AddForm();
+  private uploader: any;
+  private csrfile: any;
+  private csrfilename: string;
 
   constructor(public controller: DialogController, private dialogService: DialogService) {
     this.controller = controller;
@@ -36,15 +39,14 @@ export class PersonFormDialog {
             message: "This file is not an image file, but a",
             ext: ext,
             message2: ". Please select an image file",
-            browse: () => this.uploader.browse();
+            browse: () => this.uploader.browse()
           }
         });
         return;
-      }else{
-      console.log("aaaa");
-  	}
+      }
       this.csrfile = event.detail.file;
       this.csrfilename = event.detail.file.name.toString();
+      console.log(this.csrfilename);
     } else {
       this.csrfilename = null;
       this.csrfile = null;

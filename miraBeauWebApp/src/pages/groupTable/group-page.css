@@ -14,6 +14,7 @@
 
 .list-grid__header {
   display: flex;
+  width:100%;
 }
 
 .list-grid__header:first-child {
@@ -30,6 +31,7 @@
   float:left;
   font-size: 11px;
   padding: 7px 9px 6px;
+  width:25%;
 }
 
 .list-grid__header,
@@ -91,6 +93,5 @@
 
 .addButton {
   float: right;
-  margin-left:57%;
 }
 

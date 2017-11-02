@@ -1,8 +1,8 @@
 import {autoinject} from "aurelia-framework";
 import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
-import {DeleteDialog} from "../../widgets/dialog/delete-dialog";
-import {PersonFormDialog} from "../../widgets/dialog/person-form-dialog";
+import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
+import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
 
 @autoinject
 export class groupPage {

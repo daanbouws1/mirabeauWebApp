@@ -2,7 +2,8 @@
 <require from="./upload-file"></require>
 <ux-dialog>
     <ux-dialog-header>
-      Confirm
+      <h4>Add new Person</h4>
+      Fill in this form to upload a person<br> to the face recognition group.
     </ux-dialog-header>
     <ux-dialog-body>
       ${message}
@@ -16,17 +17,19 @@
         view-model.ref="uploader">
       </upload-file>
       <br />
+      <label for="namefield">Insert your name:</label><br>
+      <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name.."></input>
       <br />
-      <input type="text" value.bind="addForm.name" placeholder="Vul je naam in.."></input>
       <br />
-      <br />
-      <select value.bind="addForm.age">
+      <label for="agefield">Select your age:</label><br>
+      <select id="agefield" value.bind="addForm.age">
       	<option value="">Select age</option>
-      	<option repeat.for="i of 100">${i}</option>
+      	<option repeat.for="i of 86">${i+14}</option>
 	  </select>
 	  <br />
 	  <br />
-      <input type="text" value.bind="addForm.jobTitle" placeholder="Vul je functie in"></input>
+      <label for="jobfunctionfield">Insert your Job title:</label><br>
+      <input type="text" id="jobfunctionfield" value.bind="addForm.jobTitle" placeholder="Insert your Job title"></input>
 
     </ux-dialog-body>
     <ux-dialog-footer>

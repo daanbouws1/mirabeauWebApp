@@ -53,6 +53,8 @@ export class groupPage {
     }).whenClosed(response => {
       if(!response.wasCancelled) {
         console.log("DIE RESPONSE",response);
+        // TODO send picture to firebase, recieve link back from firebase.
+        // TODO send personData to Azure along with link to image on firebase.
       }
     })
   }

@@ -4,7 +4,7 @@ import {DialogController} from "aurelia-dialog";
 export class InvalidFileDialog {
 
 	private message: string;
-	private ext: ext;
+	private ext: string;
 	private message2: string;
 
 

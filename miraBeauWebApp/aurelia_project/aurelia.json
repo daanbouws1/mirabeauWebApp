@@ -64,12 +64,12 @@
           "aurelia-templating",
           "aurelia-templating-binding",
           "aurelia-fetch-client",
-          "jquery",
           {
             "name": "aurelia-dialog",
             "path": "../node_modules/aurelia-dialog/dist/amd",
             "main": "aurelia-dialog"
           },
+          "jquery",
           {
             "name": "aurelia-templating-resources",
             "path": "../node_modules/aurelia-templating-resources/dist/amd",
@@ -101,7 +101,7 @@
             ".html",
             ".css"
           ],
-          "stub": true
+          "stub": false
         }
       ]
     }

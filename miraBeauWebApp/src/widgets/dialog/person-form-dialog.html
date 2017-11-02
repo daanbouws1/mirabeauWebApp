@@ -1,1 +1,37 @@
-<template></template>
+<template>
+<require from="./upload-file"></require>
+<ux-dialog>
+    <ux-dialog-header>
+      Confirm
+    </ux-dialog-header>
+    <ux-dialog-body>
+      ${message}
+      <upload-file
+        class="upload-file"
+        filechange.delegate="onFileChange($event)"
+        filename.bind="csrfilename"
+        file.bind="csrfile"
+        name="file"
+        id="myFileField"
+        view-model.ref="uploader">
+      </upload-file>
+      <br />
+      <br />
+      <input type="text" value.bind="addForm.name" placeholder="Vul je naam in.."></input>
+      <br />
+      <br />
+      <select value.bind="addForm.age">
+      	<option value="">Select age</option>
+      	<option repeat.for="i of 100">${i}</option>
+	  </select>
+	  <br />
+	  <br />
+      <input type="text" value.bind="addForm.jobTitle" placeholder="Vul je functie in"></input>
+
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
+      <button class="btn btn-primary" click.trigger="controller.ok(addForm)">Add</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

@@ -1,0 +1,32 @@
+<template>
+  <!-- UI -->
+  <div>
+    <!-- File name -->
+    <div>
+      <div>
+        ${filename}
+      </div>
+    </div>
+
+    <!-- Invisible form upload field -->
+    <form ref="fileForm">
+      <input id="file" name="uploadedfile" type="file"
+             files.bind="selectedFiles" ref="fileInput">
+    </form>
+
+    <!-- Controls -->
+    <div>
+      <!-- Browse for file -->
+      <label for="file">
+        <span></span>
+        <span>Browse</span>
+      </label>
+
+      <!-- Trash -->
+      <div type="button"
+           click.delegate="reset()">
+        <span></span>
+      </div>
+    </div>
+  </div>
+</template>

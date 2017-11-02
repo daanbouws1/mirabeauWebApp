@@ -2,6 +2,7 @@ import {autoinject} from "aurelia-framework";
 import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete-dialog";
+import {PersonFormDialog} from "../../widgets/dialog/person-form-dialog";
 
 @autoinject
 export class groupPage {
@@ -46,9 +47,16 @@ export class groupPage {
 
   private addPerson() {
     console.log("add a dewd");
+    this.dialogService.open({
+        viewModel: PersonFormDialog,
+        model: "Add a new person"
+    }).whenClosed(response => {
+      if(!response.wasCancelled) {
+        console.log("DIE RESPONSE",response);
+      }
+    })
   }
 }
-
 
 class Person {
 

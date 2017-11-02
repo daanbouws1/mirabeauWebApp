@@ -1,0 +1,4 @@
+export const HTTP_STATUS_CODE: any = {
+  NO_CONTENT: 204,
+  UNAUTHORIZED: 401
+};

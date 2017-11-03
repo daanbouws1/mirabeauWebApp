@@ -10,5 +10,19 @@
   <body aurelia-app="main">
     <script src="scripts/vendor-bundle.js" data-main="aurelia-bootstrapper"></script>
     <script src="node_modules/requirejs/require.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCC4JYrqvxHcO76iinP7bSU-4leV3Nx3zQ",
+        authDomain: "mirabeau-face-recognition.firebaseapp.com",
+        databaseURL: "https://mirabeau-face-recognition.firebaseio.com",
+        projectId: "mirabeau-face-recognition",
+        storageBucket: "mirabeau-face-recognition.appspot.com",
+        messagingSenderId: "906599097758"
+      };
+      firebase.initializeApp(config);
+    </script>
   </body>
 </html>

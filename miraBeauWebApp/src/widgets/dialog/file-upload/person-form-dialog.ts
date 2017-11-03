@@ -2,7 +2,7 @@ import {autoinject} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
-import {ConfirmDialog} from "../confirm/confirm-dialog"
+// import {ConfirmDialog} from "../confirm/confirm-dialog"
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
 
 @autoinject(DialogController)
@@ -19,7 +19,9 @@ export class PersonFormDialog {
 
   constructor(public controller: DialogController,
               private dialogService: DialogService,
-              private controllerFactory: ValidationControllerFactory) {
+              private controllerFactory: ValidationControllerFactory
+              // ,private firebase: Firebase
+  ) {
     this.controller = controller;
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
@@ -42,14 +44,7 @@ export class PersonFormDialog {
       console.log(result);
       if(result.valid === true) {
         console.log("validation passed");
-        this.dialogService.open({
-          viewModel: ConfirmDialog,
-          model: {message: "Are you sure you want to generate this csr?"}
-        }).whenClosed(response => {
-
-        });
-      } else {
-
+        this.controller.ok(addForm, this.csrfile);
       }
     });
 

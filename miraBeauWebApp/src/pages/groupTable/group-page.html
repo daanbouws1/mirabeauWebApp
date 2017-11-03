@@ -5,22 +5,28 @@
   <span>
     <br/>
     <h3>Clients</h3>
+    <br/>
   </span>
+  <div>
+    <button click.delegate="addPerson()" class="addButton button list-grid__button btn btn-primary">+</button>
+  </div>
+  <br/><br/>
   <div class="list-grid border border--round">
     <div class="list-grid__header">
       <div class="list-grid__column">Name</div>
       <div class="list-grid__column">Age</div>
       <div class="list-grid__column">Job Title</div>
-      <button click.delegate="addPerson()" class="addButton btn btn-primary">Add new Person</button>
     </div>
     <div class="list-grid__body">
       <div repeat.for="dude of people" class="list-item">
         <!--<div class="list-grid__column">${dude.id}</div>-->
-        <div class="list-grid__column">${dude.name}</div>
-        <div class="list-grid__column">${dude.age}</div>
-        <div class="list-grid__column">${dude.jobTitle}</div>
-        <button class="btn btn-primary" click.delegate="editPerson(dude.id)">Edit</button>
-        <button class="btn btn-warning" click.delegate="deletePerson(dude)">Delete</button>
+        <div class="list-grid__column list-grid__column--item">${dude.name}</div>
+        <div class="list-grid__column list-grid__column--item">${dude.age}</div>
+        <div class="list-grid__column list-grid__column--item">${dude.jobTitle}</div>
+        <div class="list-grid__column" style="margin-bottom:20px;">
+          <button class="btn button btn-primary" click.delegate="editPerson(dude)">Edit</button>
+          <button class="btn button btn-warning" click.delegate="deletePerson(dude)">Delete</button>
+        </div>
         <br><br>
       </div>
     </div>

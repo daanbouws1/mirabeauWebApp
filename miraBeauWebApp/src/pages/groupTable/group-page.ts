@@ -3,7 +3,6 @@ import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
-import {FB} from "firebase";
 
 @autoinject
 export class groupPage {
@@ -16,7 +15,12 @@ export class groupPage {
 
   activate() {
     this.getAllPeople();
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+    console.log(storage);
+    console.log(storageRef);
   }
+
 
   private getAllPeople() {
     this.peopleApi.getPeople().then(result => {
@@ -33,7 +37,7 @@ export class groupPage {
   private editPerson(id: string) {  
     return this.peopleApi.getPerson(id).then(response => {
       console.warn("Die response", response);
-    })
+    });
   }
 
   private deletePerson(dude: Person) {

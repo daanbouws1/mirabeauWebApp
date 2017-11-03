@@ -30,8 +30,10 @@ export class groupPage {
     });
   }
 
-  private editPerson(dude: Person) {
-    console.log("open a modal and edit this dewd " + dude.name);
+  private editPerson(id: string) {  
+    return this.peopleApi.getPerson(id).then(response => {
+      console.warn("Die response", response);
+    })
   }
 
   private deletePerson(dude: Person) {

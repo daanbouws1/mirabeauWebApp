@@ -25,8 +25,8 @@ export class DatePicker {
   	return this._selectedYear;
   }
 
-  set selectedDay(value) {
-    this._selectedDay = value;
+  set selectedDay(value){
+     this._selectedDay = value;
   }
 
   set selectedMonth(value){

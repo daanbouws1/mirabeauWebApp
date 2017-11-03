@@ -5,6 +5,7 @@
   <span>
     <br/>
     <h3>Clients</h3>
+    <h4 style="color:grey">Manage your clients here. Add/Edit/Delete</h4>
     <br/>
   </span>
   <div>
@@ -24,8 +25,8 @@
         <div class="list-grid__column list-grid__column--item">${dude.age}</div>
         <div class="list-grid__column list-grid__column--item">${dude.jobTitle}</div>
         <div class="list-grid__column" style="margin-bottom:20px;">
-          <button class="btn button btn-primary" click.delegate="editPerson(dude)">Edit</button>
-          <button class="btn button btn-warning" click.delegate="deletePerson(dude)">Delete</button>
+          <button class="btn button btn-primary btn-primary--shadow" click.delegate="editPerson(dude)">Edit</button>
+          <button class="btn button btn-warning btn-warning--shadow" click.delegate="deletePerson(dude)">Delete</button>
         </div>
         <br><br>
       </div>

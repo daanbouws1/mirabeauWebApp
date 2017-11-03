@@ -28,7 +28,6 @@ export class PersonFormDialog {
 
   activate(message) {
     this.message = message;
-
     ValidationRules
       .ensure("name").required().withMessage("Name may not be empty")
       .maxLength(15).withMessage("Name cant contain more than 15 characters")

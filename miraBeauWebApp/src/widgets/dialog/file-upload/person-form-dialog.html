@@ -1,5 +1,6 @@
 <template>
 <require from="./upload-file"></require>
+<require from="./datepicker"></require>
 <require from="./person-form-dialog.css"></require>
 <ux-dialog>
     <ux-dialog-header>
@@ -24,11 +25,10 @@
       <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name.."></input>
       <br />
       <br />
-      <label for="agefield">Select your age:</label><br>
-      <select id="agefield" value.bind="addForm.age">
-      	<option value="">Select age</option>
-      	<option repeat.for="i of 86">${i+14}</option>
-	  </select>
+      <label for="agefield">insert your age:</label><br>
+      <datepicker
+      class="datepicker">
+      </datepicker>
 	  <br />
 	  <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>

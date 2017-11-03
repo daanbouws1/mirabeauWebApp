@@ -3,6 +3,7 @@ import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
+import {FB} from "firebase";
 
 @autoinject
 export class groupPage {

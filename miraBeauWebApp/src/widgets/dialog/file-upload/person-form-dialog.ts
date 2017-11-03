@@ -79,7 +79,7 @@ export class PersonFormDialog {
       }
       this.csrfile = event.detail.file;
       this.csrfilename = event.detail.file.name.toString();
-      console.log(this.csrfilename);
+      console.log("dit is het bestandje", this.csrfilename);
     } else {
       this.csrfilename = null;
       this.csrfile = null;

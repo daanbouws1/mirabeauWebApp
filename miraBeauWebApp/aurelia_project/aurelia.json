@@ -54,6 +54,7 @@
           "aurelia-logging",
           "aurelia-logging-console",
           "aurelia-metadata",
+          "aurelia-metadata",
           "aurelia-pal",
           "aurelia-pal-browser",
           "aurelia-path",
@@ -68,6 +69,21 @@
             "name": "aurelia-dialog",
             "path": "../node_modules/aurelia-dialog/dist/amd",
             "main": "aurelia-dialog"
+          },
+          {
+            "name": "aurelia-validation",
+            "path": "../node_modules/aurelia-validation/dist/amd",
+            "main": "aurelia-validation"
+          },
+          {
+            "name": "aurelia-validatejs",
+            "path": "../node_modules/aurelia-validatejs/dist/amd",
+            "main": "aurelia-validatejs"
+          },
+          {
+            "name": "validate.js",
+            "path": "../node_modules/validate.js/",
+            "main": "validate"
           },
           "jquery",
           {

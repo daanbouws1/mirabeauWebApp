@@ -2,6 +2,8 @@ import {autoinject} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
+import {ConfirmDialog} from "../confirm/confirm-dialog"
+import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
 
 @autoinject(DialogController)
 
@@ -13,14 +15,45 @@ export class PersonFormDialog {
   private uploader: any;
   private csrfile: any;
   private csrfilename: string;
+  private validationController: ValidationController;
 
-  constructor(public controller: DialogController, private dialogService: DialogService) {
+  constructor(public controller: DialogController,
+              private dialogService: DialogService,
+              private controllerFactory: ValidationControllerFactory) {
     this.controller = controller;
+    this.validationController = controllerFactory.createForCurrentScope();
+    this.validationController.validateTrigger = validateTrigger.manual;
     controller.settings.centerHorizontalOnly = true;
   }
 
   activate(message) {
     this.message = message;
+
+    ValidationRules
+      .ensure("name").required().withMessage("Name may not be empty")
+      .maxLength(15).withMessage("Name cant contain more than 15 characters")
+      .ensure("jobTitle").required().withMessage("Function may not be empty")
+      .maxLength(20).withMessage("Job title can't contain more than 20 characters")
+      .on(AddForm);
+  }
+
+  submitForm(addForm: any) {
+    console.log(addForm);
+    this.validationController.validate({object: this.addForm}).then(result => {
+      console.log(result);
+      if(result.valid === true) {
+        console.log("validation passed");
+        this.dialogService.open({
+          viewModel: ConfirmDialog,
+          model: {message: "Are you sure you want to generate this csr?"}
+        }).whenClosed(response => {
+
+        });
+      } else {
+
+      }
+    });
+
   }
 
   onFileChange(event) {
@@ -51,10 +84,10 @@ export class PersonFormDialog {
       this.csrfilename = null;
       this.csrfile = null;
     }
-}
+  }
 }
 
-class AddForm {
+export class AddForm {
 	private name: string = "";
 	private age: number;
 	private jobTitle: string = "";

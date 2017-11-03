@@ -1,5 +1,6 @@
 <template>
 <require from="./upload-file"></require>
+<require from="./person-form-dialog.css"></require>
 <ux-dialog>
     <ux-dialog-header>
       <h4>Add new Person</h4>
@@ -18,6 +19,8 @@
       </upload-file>
       <br />
       <label for="namefield">Insert your name:</label><br>
+      <div class="errorMessage" id="errorMessage1" if.bind="validationController.results['0'].valid == false"> Name may not be empty</div>
+      <div class="errorMessage" if.bind="validationController.results['1'].valid == false"> Name must be under 15 characters long</div>
       <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name.."></input>
       <br />
       <br />
@@ -29,12 +32,14 @@
 	  <br />
 	  <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>
-      <input type="text" id="jobfunctionfield" value.bind="addForm.jobTitle" placeholder="Insert your Job title"></input>
+      <div class="errorMessage" id="errorMessage2" if.bind="validationController.results['2'].valid == false"> Job title may not be empty</div>
+      <div class="errorMessage" if.bind="validationController.results['3'].valid == false"> Job title must be under 20 characters long</div>
+      <input type="text" id="jobfunctionfield" value.bind="addForm.jobTitle" placeholder="Insert your Job title"/>
 
     </ux-dialog-body>
     <ux-dialog-footer>
       <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
-      <button class="btn btn-primary" click.trigger="controller.ok(addForm)">Add</button>
+      <button class="btn btn-primary" click.trigger="submitForm(addForm)">Add</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

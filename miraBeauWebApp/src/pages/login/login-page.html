@@ -1,0 +1,11 @@
+<template>
+  <div>
+    <label> Type in your email-address: <br>
+      <input value.bind="email" type="text" placeholder="example@example.com">
+    </label>
+    <label> Type in your password: <br>
+      <input value.bind="password" type="password" placeholder="***********">
+    </label>
+    <button click.delegate="login(email,password)">Submit</button>
+  </div>
+</template>

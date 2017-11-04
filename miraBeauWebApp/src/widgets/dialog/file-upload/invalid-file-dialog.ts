@@ -19,7 +19,6 @@ export class InvalidFileDialog {
 	}
 
 	browse(){
-		console.warn("HIJ KOMT HIER GEK");
 		this.model.browse();
 		this.controller.cancel();
 	}

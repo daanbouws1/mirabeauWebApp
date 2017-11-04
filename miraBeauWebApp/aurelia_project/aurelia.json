@@ -65,6 +65,23 @@
           "aurelia-templating",
           "aurelia-templating-binding",
           "aurelia-fetch-client",
+          "moment",
+          {
+            "name": "eonasdan-bootstrap-datetimepicker",
+            "path": "../node_modules/eonasdan-bootstrap-datetimepicker/build",
+            "main": "js/bootstrap-datetimepicker.min",
+            "resources": [
+              "css/bootstrap-datetimepicker.min.css"
+            ]
+          },
+          {
+            "name": "aurelia-bootstrap-datetimepicker",
+            "path": "../node_modules/aurelia-bootstrap-datetimepicker/dist/amd",
+            "main": "index",
+            "resources": [
+              "**/*.{css,html}"
+            ]
+          },
           {
             "name": "aurelia-dialog",
             "path": "../node_modules/aurelia-dialog/dist/amd",

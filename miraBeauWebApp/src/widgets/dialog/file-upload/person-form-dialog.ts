@@ -1,8 +1,8 @@
-import {autoinject} from "aurelia-framework";
+import {autoinject, bindable} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
-// import {ConfirmDialog} from "../confirm/confirm-dialog"
+import {ConfirmDialog} from "../confirm/confirm-dialog";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
 
 @autoinject(DialogController)
@@ -19,9 +19,7 @@ export class PersonFormDialog {
 
   constructor(public controller: DialogController,
               private dialogService: DialogService,
-              private controllerFactory: ValidationControllerFactory
-              // ,private firebase: Firebase
-  ) {
+              private controllerFactory: ValidationControllerFactory) {
     this.controller = controller;
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
@@ -36,18 +34,15 @@ export class PersonFormDialog {
       .ensure("jobTitle").required().withMessage("Function may not be empty")
       .maxLength(20).withMessage("Job title can't contain more than 20 characters")
       .on(AddForm);
+
   }
 
   submitForm(addForm: any) {
-    console.log(addForm);
     this.validationController.validate({object: this.addForm}).then(result => {
-      console.log(result);
       if(result.valid === true) {
-        console.log("validation passed");
-        this.controller.ok(addForm, this.csrfile);
+        this.controller.ok(addForm);
       }
     });
-
   }
 
   onFileChange(event) {
@@ -71,9 +66,8 @@ export class PersonFormDialog {
         });
         return;
       }
-      this.csrfile = event.detail.file;
+      this.addForm.file = event.detail.file;
       this.csrfilename = event.detail.file.name.toString();
-      console.log("dit is het bestandje", this.csrfilename);
     } else {
       this.csrfilename = null;
       this.csrfile = null;
@@ -85,4 +79,5 @@ export class AddForm {
 	private name: string = "";
 	private age: number;
 	private jobTitle: string = "";
+	public file: any;
 }

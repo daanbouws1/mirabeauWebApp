@@ -13,7 +13,7 @@
         class="upload-file"
         filechange.delegate="onFileChange($event)"
         filename.bind="csrfilename"
-        file.bind="csrfile"
+        file.bind="addForm.file"
         name="file"
         id="myFileField"
         view-model.ref="uploader">
@@ -25,11 +25,9 @@
       <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name.."></input>
       <br />
       <br />
-      <label for="agefield">insert your age:</label><br>
-      <datepicker
-      class="datepicker">
-      </datepicker>
-	  <br />
+      <!--<label for="agefield">insert your age:</label><br>-->
+      <datepicker class="datepicker" change.delegate="onDatePicked($event.target.selectedIndex)"></datepicker>
+
 	  <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>
       <div class="errorMessage" id="errorMessage2" if.bind="validationController.results['2'].valid == false"> Job title may not be empty</div>

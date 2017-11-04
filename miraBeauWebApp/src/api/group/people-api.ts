@@ -3,8 +3,6 @@ import {baseApi} from "../base-api/base-api";
 export class PeopleApi extends baseApi {
 
   servicePath = "persongroups/mirabeaugroup_mobile/persons";
-
-   servicePath = "persongroups/mirabeaugroup_mobile/persons";
  
    getPeople() {
     console.warn("GETPEOPLE")

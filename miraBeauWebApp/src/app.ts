@@ -1,5 +1,6 @@
 import {autoinject} from "aurelia-framework";
 
+
 @autoinject
 export class App {
   router;
@@ -7,12 +8,11 @@ export class App {
   constructor() {}
 
   configureRouter(config,router) {
-    console.log(1);
-      config.title = "Mirabeau Web App";
-      config.map([
-        {route: ['', 'home'], name: 'home', moduleId: './pages/groupTable/group-page', nav: true, title: 'Home'},
-      ]);
-
+    config.title = "Mirabeau Web App";
+    config.map([
+      {route: 'login-page', name: 'login-page', moduleId: './pages/login/login-page', nav: true, title: 'Login Page'},
+      {route: ['', 'home'], name: 'home', moduleId: './pages/groupTable/group-page', nav: true, title: 'Home'}
+    ]);
     this.router = router;
   }
 }

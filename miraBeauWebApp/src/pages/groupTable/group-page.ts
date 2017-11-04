@@ -3,22 +3,28 @@ import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
+import {Router} from 'aurelia-router';
 
 @autoinject
 export class groupPage {
 
   private people: Person[] = [];
+  private storageRef: any;
+  private storage: any;
 
   constructor(private peopleApi: PeopleApi,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private router: Router) {
   }
 
   activate() {
-    this.getAllPeople();
-    var storage = firebase.storage();
-    var storageRef = storage.ref();
-    console.log(storage);
-    console.log(storageRef);
+    let user = firebase.auth().currentUser;
+    if (!(user == null)) {
+      this.getAllPeople();
+      this.storage = firebase.storage();
+    } else {
+      this.router.navigate('login-page');
+    }
   }
 
 
@@ -59,9 +65,12 @@ export class groupPage {
         model: "Add a new person"
     }).whenClosed(response => {
       if(!response.wasCancelled) {
-        console.log("DIE RESPONSE",response);
-        // TODO send picture to firebase, recieve link back from firebase.
-        // TODO send personData to Azure along with link to image on firebase.
+        console.log("DIE RESPONSE",response.output.file.name);
+        this.storageRef = this.storage.ref(response.output.file.name);
+        this.storageRef.put(response.output.file).then(snapshot => {
+          console.log(snapshot);
+          console.log('Uploaded a blob or file!');
+        });
       }
     })
   }

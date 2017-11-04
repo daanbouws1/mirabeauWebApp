@@ -3,6 +3,8 @@
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
+  margin-bottom: 3rem;
+  box-shadow: 1px 1px 15px black;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -24,6 +26,14 @@
 
 .list-grid__column:last-child {
   border-left: 1px solid #e8e8e8;
+}
+
+.btn-primary--shadow{
+  box-shadow: 1px 1px 15px black;
+}
+
+.btn-warning--shadow{
+  box-shadow: 1px 1px 15px black;
 }
 
 .list-grid__column--item {
@@ -101,6 +111,7 @@
 }
 
 .addButton {
+  box-shadow: 1px 1px 12px black;
   float: right;
   padding-top:0px;
 }
@@ -114,5 +125,9 @@
 .list-grid__button {
   width:100px;
   height: 25px;
+}
+
+html{
+  background-color:#5a5a5a;
 }
 

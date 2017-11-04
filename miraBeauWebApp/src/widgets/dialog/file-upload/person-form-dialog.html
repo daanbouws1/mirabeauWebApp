@@ -1,6 +1,6 @@
 <template>
 <require from="./upload-file"></require>
-<require from="./datepicker"></require>
+<require from="./datepicker.html"></require>
 <require from="./person-form-dialog.css"></require>
 <ux-dialog>
     <ux-dialog-header>
@@ -26,8 +26,8 @@
       <br />
       <br />
       <!--<label for="agefield">insert your age:</label><br>-->
-      <datepicker class="datepicker" change.delegate="onDatePicked($event.target.selectedIndex)"></datepicker>
-
+      <datepicker class="datepicker"></datepicker>
+	  <br />
 	  <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>
       <div class="errorMessage" id="errorMessage2" if.bind="validationController.results['2'].valid == false"> Job title may not be empty</div>

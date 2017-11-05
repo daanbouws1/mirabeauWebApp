@@ -56,7 +56,7 @@ export class groupPage {
         model: ["Add a new person", dude]
       }).whenClosed(response => {
         if(!response.wasCancelled) {
-          let userData: string = response.output.age + ", " + response.output.jobTitle;
+          let userData: string = response.output.age + "," + response.output.jobTitle;
           let personData = {"name": response.output.name, "userData": userData};
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).catch(() => {
             this.getAllPeople();

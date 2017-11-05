@@ -3,7 +3,6 @@ import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
-import {ConfirmDialog} from "../confirm/confirm-dialog";
 
 @autoinject(DialogController)
 

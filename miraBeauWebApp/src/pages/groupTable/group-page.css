@@ -46,7 +46,7 @@
   color: #999;
   float:left;
   font-size: 11px;
-  padding: 18px 9px 17px;
+  padding: 17px 9px 17px;
   width:25%;
   vertical-align: middle;
   text-align:center;
@@ -59,11 +59,6 @@
   background-color: #f8f8f8;
   border: 1px solid #f8f8f8;
   border-top: none;
-}
-
-.list-grid__filter {
-  padding: 1rem 2rem;
-  width: 100%;
 }
 
 .list-grid__header,
@@ -102,14 +97,6 @@
   overflow-x: hidden;
 }
 
-.list-grid__body--plugins:empty:after {
-    content: 'No plugins found';
-}
-
-.list-grid__body--active-users:empty:after {
-    content: 'No active users found';
-}
-
 .addButton {
   box-shadow: 1px 1px 12px black;
   float: right;
@@ -127,7 +114,29 @@
   height: 25px;
 }
 
-html{
-  background-color:#5a5a5a;
+.leftButton {
+  margin-right:10px;
+}
+
+@media only screen and (max-width: 500px) {
+  .list-grid__column {
+    color: #999;
+    float:left;
+    font-size: 11px;
+    padding: 5px 9px 17px;
+    width:25%;
+    vertical-align: middle;
+    text-align:center;
+    height: 40px;
+  }
+
+  .leftButton{
+    margin-right:0px;
+  }
+
+  .button {
+    height:24px;
+    margin-bottom:4px !important;
+  }
 }
 

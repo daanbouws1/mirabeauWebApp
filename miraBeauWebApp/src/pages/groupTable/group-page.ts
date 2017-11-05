@@ -82,7 +82,6 @@ export class groupPage {
 
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result => {
                 this.busy.off();
-                window.alert("success");
               });
             });
           }

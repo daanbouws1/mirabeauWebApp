@@ -1,14 +1,14 @@
 <template>
-<require from="./upload-file"></require>
-<require from="./datepicker.html"></require>
-<require from="./person-form-dialog.css"></require>
-<ux-dialog>
+  <require from="./upload-file"></require>
+  <require from="./person-form-dialog.css"></require>
+  <ux-dialog>
     <ux-dialog-header>
       <h4>Add new Person</h4>
       Fill in this form to upload a person<br> to the face recognition group.
     </ux-dialog-header>
     <ux-dialog-body>
       ${message}
+      <div class="errorMessage" id="errorMessage4" if.bind="validationController.results['4'].valid == false">No file provided, please add a picture of your face</div>
       <upload-file
         class="upload-file"
         filechange.delegate="onFileChange($event)"
@@ -22,11 +22,23 @@
       <label for="namefield">Insert your name:</label><br>
       <div class="errorMessage" id="errorMessage1" if.bind="validationController.results['0'].valid == false"> Name may not be empty</div>
       <div class="errorMessage" if.bind="validationController.results['1'].valid == false"> Name must be under 15 characters long</div>
-      <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name.."></input>
+      <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name..">
       <br />
       <br />
       <!--<label for="agefield">insert your age:</label><br>-->
-      <datepicker class="datepicker"></datepicker>
+      <!--<datepicker class="datepicker"></datepicker>-->
+      <select name="DOBMonth" value.bind="selectedMonth">
+        <option> - Month - </option>
+        <option repeat.for="month of months" value.bind="month">${month}</option>
+      </select>
+      <select name="DOBDay" value.bind="selectedDay">
+        <option> - Day - </option>
+        <option repeat.for="day of days" value.bind="day">${day}</option>
+      </select>
+      <select name="DOBYear" value.bind="selectedYear">
+        <option> - Year - </option>
+        <option repeat.for="year of years" value.bind="year">${year}</option>
+      </select>
 	  <br />
 	  <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>

@@ -11,7 +11,11 @@ export class LoginPage {
   constructor(private router: Router) {}
 
   activate() {
-
+    let user = firebase.auth().currentUser;
+    console.log(user);
+    if (!(user == null)) {
+      this.router.navigate('home');
+    }
   }
 
   login(email: string, password: string) {

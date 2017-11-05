@@ -19,6 +19,7 @@ export class groupPage {
 
   activate() {
     let user = firebase.auth().currentUser;
+    console.log(user);
     if (!(user == null)) {
       this.getAllPeople();
       this.storage = firebase.storage();
@@ -37,6 +38,7 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
+      console.log(result);
     });
   }
 
@@ -59,20 +61,37 @@ export class groupPage {
   }
 
   private addPerson() {
-    console.log("add a dewd");
     this.dialogService.open({
         viewModel: PersonFormDialog,
         model: "Add a new person"
     }).whenClosed(response => {
       if(!response.wasCancelled) {
-        console.log("DIE RESPONSE",response.output.file.name);
-        this.storageRef = this.storage.ref(response.output.file.name);
-        this.storageRef.put(response.output.file).then(snapshot => {
-          console.log(snapshot);
-          console.log('Uploaded a blob or file!');
+        let userData: string = response.output.age + ", " + response.output.jobTitle;
+        let personData = {"name": response.output.name, "userData": userData};
+        console.log(personData);
+        // personData = <JSON>personData;
+
+        this.peopleApi.addPerson(personData).then(result => {
+          console.log(result);
+          // this.storageRef = this.storage.ref(response.output.file.name);
+          // this.addPersonFace(result.personId, response.output.file);
         });
       }
     })
+  }
+
+  private addPersonFace(personId: any, file: any) {
+    let formDataFace: FormData = new FormData();
+    this.storageRef.put(file).then(snapshot => {
+      console.log(snapshot);
+      console.log('Uploaded a blob or file!');
+      if(snapshot.success) {
+        formDataFace.append("url", snapshot.downloadUrl);
+        this.peopleApi.addPersonFace(formDataFace, personId).then(result => {
+          console.log(result);
+        });
+      }
+    });
   }
 }
 

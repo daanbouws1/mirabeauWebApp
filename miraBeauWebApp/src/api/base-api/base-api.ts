@@ -21,6 +21,10 @@ export class baseApi {
     return this.fetchWithMethod("DELETE", path, null);
   }
 
+  protected _post(path) : Promise<any> {
+    return this.fetchWithMethod("POST", path, null);
+  }
+
   protected _postParams(path: string, formData?: FormData): Promise<any> {
     return this.fetchWithMethod("POST", path, {
       body: formData
@@ -40,6 +44,7 @@ export class baseApi {
       `${endpoint}`,
       ObjectUtil.deepAssign({
         headers: {
+          "Content-Type": "application/json",
           "Ocp-Apim-Subscription-Key": "9efbc9f5bd714d9a99ef2df0e6b36ead"
         },
         mode: "cors"

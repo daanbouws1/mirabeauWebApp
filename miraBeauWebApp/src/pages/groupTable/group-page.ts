@@ -20,7 +20,7 @@ export class groupPage {
   }
 
   activate() {
-    let user = firebase.auth().currentUser;
+    let user: any = firebase.auth().currentUser;
     if (user) {
       this.getAllPeople();
       this.storage = firebase.storage();
@@ -34,9 +34,9 @@ export class groupPage {
     this.people = [];
     this.peopleApi.getPeople().then(result => {
       for(let item in result) {
-        let age = result[item].userData.split(",")[0];
-        let jobTitle = result[item].userData.split(",")[1];
-        let id = result[item].personId;
+        let age: string = result[item].userData.split(",")[0];
+        let jobTitle: string = result[item].userData.split(",")[1];
+        let id: string = result[item].personId;
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
@@ -57,7 +57,7 @@ export class groupPage {
       }).whenClosed(response => {
         if(!response.wasCancelled) {
           let userData: string = response.output.age + "," + response.output.jobTitle;
-          let personData = {"name": response.output.name, "userData": userData};
+          let personData: any = {"name": response.output.name, "userData": userData};
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).catch(() => {
             this.getAllPeople();
           });
@@ -100,7 +100,7 @@ export class groupPage {
 
           if(snapshot.state === "success") {
             let userData: string = response.output.age + ", " + response.output.jobTitle;
-            let personData = {"name": response.output.name, "userData": userData};
+            let personData: any = {"name": response.output.name, "userData": userData};
 
             this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
               let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);

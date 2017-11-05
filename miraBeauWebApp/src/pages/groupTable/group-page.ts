@@ -39,7 +39,6 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
-      console.log(result);
     });
   }
 
@@ -61,8 +60,7 @@ export class groupPage {
       model: "Are you sure you want to delete this person?"
     }).whenClosed(response => {
       if (!response.wasCancelled) {
-        this.peopleApi.deletePerson(dude._id).catch(error => {
-          console.log(this.people);
+        this.peopleApi.deletePerson(dude._id).catch(() => {
         });
       }
     });
@@ -84,6 +82,8 @@ export class groupPage {
             let personData = {"name": response.output.name, "userData": userData};
 
             this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
+              let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
+              this.people.push(newDude);
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
 
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result => {

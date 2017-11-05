@@ -11,14 +11,15 @@ import {user} from "firebase-functions/lib/providers/auth";
 export class PersonFormDialog {
 
   message: any;
+  private createOrUpdate: boolean;
   private addForm: AddForm = new AddForm();
   private uploader: any;
   private selectedDay: any;
-  private days: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+  private days: string[] = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
   private selectedMonth: any;
-  private months: number[] = [1,2,3,4,5,6,7,8,9,10,11,12];
+  private months: string[] = ["01","02","03","04","05","06","07","08","09","10","11","12"];
   private selectedYear: any;
-  private years: number[] = [1996,1995,1994,1993,1992,1991,1990,1989,1988,1987,1986,1985,1984,
+  private years: number[] = [2000,1999,1998,1997,1996,1995,1994,1993,1992,1991,1990,1989,1988,1987,1986,1985,1984,
     1983,1982,1981,1980,1979,1978,1977,1976,1975,1974,1973,1972,1971,1970,1969,1968,1967,1966,
     1965,1964,1963,1962,1961,1960,1959,1958,1957,1956,1955,1954,1953,1952,1951,1950,1949,1948,
     1947,1946,1945];
@@ -37,14 +38,18 @@ export class PersonFormDialog {
 
   activate(message) {
     this.message = message;
-    console.log(typeof message);
     if (!(typeof message === "string")) {
       this.addForm.name = message[1].name;
-      // let userData = message[1];
       this.addForm.setAge(message[1].age);
       this.addForm.jobTitle = message[1].jobTitle;
-      this.message = message[0];
+      this.selectedYear = message[1].age.substring(0,4);
+      this.selectedMonth = message[1].age.substring(5,7);
+      this.selectedDay = message[1].age.substring(8,10);
+      this.createOrUpdate = true;
+    } else {
+      this.createOrUpdate = false;
     }
+
     ValidationRules
       .ensure("name").required().withMessage("Name may not be empty")
       .maxLength(15).withMessage("Name cant contain more than 15 characters")
@@ -52,10 +57,9 @@ export class PersonFormDialog {
       .maxLength(20).withMessage("Job title can't contain more than 20 characters")
       .ensure("file").required().withMessage("No file added, please upload a picture of your face")
       .on(AddForm);
-
   }
 
-  submitForm(addForm: any) {
+  submitForm() {
     this.validationController.validate({object: this.addForm}).then(result => {
       if(result.valid === true) {
         this.addForm.setAge(this.selectedMonth, this.selectedDay, this.selectedYear);

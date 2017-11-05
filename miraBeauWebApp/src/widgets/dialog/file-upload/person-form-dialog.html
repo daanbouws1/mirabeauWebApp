@@ -26,15 +26,15 @@
       <br />
       <!--<label for="agefield">insert your age:</label><br>-->
       <!--<datepicker class="datepicker"></datepicker>-->
-      <select name="DOBMonth" value.bind="selectedMonth">
+      <select name="DOBMonth" value.two-way="selectedMonth">
         <option> - Month - </option>
         <option repeat.for="month of months" value.bind="month">${month}</option>
       </select>
-      <select name="DOBDay" value.bind="selectedDay">
+      <select name="DOBDay" value.two-way="selectedDay">
         <option> - Day - </option>
         <option repeat.for="day of days" value.bind="day">${day}</option>
       </select>
-      <select name="DOBYear" value.bind="selectedYear">
+      <select name="DOBYear" value.two-way="selectedYear">
         <option> - Year - </option>
         <option repeat.for="year of years" value.bind="year">${year}</option>
       </select>
@@ -48,7 +48,8 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
-      <button class="btn btn-primary" click.trigger="submitForm(addForm)">Add</button>
+      <button class="btn btn-primary" if.bind="createOrUpdate == false" click.trigger="submitForm()">Add</button>
+      <button class="btn btn-primary" if.bind="createOrUpdate == true" click.trigger="submitForm()">Update</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

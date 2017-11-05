@@ -7,30 +7,33 @@ export class LoginPage {
   private email: string;
   private password: string;
   private passBool: boolean;
+  private errorMessage: string;
 
   constructor(private router: Router) {}
 
   activate() {
     let user = firebase.auth().currentUser;
-    console.log(user);
-    if (!(user == null)) {
+    if (user) {
       this.router.navigate('home');
     }
   }
 
   login(email: string, password: string) {
-    firebase.auth().signInWithEmailAndPassword(email, password).then(error => {
-      // Handle Errors here.
-      let errorCode = error.code;
-      let errorMessage = error.message;
-
-      if (errorCode == null) {
-        this.passBool = true;
+    if (!(email ==null) && !(password == null)){
+      this.errorMessage = "";
+      this.passBool = true;
+      firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
         this.router.navigate("home");
-      } else {
-        this.passBool = false;
-      }
-    });
+      }).catch(error => {
+        if (error.code) {
+          this.passBool = false;
+          this.errorMessage = error.message;
+        }
+      });
+    } else {
+      this.passBool = false;
+      this.errorMessage = "Both input fields must be filled in in order to log in";
+    }
   }
 }
 

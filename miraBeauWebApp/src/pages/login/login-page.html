@@ -1,11 +1,19 @@
 <template>
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="./login-page.css"></require>
+  <require from="../groupTable/group-page.css"></require>
   <div>
-    <label> Type in your email-address: <br>
-      <input value.bind="email" type="text" placeholder="example@example.com">
-    </label>
-    <label> Type in your password: <br>
-      <input value.bind="password" type="password" placeholder="***********">
-    </label>
-    <button click.delegate="login(email,password)">Submit</button>
+    <h1 class="centered">Login Page</h1> <br>
+    <div class="list-grid border border--round loginCard"> <br>
+      <label class="centered"> Type in your email-address: <br>
+        <input value.bind="email" type="text" placeholder="example@example.com">
+      </label>
+      <label class="centered"> Type in your password: <br>
+        <input value.bind="password" type="password" placeholder="***********">
+      </label>
+      <br>
+      <div class="errorMessage centered" if.bind="passBool == false">${errorMessage}</div>
+      <button class="btn button btn-primary btn-primary--shadow" click.delegate="login(email,password)">Submit</button>
+    </div>
   </div>
 </template>

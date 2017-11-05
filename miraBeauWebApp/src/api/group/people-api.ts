@@ -13,7 +13,8 @@ export class PeopleApi extends baseApi {
    }
  
    updatePerson(id: string, formData: JSON) {
-     return this._postParams(this.servicePath + "/" + id + "?");
+     //TODO make normal post like addPerson();
+     return this._postParams(this.servicePath + "/" + id + "?", formData);
    }
 
    getPerson(id: string) {

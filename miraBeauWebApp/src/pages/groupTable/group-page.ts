@@ -21,8 +21,7 @@ export class groupPage {
 
   activate() {
     let user = firebase.auth().currentUser;
-    console.log(user);
-    if (!(user == null)) {
+    if (user) {
       this.getAllPeople();
       this.storage = firebase.storage();
     } else {
@@ -40,7 +39,12 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
-      console.log(result);
+    });
+  }
+
+  private logout() {
+    firebase.auth().signOut().then(result => {
+      this.router.navigate("login-page");
     });
   }
 

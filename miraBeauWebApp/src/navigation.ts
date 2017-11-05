@@ -10,13 +10,11 @@ export class Navigation {
   constructor(){}
 
   attached() {
-    console.log(1);
     this.constructNavBar(this.router);
   }
 
   constructNavBar(router) {
     router.navigation.forEach(section => {
-      console.log(1);
       this.navigationTree.push(section);
     });
   }

@@ -9,7 +9,7 @@ import {Busy} from '../../widgets/spinner/busy';
 @autoinject
 export class groupPage {
 
-  private people: Person[] = [];
+  private people: Person[];
   private storageRef: any;
   private storage: any;
 
@@ -49,9 +49,15 @@ export class groupPage {
     });
   }
 
-  private editPerson(id: string) {  
-    return this.peopleApi.getPerson(id).then(response => {
+  private editPerson(dude: Person) {
+    return this.peopleApi.getPerson(dude.id).then(response => {
       console.warn("Die response", response);
+      this.dialogService.open({
+        viewModel: PersonFormDialog,
+        model: ["Add a new person", dude]
+      }).whenClosed(response => {
+
+      });
     });
   }
 
@@ -71,7 +77,7 @@ export class groupPage {
   private addPerson() {
     this.dialogService.open({
         viewModel: PersonFormDialog,
-        model: "Add a new person"
+        model: "Add a new person",
     }).whenClosed(response => {
       if(!response.wasCancelled) {
 

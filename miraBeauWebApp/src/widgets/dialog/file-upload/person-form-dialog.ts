@@ -3,13 +3,14 @@ import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
+import {user} from "firebase-functions/lib/providers/auth";
 
 @autoinject(DialogController)
 
 @autoinject
 export class PersonFormDialog {
 
-  message: string;
+  message: any;
   private addForm: AddForm = new AddForm();
   private uploader: any;
   private selectedDay: any;
@@ -36,6 +37,14 @@ export class PersonFormDialog {
 
   activate(message) {
     this.message = message;
+    console.log(typeof message);
+    if (!(typeof message === "string")) {
+      this.addForm.name = message[1].name;
+      // let userData = message[1];
+      this.addForm.setAge(message[1].age);
+      this.addForm.jobTitle = message[1].jobTitle;
+      this.message = message[0];
+    }
     ValidationRules
       .ensure("name").required().withMessage("Name may not be empty")
       .maxLength(15).withMessage("Name cant contain more than 15 characters")

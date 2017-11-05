@@ -2,7 +2,6 @@ import {autoinject, bindable} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
-import {ConfirmDialog} from "../confirm/confirm-dialog";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
 
 @autoinject(DialogController)
@@ -62,9 +61,7 @@ export class PersonFormDialog {
           event.detail.file.name.toString().lastIndexOf(".") + 1,
           event.detail.file.name.toString().length) ||
           event.detail.file.name.toString();
-          console.warn("ext", ext === "png");
       if (!(ext === "png" || ext === "jpg")) {
-      	console.warn("a");
         this.dialogService.open({
           viewModel: InvalidFileDialog,
           model: {
@@ -94,7 +91,6 @@ export class AddForm {
 
 
   setAge(month: any, day: any, year: any) {
-
     this.age = year + "-" + month + "-" + day;
   }
 }

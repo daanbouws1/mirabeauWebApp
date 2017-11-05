@@ -39,6 +39,7 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
+      console.log(result);
     });
   }
 
@@ -55,13 +56,14 @@ export class groupPage {
   }
 
   private deletePerson(dude: Person) {
-    console.log("delete this duuwwduru " + dude.name);
     this.dialogService.open({
       viewModel: DeleteDialog,
       model: "Are you sure you want to delete this person?"
     }).whenClosed(response => {
       if (!response.wasCancelled) {
-        console.log("delete the mothafucktard");
+        this.peopleApi.deletePerson(dude._id).catch(error => {
+          console.log(this.people);
+        });
       }
     });
   }

@@ -57,16 +57,18 @@ export class baseApi {
   }
 
   private defaultResponseHandling(response) {
-    if (response.status === HTTP_STATUS_CODE.NO_CONTENT) {
-      return;
-    }
-
-    return response.json().then(jsonResponse => {
-      if (jsonResponse.errorcode) {
-        return this.responseErrorHandling(jsonResponse);
+    console.log(response);
+    if(response) {
+      if (response.status === HTTP_STATUS_CODE.NO_CONTENT) {
+        return;
       }
-      return jsonResponse;
-    });
+      return response.json().then(jsonResponse => {
+        if (jsonResponse.errorcode) {
+          return this.responseErrorHandling(jsonResponse);
+        }
+        return jsonResponse;
+      });
+    }
   }
 
   private defaultErrorHandling(error) {

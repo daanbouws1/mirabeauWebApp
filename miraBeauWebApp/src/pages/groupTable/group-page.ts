@@ -4,6 +4,7 @@ import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
 import {Router} from 'aurelia-router';
+import {Busy} from '../../widgets/spinner/busy';
 
 @autoinject
 export class groupPage {
@@ -14,7 +15,8 @@ export class groupPage {
 
   constructor(private peopleApi: PeopleApi,
               private dialogService: DialogService,
-              private router: Router) {
+              private router: Router,
+              private busy: Busy) {
   }
 
   activate() {
@@ -68,6 +70,7 @@ export class groupPage {
       if(!response.wasCancelled) {
 
         this.storageRef = this.storage.ref(response.output.file.name);
+        this.busy.on();
         this.storageRef.put(response.output.file).then(snapshot => {
 
           if(snapshot.state === "success") {
@@ -78,6 +81,7 @@ export class groupPage {
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
 
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result => {
+                this.busy.off();
                 window.alert("success");
               });
             });

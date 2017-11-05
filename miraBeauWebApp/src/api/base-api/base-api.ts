@@ -28,6 +28,12 @@ export class baseApi {
     });
   }
 
+  protected _patch(path: string, params: any) : Promise<any> {
+    return this.fetchWithMethod("PATCH", path, {
+      body: params
+    })
+  }
+
   // Don't use for Azure, they are oldschool af.
   protected _postParams(path: string, formData: FormData): Promise<any> {
     return this.fetchWithMethod("POST", path, {

@@ -12,9 +12,9 @@ export class PeopleApi extends baseApi {
      return this._delete(this.servicePath + "/" + id);
    }
  
-   updatePerson(id: string, formData: JSON) {
+   updatePerson(params: any, id: string) {
      //TODO make normal post like addPerson();
-     return this._postParams(this.servicePath + "/" + id + "?", formData);
+     return this._patch(this.servicePath + "/" + id + "?", params);
    }
 
    getPerson(id: string) {

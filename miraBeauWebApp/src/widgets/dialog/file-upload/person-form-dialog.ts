@@ -39,6 +39,8 @@ export class PersonFormDialog {
   activate(message) {
     this.message = message;
     if (!(typeof message === "string")) {
+      console.log(message[1]);
+      this.addForm.id = message[1].id;
       this.addForm.name = message[1].name;
       this.addForm.setAge(message[1].age);
       this.addForm.jobTitle = message[1].jobTitle;
@@ -55,7 +57,6 @@ export class PersonFormDialog {
       .maxLength(15).withMessage("Name cant contain more than 15 characters")
       .ensure("jobTitle").required().withMessage("Function may not be empty")
       .maxLength(20).withMessage("Job title can't contain more than 20 characters")
-      .ensure("file").required().withMessage("No file added, please upload a picture of your face")
       .on(AddForm);
   }
 
@@ -63,7 +64,7 @@ export class PersonFormDialog {
     this.validationController.validate({object: this.addForm}).then(result => {
       if(result.valid === true) {
         this.addForm.setAge(this.selectedMonth, this.selectedDay, this.selectedYear);
-        this.controller.ok(addForm);
+        this.controller.ok(this.addForm);
       }
     });
   }
@@ -97,6 +98,7 @@ export class PersonFormDialog {
 }
 
 export class AddForm {
+  private id: string = "";
 	private name: string = "";
 	private age: any;
 	private jobTitle: string = "";

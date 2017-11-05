@@ -7,7 +7,6 @@
       Fill in this form to upload a person<br> to the face recognition group.
     </ux-dialog-header>
     <ux-dialog-body>
-      <div class="errorMessage" id="errorMessage4" if.bind="validationController.results['4'].valid == false">No file provided, please add a picture of your face</div>
       <upload-file
         class="upload-file"
         filechange.delegate="onFileChange($event)"

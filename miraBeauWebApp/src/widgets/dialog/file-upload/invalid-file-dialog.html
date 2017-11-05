@@ -10,7 +10,7 @@
     </ux-dialog-body>
     <ux-dialog-footer>
       <button class="btn btn-default" click.trigger="controller.cancel()">No</button>
-      <button class="btn btn-primary" click.trigger="browse(model.file)">Browse</button>
+      <button class="btn btn-primary" click.trigger="browse(model.file) controller.ok()">Browse</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

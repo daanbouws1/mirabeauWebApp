@@ -31,6 +31,7 @@ export class groupPage {
 
 
   private getAllPeople() {
+    this.people = [];
     this.peopleApi.getPeople().then(result => {
       for(let item in result) {
         let age = result[item].userData.split(",")[0];
@@ -61,6 +62,7 @@ export class groupPage {
     }).whenClosed(response => {
       if (!response.wasCancelled) {
         this.peopleApi.deletePerson(dude._id).catch(() => {
+          this.getAllPeople();
         });
       }
     });

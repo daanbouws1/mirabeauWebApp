@@ -1,11 +1,42 @@
+body {
+  min-height:100%;
+  position: absolute;
+  min-width:100%;
+}
+
 .centered {
   text-align:center;
 }
 
 .loginCard {
   width:50%;
+  height:300px;
+}
+
+.title {
+  margin-bottom:7%;
 }
 
 .errorMessage {
   color: red;
+}
+
+.submitButton {
+  margin: auto;
+  width:80px;
+}
+
+.inputField {
+  width:50%;
+}
+
+@media only screen and (max-width: 500px) {
+  .loginCard {
+    width: 90%;
+    height:300px;
+  }
+
+  .inputField {
+    width: 90%;
+  }
 }

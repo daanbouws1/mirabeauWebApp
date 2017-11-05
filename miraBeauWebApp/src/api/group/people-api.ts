@@ -20,9 +20,8 @@ export class PeopleApi extends baseApi {
      return this._get(this.servicePath + "/" + id);
    }
  
-   addPerson(formData: any) {
-     console.log(formData);
-     return this._post(this.servicePath + "?", formData);
+   addPerson(params: any) {
+     return this._post(this.servicePath, params)
    }
 
    addPersonFace(formData: FormData, personId: string) {

@@ -68,10 +68,10 @@ export class groupPage {
       if(!response.wasCancelled) {
         let userData: string = response.output.age + ", " + response.output.jobTitle;
         let personData = {"name": response.output.name, "userData": userData};
-        console.log(personData);
+        console.log(JSON.stringify(personData));
         // personData = <JSON>personData;
 
-        this.peopleApi.addPerson(personData).then(result => {
+        this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
           console.log(result);
           // this.storageRef = this.storage.ref(response.output.file.name);
           // this.addPersonFace(result.personId, response.output.file);

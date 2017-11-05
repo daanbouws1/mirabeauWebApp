@@ -21,11 +21,13 @@ export class baseApi {
     return this.fetchWithMethod("DELETE", path, null);
   }
 
-  protected _post(path) : Promise<any> {
-    return this.fetchWithMethod("POST", path, null);
+  protected _post(path: string, params: any) : Promise<any> {
+    return this.fetchWithMethod("POST", path, {
+      body: params
+    });
   }
 
-  protected _postParams(path: string, formData?: FormData): Promise<any> {
+  protected _postParams(path: string, formData: FormData): Promise<any> {
     return this.fetchWithMethod("POST", path, {
       body: formData
     });

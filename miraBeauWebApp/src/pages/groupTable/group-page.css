@@ -98,6 +98,13 @@
 }
 
 .addButton {
+  min-width:100% !important;
+  box-shadow: 1px 1px 12px black;
+  float: right;
+  padding-top:0px;
+}
+
+.logoutButton {
   box-shadow: 1px 1px 12px black;
   float: right;
   padding-top:0px;
@@ -106,7 +113,7 @@
 .button {
   height:25px;
   font-size:9px !important;
-  min-width:52px !important;
+  min-width:52px;
 }
 
 .list-grid__button {

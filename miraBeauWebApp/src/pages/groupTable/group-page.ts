@@ -80,7 +80,7 @@ export class groupPage {
       model: "Are you sure you want to delete this person?"
     }).whenClosed(response => {
       if (!response.wasCancelled) {
-        this.peopleApi.deletePerson(dude._id).catch(() => {
+        this.peopleApi.deletePerson(dude.id).catch(() => {
           this.getAllPeople();
         });
       }
@@ -121,48 +121,15 @@ export class groupPage {
 
 class Person {
 
-  private _id: string;
-  private _name: string;
-  private _age: string;
-  private _jobTitle: string;
+  public id: string;
+  public name: string;
+  public age: string;
+  public jobTitle: string;
 
   constructor(id: string, name: string, age: string, jobTitle: string) {
-    this._id = id;
-    this._name = name;
-    this._age = age;
-    this._jobTitle = jobTitle;
-  }
-
-
-  get id(): string {
-    return this._id;
-  }
-
-  set id(value: string) {
-    this._id = value;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
-  }
-
-  get age(): string {
-    return this._age;
-  }
-
-  set age(value: string) {
-    this._age = value;
-  }
-
-  get jobTitle(): string {
-    return this._jobTitle;
-  }
-
-  set jobTitle(value: string) {
-    this._jobTitle = value;
+    this.id = id;
+    this.name = name;
+    this.age = age;
+    this.jobTitle = jobTitle;
   }
 }

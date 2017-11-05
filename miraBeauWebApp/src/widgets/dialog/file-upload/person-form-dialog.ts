@@ -3,6 +3,7 @@ import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
+import {ConfirmDialog} from "../confirm/confirm-dialog";
 
 @autoinject(DialogController)
 
@@ -25,6 +26,7 @@ export class PersonFormDialog {
   private csrfile: any;
   private csrfilename: string;
   private validationController: ValidationController;
+  private filePresent: boolean;
 
   constructor(public controller: DialogController,
               private dialogService: DialogService,
@@ -40,7 +42,7 @@ export class PersonFormDialog {
     if (!(typeof message === "string")) {
       this.addForm.id = message[1].id;
       this.addForm.name = message[1].name;
-      this.addForm.setAge(message[1].age);
+      this.addForm.age = message[1].age;
       this.addForm.jobTitle = message[1].jobTitle;
       this.selectedYear = message[1].age.substring(0,4);
       this.selectedMonth = message[1].age.substring(5,7);
@@ -61,8 +63,12 @@ export class PersonFormDialog {
   submitForm() {
     this.validationController.validate({object: this.addForm}).then(result => {
       if(result.valid === true) {
-        this.addForm.setAge(this.selectedMonth, this.selectedDay, this.selectedYear);
-        this.controller.ok(this.addForm);
+        this.addForm.age = this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
+        if (this.addForm.file == null && this.createOrUpdate == false) {
+          this.filePresent = false;
+        } else {
+          this.controller.ok(this.addForm);
+        }
       }
     });
   }
@@ -96,14 +102,9 @@ export class PersonFormDialog {
 }
 
 export class AddForm {
-  private id: string = "";
-	private name: string = "";
-	private age: any;
-	private jobTitle: string = "";
+  public id: string = "";
+	public name: string = "";
+	public age: any;
+	public jobTitle: string = "";
 	public file: any;
-
-
-  setAge(month: any, day: any, year: any) {
-    this.age = year + "-" + month + "-" + day;
-  }
 }

@@ -15,6 +15,7 @@
     </ux-dialog-header>
     <ux-dialog-body>
       <div >
+        <div class="errorMessage" if.bind="filePresent == false">Please include a picture of your face</div>
         <upload-file
           class="upload-file"
           filechange.delegate="onFileChange($event)"

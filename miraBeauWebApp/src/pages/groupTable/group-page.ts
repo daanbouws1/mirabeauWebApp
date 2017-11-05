@@ -51,24 +51,24 @@ export class groupPage {
 
   private editPerson(dude: Person) {
     return this.peopleApi.getPerson(dude.id).then(response => {
-      console.warn("Die response", response);
       this.dialogService.open({
         viewModel: PersonFormDialog,
         model: ["Add a new person", dude]
       }).whenClosed(response => {
-
-        let userData: string = response.output.age + ", " + response.output.jobTitle;
-        let personData = {"name": response.output.name, "userData": userData};
-        this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).catch(() => {
-          this.getAllPeople();
-        });
-
-        if (!(response.output.file == null)) {
-          this.storageRef = this.storage.ref(response.output.file.name);
-          this.busy.on();
-          this.storageRef.put(response.output.file).then(() => {
-            this.busy.off();
+        if(!response.wasCancelled) {
+          let userData: string = response.output.age + ", " + response.output.jobTitle;
+          let personData = {"name": response.output.name, "userData": userData};
+          this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).catch(() => {
+            this.getAllPeople();
           });
+
+          if (!(response.output.file == null)) {
+            this.storageRef = this.storage.ref(response.output.file.name);
+            this.busy.on();
+            this.storageRef.put(response.output.file).then(() => {
+              this.busy.off();
+            });
+          }
         }
       });
     });
@@ -107,7 +107,7 @@ export class groupPage {
               this.people.push(newDude);
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
 
-              this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result => {
+              this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(() => {
                 this.busy.off();
               });
             });

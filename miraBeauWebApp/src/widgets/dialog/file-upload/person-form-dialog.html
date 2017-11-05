@@ -3,49 +3,53 @@
   <require from="./person-form-dialog.css"></require>
   <ux-dialog>
     <ux-dialog-header>
-      <h4><b>Add new Person</b></h4>
+      <h4 if.bind="createOrUpdate == false"><b>Add new Person</b></h4>
+      <h4 if.bind="createOrUpdate == true"><b>Update your Data</b></h4>
       <hr>
-      <h5>Fill in this form to upload a person to the face recognition group.<br><br>
+      <h5 if.bind="createOrUpdate == false">Fill in this form to upload a person to the face recognition group.<br><br>
       Please upload a picture of your face in a neutral pose.<br>
+        Please upload a picture in which you are the only person.<br><br></h5>
+      <h5 if.bind="createOrUpdate == true">Fill in this form to update your data to the face recognition group.<br><br>
+        Please upload a picture of your face in a neutral pose.<br>
         Please upload a picture in which you are the only person.<br><br></h5>
     </ux-dialog-header>
     <ux-dialog-body>
-      <upload-file
-        class="upload-file"
-        filechange.delegate="onFileChange($event)"
-        filename.bind="csrfilename"
-        file.bind="addForm.file"
-        name="file"
-        id="myFileField"
-        view-model.ref="uploader">
-      </upload-file>
-      <br />
+      <div >
+        <upload-file
+          class="upload-file"
+          filechange.delegate="onFileChange($event)"
+          filename.bind="csrfilename"
+          file.bind="addForm.file"
+          name="file"
+          id="myFileField"
+          view-model.ref="uploader">
+        </upload-file><br>
+      </div>
       <label for="namefield">Insert your name:</label><br>
       <div class="errorMessage" id="errorMessage1" if.bind="validationController.results['0'].valid == false"> Name may not be empty</div>
       <div class="errorMessage" if.bind="validationController.results['1'].valid == false"> Name must be under 15 characters long</div>
-      <input id="namefield" type="text" value.bind="addForm.name" placeholder="Insert your name..">
+      <input id="namefield" class="inputField" type="text" value.bind="addForm.name" placeholder="Insert your name..">
       <br />
       <br />
-      <!--<label for="agefield">insert your age:</label><br>-->
-      <!--<datepicker class="datepicker"></datepicker>-->
-      <select name="DOBMonth" value.two-way="selectedMonth">
-        <option> - Month - </option>
-        <option repeat.for="month of months" value.bind="month">${month}</option>
-      </select>
-      <select name="DOBDay" value.two-way="selectedDay">
-        <option> - Day - </option>
-        <option repeat.for="day of days" value.bind="day">${day}</option>
-      </select>
-      <select name="DOBYear" value.two-way="selectedYear">
+      <select name="DOBYear" class="dropDown" value.two-way="selectedYear">
         <option> - Year - </option>
         <option repeat.for="year of years" value.bind="year">${year}</option>
       </select>
+      <select name="DOBMonth" class="dropDown" value.two-way="selectedMonth">
+        <option> - Month - </option>
+        <option repeat.for="month of months" value.bind="month">${month}</option>
+      </select>
+      <select name="DOBDay" class="dropDown" value.two-way="selectedDay">
+        <option> - Day - </option>
+        <option repeat.for="day of days" value.bind="day">${day}</option>
+      </select>
+
 	  <br />
 	  <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>
       <div class="errorMessage" id="errorMessage2" if.bind="validationController.results['2'].valid == false"> Job title may not be empty</div>
       <div class="errorMessage" if.bind="validationController.results['3'].valid == false"> Job title must be under 20 characters long</div>
-      <input type="text" id="jobfunctionfield" value.bind="addForm.jobTitle" placeholder="Insert your Job title"/>
+      <input type="text" class="inputField" id="jobfunctionfield" value.bind="addForm.jobTitle" placeholder="Insert your Job title"/>
 
     </ux-dialog-body>
     <ux-dialog-footer>

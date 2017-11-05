@@ -9,7 +9,6 @@ export class App {
   configureRouter(config,router) {
     this.router = router;
     config.title = "Mirabeau Web App";
-    console.log(router.navigation);
     const navStrat = instruction => {
       instruction.config.redirect = router.navigation[1].config.route;
     };

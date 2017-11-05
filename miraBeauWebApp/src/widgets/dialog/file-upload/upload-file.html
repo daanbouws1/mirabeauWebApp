@@ -3,13 +3,16 @@
   <div>
     <!-- Invisible form upload field -->
     <form ref="fileForm">
+      <label for="file" class="btn btn-default" style="width:100%;">
+        Upload a file
       <input id="file" name="uploadedfile" type="file"
              files.bind="selectedFiles" ref="fileInput"
-             style="color:transparent;width: 130px;">
+             size="160"
+             style="color:transparent;display:none;">
+      </label>
     </form>
     <div>
-      filename:<br>
-      ${filename}
+      filename:   ${filename}
     </div>
   </div>
 </template>

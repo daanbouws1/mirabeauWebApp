@@ -1,9 +1,8 @@
-import {autoinject, bindable} from "aurelia-framework";
+import {autoinject} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
-import {user} from "firebase-functions/lib/providers/auth";
 
 @autoinject(DialogController)
 
@@ -39,7 +38,6 @@ export class PersonFormDialog {
   activate(message) {
     this.message = message;
     if (!(typeof message === "string")) {
-      console.log(message[1]);
       this.addForm.id = message[1].id;
       this.addForm.name = message[1].name;
       this.addForm.setAge(message[1].age);

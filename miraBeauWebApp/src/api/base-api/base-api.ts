@@ -63,7 +63,6 @@ export class baseApi {
   }
 
   private defaultResponseHandling(response) {
-    console.log(response);
     if(response) {
       if (response.status === HTTP_STATUS_CODE.NO_CONTENT) {
         return;

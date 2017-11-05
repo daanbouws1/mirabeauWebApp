@@ -1,3 +1,11 @@
 .errorMessage {
   color: red;
 }
+
+.inputField {
+  width:100%;
+}
+
+.dropDown {
+  margin-right: 10px;
+}

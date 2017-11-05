@@ -24,7 +24,7 @@ export class PeopleApi extends baseApi {
      return this._post(this.servicePath, params)
    }
 
-   addPersonFace(formData: FormData, personId: string) {
-     return this._postParams(this.servicePath + "/" + personId + "/" + "persistedFaces" + "?" + formData);
+   addPersonFace(params: any, personId: string) {
+     return this._post(this.servicePath + "/" + personId + "/" + "persistedFaces", params);
    }
 }

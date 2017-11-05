@@ -66,33 +66,27 @@ export class groupPage {
         model: "Add a new person"
     }).whenClosed(response => {
       if(!response.wasCancelled) {
-        let userData: string = response.output.age + ", " + response.output.jobTitle;
-        let personData = {"name": response.output.name, "userData": userData};
-        console.log(JSON.stringify(personData));
-        // personData = <JSON>personData;
 
-        this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
-          console.log(result);
-          // this.storageRef = this.storage.ref(response.output.file.name);
-          // this.addPersonFace(result.personId, response.output.file);
+        this.storageRef = this.storage.ref(response.output.file.name);
+        this.storageRef.put(response.output.file).then(snapshot => {
+
+          if(snapshot.state === "success") {
+            let userData: string = response.output.age + ", " + response.output.jobTitle;
+            let personData = {"name": response.output.name, "userData": userData};
+
+            this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
+              let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
+
+              this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result => {
+                window.alert("success");
+              });
+            });
+          }
         });
       }
     })
   }
 
-  private addPersonFace(personId: any, file: any) {
-    let formDataFace: FormData = new FormData();
-    this.storageRef.put(file).then(snapshot => {
-      console.log(snapshot);
-      console.log('Uploaded a blob or file!');
-      if(snapshot.success) {
-        formDataFace.append("url", snapshot.downloadUrl);
-        this.peopleApi.addPersonFace(formDataFace, personId).then(result => {
-          console.log(result);
-        });
-      }
-    });
-  }
 }
 
 class Person {

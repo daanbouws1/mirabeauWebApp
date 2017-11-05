@@ -21,12 +21,14 @@ export class baseApi {
     return this.fetchWithMethod("DELETE", path, null);
   }
 
+  // Only use for Azure, they are oldschool af.
   protected _post(path: string, params: any) : Promise<any> {
     return this.fetchWithMethod("POST", path, {
       body: params
     });
   }
 
+  // Don't use for Azure, they are oldschool af.
   protected _postParams(path: string, formData: FormData): Promise<any> {
     return this.fetchWithMethod("POST", path, {
       body: formData

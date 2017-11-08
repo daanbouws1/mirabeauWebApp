@@ -108,6 +108,7 @@ export class groupPage {
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
 
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(() => {
+                this.peopleApi.trainGroup();
                 this.busy.off();
               });
             });

@@ -40,6 +40,7 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
+      console.log(result);
     });
   }
 
@@ -50,7 +51,8 @@ export class groupPage {
   }
 
   private editPerson(dude: Person) {
-    return this.peopleApi.getPerson(dude.id).then(response => {
+    return this.peopleApi.getPerson(dude.id).then(result => {
+      let personId = result.personId;
       this.dialogService.open({
         viewModel: PersonFormDialog,
         model: ["Add a new person", dude]
@@ -59,13 +61,18 @@ export class groupPage {
           let userData: string = response.output.age + "," + response.output.jobTitle;
           let personData: any = {"name": response.output.name, "userData": userData};
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).catch(() => {
+
             this.getAllPeople();
           });
 
           if (!(response.output.file == null)) {
             this.storageRef = this.storage.ref(response.output.file.name);
             this.busy.on();
-            this.storageRef.put(response.output.file).then(() => {
+            this.storageRef.put(response.output.file).then(response => {
+              let faceData: any = {"personId": personId, "url": response.downloadURL};
+              this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(() => {
+                this.peopleApi.trainGroup();
+              });
               this.busy.off();
             });
           }
@@ -106,6 +113,7 @@ export class groupPage {
               let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
               this.people.push(newDude);
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
+              console.log(snapshot.downloadURL);
 
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(() => {
                 this.peopleApi.trainGroup();

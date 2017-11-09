@@ -53,9 +53,9 @@ export class PersonFormDialog {
 
     ValidationRules
       .ensure("name").required().withMessage("Name may not be empty")
-      .maxLength(15).withMessage("Name cant contain more than 15 characters")
+      .maxLength(20).withMessage("Name cant contain more than 20 characters")
       .ensure("jobTitle").required().withMessage("Function may not be empty")
-      .maxLength(20).withMessage("Job title can't contain more than 20 characters")
+      .maxLength(25).withMessage("Job title can't contain more than 25 characters")
       .on(AddForm);
   }
 

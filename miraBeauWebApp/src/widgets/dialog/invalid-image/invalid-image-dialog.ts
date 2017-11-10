@@ -4,7 +4,7 @@ import {DialogController} from "aurelia-dialog";
 @autoinject(DialogController)
 
 @autoinject
-export class ConfirmDialog {
+export class InvalidImageDialog {
 
   message: string;
 

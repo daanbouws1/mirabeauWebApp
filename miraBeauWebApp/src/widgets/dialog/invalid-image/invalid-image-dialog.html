@@ -2,14 +2,14 @@
   <!--<require from="../dialog.css"></require>-->
   <ux-dialog>
     <ux-dialog-header>
-      Confirm
+      Invalid File
     </ux-dialog-header>
     <ux-dialog-body>
       ${message}
+      <br>
     </ux-dialog-body>
     <ux-dialog-footer>
-      <button class="btn btn-primary" click.trigger="controller.cancel()">No</button>
-      <button class="btn btn-warning" click.trigger="controller.ok()">Yes</button>
+      <button class="btn btn-warning" click.trigger="controller.ok()">Ok</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

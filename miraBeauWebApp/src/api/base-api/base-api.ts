@@ -64,12 +64,6 @@ export class baseApi {
 
   private defaultResponseHandling(response) {
     if(response) {
-      if (response.status === HTTP_STATUS_CODE.NO_CONTENT) {
-        return;
-      }
-      if (response.status === 202) {
-        return;
-      }
       return response.json().then(jsonResponse => {
         if (jsonResponse.errorcode) {
           return this.responseErrorHandling(jsonResponse);

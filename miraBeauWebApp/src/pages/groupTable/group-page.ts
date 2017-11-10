@@ -70,7 +70,9 @@ export class groupPage {
           let personData: any = {"name": response.output.name, "userData": userData};
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
+            this.newlyAdded = false;
             this.getAllPeople();
+            // this.newlyAdded = true;
           });
           // Check if file was provided
           if (!(response.output.file == null)) {

@@ -13,7 +13,6 @@ export class PeopleApi extends baseApi {
    }
  
    updatePerson(params: any, id: string) {
-     //TODO make normal post like addPerson();
      return this._patch(this.servicePath + "persons/" + id + "?", params);
    }
 

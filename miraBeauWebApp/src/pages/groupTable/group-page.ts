@@ -22,6 +22,7 @@ export class groupPage {
   }
 
   activate() {
+    // check if user really is logged in and redirect if not.
     let user: any = firebase.auth().currentUser;
     if (user) {
       // this.newlyAdded = false;
@@ -35,6 +36,7 @@ export class groupPage {
 
   private getAllPeople() {
     this.people = [];
+    //get list of people in group from azure
     this.peopleApi.getPeople().then(result => {
       for(let item in result) {
         let age: string = result[item].userData.split(",")[0];
@@ -47,20 +49,22 @@ export class groupPage {
   }
 
   private logout() {
+    //logout
     firebase.auth().signOut().then(result => {
       this.router.navigate("login-page");
     });
   }
 
   private editPerson(dude: Person) {
+    //Get data person form azure.
     return this.peopleApi.getPerson(dude.id).then(result => {
       let personId = result.personId;
-      // Open dialog
+      // Open Edit Dialog with person data.
       this.dialogService.open({
         viewModel: PersonFormDialog,
         model: ["Add a new person", dude]
       }).whenClosed(response => {
-        //If user clicked ok
+        //Check if user clicked ok
         if(!response.wasCancelled) {
           let userData: string = response.output.age + "," + response.output.jobTitle;
           let personData: any = {"name": response.output.name, "userData": userData};
@@ -91,6 +95,7 @@ export class groupPage {
   }
 
   private invalidImageResponse() {
+    //Give user feedback they have uploaded a invalid image
     this.busy.off();
     this.dialogService.open({
       viewModel: InvalidImageDialog,
@@ -111,6 +116,7 @@ export class groupPage {
       //   this.peopleApi.getPerson(dude.id).then(result => {
       //     console.log(result.persistedFaceIds);
       //   });
+        //Delete person from azure.
         this.peopleApi.deletePerson(dude.id).catch(() => {
           this.getAllPeople();
           this.newlyAdded = false;
@@ -120,25 +126,28 @@ export class groupPage {
   }
 
   private addPerson() {
+    //Open Add Person Dialog
     this.dialogService.open({
         viewModel: PersonFormDialog,
         model: "Add a new person",
     }).whenClosed(response => {
+      //Check if user clicked ok.
       if(!response.wasCancelled) {
         this.storageRef = this.storage.ref(response.output.file.name);
         this.busy.on();
+        //Upload file to firebase
         this.storageRef.put(response.output.file).then(snapshot => {
-
+          //Check if file uploaded successfully
           if(snapshot.state === "success") {
             let userData: string = response.output.age + ", " + response.output.jobTitle;
             let personData: any = {"name": response.output.name, "userData": userData};
-
+            // Upload new person to azure
             this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
               let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
               this.people.unshift(newDude);
               this.newlyAdded = true;
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
-
+              // Add a reference to image in firebase to a person and call it their face.
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(() => {
                 this.peopleApi.trainGroup();
                 this.busy.off();

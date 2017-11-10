@@ -14,10 +14,13 @@ export class PersonFormDialog {
   private addForm: AddForm = new AddForm();
   private uploader: any;
   private selectedDay: any;
+  //days in a month
   private days: string[] = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
   private selectedMonth: any;
+  // months in a year
   private months: string[] = ["01","02","03","04","05","06","07","08","09","10","11","12"];
   private selectedYear: any;
+  // years you might be born in
   private years: number[] = [2000,1999,1998,1997,1996,1995,1994,1993,1992,1991,1990,1989,1988,1987,1986,1985,1984,
     1983,1982,1981,1980,1979,1978,1977,1976,1975,1974,1973,1972,1971,1970,1969,1968,1967,1966,
     1965,1964,1963,1962,1961,1960,1959,1958,1957,1956,1955,1954,1953,1952,1951,1950,1949,1948,
@@ -31,14 +34,18 @@ export class PersonFormDialog {
   constructor(public controller: DialogController,
               private dialogService: DialogService,
               private controllerFactory: ValidationControllerFactory) {
+    //set validation
     this.controller = controller;
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
+    //center dialog
     controller.settings.centerHorizontalOnly = true;
+    //set keylistener
     this.myKeypressCallback = this.keypressInput.bind(this);
   }
 
   activate(message) {
+    //check if user clicked add or edit and load data accordingly
     this.message = message;
     if (!(typeof message === "string")) {
       this.addForm.id = message[1].id;
@@ -52,10 +59,10 @@ export class PersonFormDialog {
     } else {
       this.createOrUpdate = false;
     }
-
+    // add keylistener + focus input field so enter wont trigger Add button again.
     window.addEventListener('keypress', this.myKeypressCallback, false);
     this.hasFocus = true;
-
+    // set validation rules
     ValidationRules
       .ensure("name").required().withMessage("Name may not be empty")
       .maxLength(20).withMessage("Name cant contain more than 20 characters")
@@ -65,16 +72,19 @@ export class PersonFormDialog {
   }
 
   deactivate() {
+    // remove keylistener
     window.removeEventListener('keypress', this.myKeypressCallback);
   }
 
   keypressInput(e) {
+    //listen for enter and submit form
     if (e.code === "Enter") {
       this.submitForm();
     }
   }
 
   submitForm() {
+    //Send form to firebase and azure.
     this.validationController.validate({object: this.addForm}).then(result => {
       if(result.valid === true) {
         this.addForm.age = this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
@@ -88,12 +98,14 @@ export class PersonFormDialog {
   }
 
   onFileChange(event) {
+    //check if file has right extension
     if (event.detail.file) {
       const ext = event.detail.file.name.toString().substr(
           event.detail.file.name.toString().lastIndexOf(".") + 1,
           event.detail.file.name.toString().length) ||
           event.detail.file.name.toString();
       if (!(ext === "png" || ext === "jpg")) {
+        //tell user to try again and open dialog that lets them do so.
         this.dialogService.open({
           viewModel: InvalidFileDialog,
           model: {
@@ -101,6 +113,7 @@ export class PersonFormDialog {
             message: "This file is not an image file, but a",
             ext: ext,
             message2: ". Please select an image file",
+            // opens up another upload-file dialog by calling the browse() function from upload-file.ts
             browse: () => this.uploader.browse()
           }
         });

@@ -14,30 +14,36 @@ export class LoginPage {
   }
 
   activate() {
+    //check if user is already loggin in and redirect if so.
     let user = firebase.auth().currentUser;
     if (user) {
       this.router.navigate('home');
     }
+    //Add keylistener
     window.addEventListener('keypress', this.myKeypressCallback, false);
   }
 
   deactivate() {
+    //Remove keylistener
     window.removeEventListener('keypress', this.myKeypressCallback);
   }
 
   keypressInput(e) {
+    //listen for enter
     if (e.code === "Enter") {
       this.login();
     }
   }
 
   login() {
+    //sign in
     if (!(this.email ==null) && !(this.password == null)){
       this.errorMessage = "";
       this.passBool = true;
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
         this.router.navigate("home");
       }).catch(error => {
+        //set feedback sign in failed.
         if (error.code) {
           this.passBool = false;
           this.errorMessage = error.message;

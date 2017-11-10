@@ -69,7 +69,7 @@ export class groupPage {
           let userData: string = response.output.age + "," + response.output.jobTitle;
           let personData: any = {"name": response.output.name, "userData": userData};
           //Update persondata in azure
-          this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).catch(() => {
+          this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
             this.getAllPeople();
           });
           // Check if file was provided
@@ -80,7 +80,7 @@ export class groupPage {
             this.storageRef.put(response.output.file).then(response => {
               let faceData: any = {"personId": personId, "url": response.downloadURL};
               // Upload url to file to Azure to add the face to a person.
-              this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(result => {
+              this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(() => {
                 this.peopleApi.trainGroup();
                 this.busy.off();
               }).catch(() => {
@@ -112,16 +112,9 @@ export class groupPage {
       viewModel: DeleteDialog,
       model: "Are you sure you want to delete this person?"
     }).whenClosed(response => {
-      // if (!response.wasCancelled) {
-      //   this.peopleApi.getPerson(dude.id).then(result => {
-      //     console.log(result.persistedFaceIds);
-      //   });
-        //Delete person from azure.
-        this.peopleApi.deletePerson(dude.id).catch(() => {
-          this.getAllPeople();
-          this.newlyAdded = false;
-        });
-      // }
+      this.peopleApi.deletePerson(dude.id).then(() => {
+        this.getAllPeople();
+      });
     });
   }
 

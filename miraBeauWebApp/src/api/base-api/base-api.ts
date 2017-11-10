@@ -67,14 +67,17 @@ export class baseApi {
       if (response.status === HTTP_STATUS_CODE.NO_CONTENT) {
         return;
       }
-      // if(response.status === 202) {
-      //   return;
-      // }
+      if (response.status === 202) {
+        return;
+      }
       return response.json().then(jsonResponse => {
         if (jsonResponse.errorcode) {
           return this.responseErrorHandling(jsonResponse);
         }
         return jsonResponse;
+      }).catch(() => {
+        let promise: Promise = Promise.resolve();
+        return promise;
       });
     }
   }

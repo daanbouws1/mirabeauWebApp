@@ -107,11 +107,15 @@ export class groupPage {
       viewModel: DeleteDialog,
       model: "Are you sure you want to delete this person?"
     }).whenClosed(response => {
-      if (!response.wasCancelled) {
+      // if (!response.wasCancelled) {
+      //   this.peopleApi.getPerson(dude.id).then(result => {
+      //     console.log(result.persistedFaceIds);
+      //   });
         this.peopleApi.deletePerson(dude.id).catch(() => {
           this.getAllPeople();
+          this.newlyAdded = false;
         });
-      }
+      // }
     });
   }
 

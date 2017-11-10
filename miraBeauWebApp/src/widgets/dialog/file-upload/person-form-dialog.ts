@@ -26,6 +26,7 @@ export class PersonFormDialog {
   private csrfilename: string;
   private validationController: ValidationController;
   private filePresent: boolean;
+  private hasFocus: any;
 
   constructor(public controller: DialogController,
               private dialogService: DialogService,
@@ -34,6 +35,7 @@ export class PersonFormDialog {
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
     controller.settings.centerHorizontalOnly = true;
+    this.myKeypressCallback = this.keypressInput.bind(this);
   }
 
   activate(message) {
@@ -51,12 +53,25 @@ export class PersonFormDialog {
       this.createOrUpdate = false;
     }
 
+    window.addEventListener('keypress', this.myKeypressCallback, false);
+    this.hasFocus = true;
+
     ValidationRules
       .ensure("name").required().withMessage("Name may not be empty")
       .maxLength(20).withMessage("Name cant contain more than 20 characters")
       .ensure("jobTitle").required().withMessage("Function may not be empty")
       .maxLength(25).withMessage("Job title can't contain more than 25 characters")
       .on(AddForm);
+  }
+
+  deactivate() {
+    window.removeEventListener('keypress', this.myKeypressCallback);
+  }
+
+  keypressInput(e) {
+    if (e.code === "Enter") {
+      this.submitForm();
+    }
   }
 
   submitForm() {

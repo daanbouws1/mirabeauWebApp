@@ -13,6 +13,7 @@ export class groupPage {
   private people: Person[];
   private storageRef: any;
   private storage: any;
+  private newlyAdded: boolean;
 
   constructor(private peopleApi: PeopleApi,
               private dialogService: DialogService,
@@ -23,6 +24,7 @@ export class groupPage {
   activate() {
     let user: any = firebase.auth().currentUser;
     if (user) {
+      // this.newlyAdded = false;
       this.getAllPeople();
       this.storage = firebase.storage();
     } else {
@@ -119,7 +121,6 @@ export class groupPage {
         model: "Add a new person",
     }).whenClosed(response => {
       if(!response.wasCancelled) {
-
         this.storageRef = this.storage.ref(response.output.file.name);
         this.busy.on();
         this.storageRef.put(response.output.file).then(snapshot => {
@@ -130,7 +131,8 @@ export class groupPage {
 
             this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
               let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
-              this.people.push(newDude);
+              this.people.unshift(newDude);
+              this.newlyAdded = true;
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
 
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(() => {

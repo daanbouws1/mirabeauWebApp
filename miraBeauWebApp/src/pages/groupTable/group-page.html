@@ -25,10 +25,15 @@
       </div>
       <div class="list-grid__body">
         <div repeat.for="dude of people" class="list-item">
-          <!--<div class="list-grid__column">${dude.id}</div>-->
-          <div class="list-grid__column list-grid__column--item">${dude.name}</div>
-          <div class="list-grid__column list-grid__column--item">${dude.age}</div>
-          <div class="list-grid__column list-grid__column--item">${dude.jobTitle}</div>
+          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item"><span if.bind="$first"><b style="color:#337ab7;">${dude.name}</b></span></div>
+          <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.name}</span></div>
+
+          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item"><span if.bind="$first"><b style="color:#337ab7;">${dude.age}</b></span></div>
+          <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.age}</span></div>
+
+          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item"><span if.bind="$first"><b style="color:#337ab7;">${dude.jobTitle}</b></span></div>
+          <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.jobTitle}</span></div>
+
           <div class="list-grid__column" style="margin-bottom:20px;">
             <button class="btn button leftButton btn-primary btn-primary--shadow" click.delegate="editPerson(dude)">Edit</button>
             <button class="btn button btn-warning btn-warning--shadow" click.delegate="deletePerson(dude)">Delete</button>

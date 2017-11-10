@@ -45,6 +45,7 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
+      console.log(result);
     });
   }
 
@@ -80,9 +81,13 @@ export class groupPage {
             this.busy.on();
             //Upload file to firebase
             this.storageRef.put(response.output.file).then(response => {
-              let faceData: any = {"personId": personId, "url": response.downloadURL};
+              let filepath = this.storageRef.fullPath;
+              let faceData: any = {"personId": result.personId, "url": response.downloadURL};
               // Upload url to file to Azure to add the face to a person.
               this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(() => {
+                let filepath = this.storageRef.fullPath;
+                let personFaceUserData = {"userData": filepath};
+                this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), result.personId, result2.persistedFaceId);
                 this.peopleApi.trainGroup();
                 this.busy.off();
               }).catch(() => {
@@ -115,9 +120,17 @@ export class groupPage {
       model: "Are you sure you want to delete this person?"
     }).whenClosed(result => {
       if (!result.wasCancelled) {
-        this.peopleApi.deletePerson(dude.id).then(() => {
-          this.newlyAdded = false;
-          this.getAllPeople();
+        this.peopleApi.getPerson(dude.id).then(result => {
+          for (let item of result.persistedFaceIds) {
+            this.peopleApi.getPersonFace(dude.id, item).then(result => {
+              this.storageRef = this.storage.ref(result.userData);
+              this.storageRef.delete();
+            });
+          }
+          this.peopleApi.deletePerson(dude.id).then(() => {
+            this.newlyAdded = false;
+            this.getAllPeople();
+          });
         });
       }
     });
@@ -146,7 +159,10 @@ export class groupPage {
               this.newlyAdded = true;
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
               // Add a reference to image in firebase to a person and call it their face.
-              this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(() => {
+              this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result2 => {
+                let filepath = this.storageRef.fullPath;
+                let personFaceUserData = {"userData": filepath};
+                this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), result.personId, result2.persistedFaceId);
                 this.peopleApi.trainGroup();
                 this.busy.off();
               }).catch(() => {

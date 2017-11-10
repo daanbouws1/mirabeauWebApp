@@ -24,8 +24,16 @@ export class PeopleApi extends baseApi {
      return this._post(this.servicePath + "persons?", params)
    }
 
+   updatePersonFace(params: any, personId: string, personFaceId: string) {
+     return this._patch(this.servicePath + "persons/" + personId + "/persistedFaces/" + personFaceId + "?", params);
+   }
+
+   getPersonFace(personId: string, personFaceId: string) {
+     return this._get(this.servicePath + "persons/" + personId + "/persistedFaces/" + personFaceId + "?");
+   }
+
    addPersonFace(params: any, personId: string) {
-     return this._post(this.servicePath + "persons/" + personId + "/" + "persistedFaces", params);
+     return this._post(this.servicePath + "persons/" + personId + "/persistedFaces", params);
    }
 
    trainGroup() {

@@ -113,10 +113,13 @@ export class groupPage {
     this.dialogService.open({
       viewModel: DeleteDialog,
       model: "Are you sure you want to delete this person?"
-    }).whenClosed(response => {
-      this.peopleApi.deletePerson(dude.id).then(() => {
-        this.getAllPeople();
-      });
+    }).whenClosed(result => {
+      if (!result.wasCancelled) {
+        this.peopleApi.deletePerson(dude.id).then(() => {
+          this.newlyAdded = false;
+          this.getAllPeople();
+        });
+      }
     });
   }
 

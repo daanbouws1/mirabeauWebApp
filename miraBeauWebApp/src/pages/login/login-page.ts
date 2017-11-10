@@ -9,20 +9,33 @@ export class LoginPage {
   private passBool: boolean;
   private errorMessage: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.myKeypressCallback = this.keypressInput.bind(this);
+  }
 
   activate() {
     let user = firebase.auth().currentUser;
     if (user) {
       this.router.navigate('home');
     }
+    window.addEventListener('keypress', this.myKeypressCallback, false);
   }
 
-  login(email: string, password: string) {
-    if (!(email ==null) && !(password == null)){
+  deactivate() {
+    window.removeEventListener('keypress', this.myKeypressCallback);
+  }
+
+  keypressInput(e) {
+    if (e.code === "Enter") {
+      this.login();
+    }
+  }
+
+  login() {
+    if (!(this.email ==null) && !(this.password == null)){
       this.errorMessage = "";
       this.passBool = true;
-      firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
         this.router.navigate("home");
       }).catch(error => {
         if (error.code) {

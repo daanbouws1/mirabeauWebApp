@@ -25,7 +25,7 @@ export class groupPage {
     // check if user really is logged in and redirect if not.
     let user: any = firebase.auth().currentUser;
     if (user) {
-      // this.newlyAdded = false;
+      this.newlyAdded = false;
       this.getAllPeople();
       this.storage = firebase.storage();
     } else {
@@ -45,7 +45,7 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
-      console.log(result);
+      // console.log(result);
     });
   }
 

@@ -33,7 +33,6 @@ export class groupPage {
     }
   }
 
-
   private getAllPeople() {
     this.people = [];
     //get list of people in group from azure
@@ -87,47 +86,6 @@ export class groupPage {
     });
   }
 
-  private updateFace(file: any) {
-    this.storageRef = this.storage.ref(response.output.file.name);
-    this.busy.on();
-    //Upload file to firebase
-    this.storageRef.put(file).then(response => {
-      let filepath = this.storageRef.fullPath;
-      let faceData: any = {"personId": result.personId, "url": response.downloadURL};
-      // Upload url to file to Azure to add the face to a person.
-      this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(result2 => {
-        this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
-      }).catch(() => {
-        // Giving user feedback he/she has uploaded a invalid image
-        this.invalidImageResponse();
-      });
-    });
-  }
-
-  private updatePersonCallback(id: any) {
-    this.peopleApi.getPerson(dude.id).then(result => {
-      let age: string = result.userData.split(",")[0];
-      let jobTitle: string = result.userData.split(",")[1];
-      let id: string = result.personId;
-      let edittedDude: Person = new Person(id, result.name, age, jobTitle);
-      this.people.splice(index,1);
-      this.updateTableAfterAdd(edittedDude);
-    });
-  }
-
-  private invalidImageResponse() {
-    //Give user feedback they have uploaded a invalid image
-    this.busy.off();
-    this.dialogService.open({
-      viewModel: InvalidImageDialog,
-      model: "According to azure that file is not valid, probably there are multiple faces in it."
-    }).whenClosed(() => {
-      this.busy.on();
-      this.storageRef.delete();
-      this.busy.off();
-    });
-  }
-
   private deletePerson(dude: Person) {
     this.dialogService.open({
       viewModel: DeleteDialog,
@@ -171,6 +129,23 @@ export class groupPage {
     });
   }
 
+  private updateFace(file: any) {
+    this.storageRef = this.storage.ref(response.output.file.name);
+    this.busy.on();
+    //Upload file to firebase
+    this.storageRef.put(file).then(response => {
+      let filepath = this.storageRef.fullPath;
+      let faceData: any = {"personId": result.personId, "url": response.downloadURL};
+      // Upload url to file to Azure to add the face to a person.
+      this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(result2 => {
+        this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
+      }).catch(() => {
+        // Giving user feedback he/she has uploaded a invalid image
+        this.invalidImageResponse();
+      });
+    });
+  }
+
   private addFace(response: any) {
     //get data to be uploaded from response
     let userData: string = response.output.age + ", " + response.output.jobTitle;
@@ -203,6 +178,30 @@ export class groupPage {
     });
     this.peopleApi.trainGroup();
     this.busy.off();
+  }
+
+  private invalidImageResponse() {
+    //Give user feedback they have uploaded a invalid image
+    this.busy.off();
+    this.dialogService.open({
+      viewModel: InvalidImageDialog,
+      model: "According to azure that file is not valid, probably there are multiple faces in it."
+    }).whenClosed(() => {
+      this.busy.on();
+      this.storageRef.delete();
+      this.busy.off();
+    });
+  }
+
+  private updatePersonCallback(id: any) {
+    this.peopleApi.getPerson(dude.id).then(result => {
+      let age: string = result.userData.split(",")[0];
+      let jobTitle: string = result.userData.split(",")[1];
+      let id: string = result.personId;
+      let edittedDude: Person = new Person(id, result.name, age, jobTitle);
+      this.people.splice(index,1);
+      this.updateTableAfterAdd(edittedDude);
+    });
   }
 
 }

@@ -134,6 +134,10 @@
   border-radius: 3px;
 }
 
+.logo {
+  width:300px;
+}
+
 @media only screen and (max-width: 760px) {
   .list-grid__column {
     color: #999;
@@ -148,6 +152,10 @@
 
   .leftButton{
     margin-right:0px;
+  }
+
+  .logo {
+    width:250px;
   }
 
   .button {

@@ -76,10 +76,15 @@ export class groupPage {
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
             let index = this.people.indexOf(dude);
-            let edittedDuyde = this.people[index];
-            this.people.splice(index,1);
-            this.people.unshift(edittedDuyde);
-            this.newlyAdded = true;
+            this.peopleApi.getPerson(dude.id).then(result => {
+              let age: string = result.userData.split(",")[0];
+              let jobTitle: string = result.userData.split(",")[1];
+              let id: string = result.personId;
+              let edittedDude: Person = new Person(id, result.name, age, jobTitle);
+              this.people.splice(index,1);
+              this.people.unshift(edittedDude);
+              this.newlyAdded = true;
+            });
           });
           // Check if file was provided
           if (!(response.output.file == null)) {

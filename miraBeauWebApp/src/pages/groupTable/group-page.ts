@@ -56,6 +56,10 @@ export class groupPage {
     });
   }
 
+  private filterFunc(searchTerm, person) {
+    return person.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1;
+  }
+
   private editPerson(dude: Person) {
     //Get data person form azure.
     return this.peopleApi.getPerson(dude.id).then(result => {
@@ -71,7 +75,7 @@ export class groupPage {
           let personData: any = {"name": response.output.name, "userData": userData};
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
-            this.newlyAdded = false;
+            // this.newlyAdded = false;
             this.getAllPeople();
             // this.newlyAdded = true;
           });
@@ -156,7 +160,7 @@ export class groupPage {
             this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
               let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
               this.people.unshift(newDude);
-              this.newlyAdded = true;
+              // this.newlyAdded = true;
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
               // Add a reference to image in firebase to a person and call it their face.
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result2 => {

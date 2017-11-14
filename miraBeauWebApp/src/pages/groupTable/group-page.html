@@ -2,10 +2,12 @@
   <require from="./group-page.css"></require>
   <require from="bootstrap/css/bootstrap.css"></require>
   <require from="../../widgets/spinner/spinner.css"></require>
+
   <div show.bind="busy.active">
     <div class="spinner"></div>
     <div class="spinner-blocker"></div>
   </div>
+
     <span>
       <br/>
       <button class="button list-grid__button btn btn-warning logoutButton" click.delegate="logout()">Logout</button>
@@ -17,6 +19,11 @@
       <button click.delegate="addPerson()" class="addButton button list-grid__button btn btn-primary"><b>+</bstyle></button>
     </div>
     <br/><br/>
+    <div class="c-filter-input">
+      <input type="text" class="c-filter-input__input" value.bind="searchTerm" placeholder="Filter...">
+      <!--anchor-->
+    </div>
+  <br/>
     <div class="list-grid border border--round">
       <div class="list-grid__header">
         <div class="list-grid__column">Name</div>
@@ -24,14 +31,14 @@
         <div class="list-grid__column">Job Title</div>
       </div>
       <div class="list-grid__body">
-        <div repeat.for="dude of people" class="list-item">
-          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item"><span if.bind="$first"><b style="color:#337ab7;">${dude.name}</b></span></div>
+        <div repeat.for="dude of people | filter:searchTerm:filterFunc" class="list-item">
+          <!--<div if.bind="newlyAdded" class="list-grid__column list-grid__column&#45;&#45;item"><span if.bind="$first"><b style="color:#337ab7;">${dude.name}</b></span></div>-->
           <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.name}</span></div>
 
-          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item"><span if.bind="$first"><b style="color:#337ab7;">${dude.age}</b></span></div>
+          <!--<div if.bind="newlyAdded" class="list-grid__column list-grid__column&#45;&#45;item"><span if.bind="$first"><b style="color:#337ab7;">${dude.age}</b></span></div>-->
           <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.age}</span></div>
 
-          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item"><span if.bind="$first"><b style="color:#337ab7;">${dude.jobTitle}</b></span></div>
+          <!--<div if.bind="newlyAdded" class="list-grid__column list-grid__column&#45;&#45;item"><span if.bind="$first"><b style="color:#337ab7;">${dude.jobTitle}</b></span></div>-->
           <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.jobTitle}</span></div>
 
           <div class="list-grid__column" style="margin-bottom:20px;">

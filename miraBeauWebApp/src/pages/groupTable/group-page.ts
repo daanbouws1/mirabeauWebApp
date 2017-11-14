@@ -75,9 +75,11 @@ export class groupPage {
           let personData: any = {"name": response.output.name, "userData": userData};
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
-            // this.newlyAdded = false;
-            this.getAllPeople();
-            // this.newlyAdded = true;
+            let index = this.people.indexOf(dude);
+            let edittedDuyde = this.people[index];
+            this.people.splice(index,1);
+            this.people.unshift(edittedDuyde);
+            this.newlyAdded = true;
           });
           // Check if file was provided
           if (!(response.output.file == null)) {
@@ -160,7 +162,7 @@ export class groupPage {
             this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
               let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
               this.people.unshift(newDude);
-              // this.newlyAdded = true;
+              this.newlyAdded = true;
               let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
               // Add a reference to image in firebase to a person and call it their face.
               this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result2 => {

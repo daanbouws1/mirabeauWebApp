@@ -32,14 +32,31 @@
       </div>
       <div class="list-grid__body">
         <div repeat.for="dude of people | filter:searchTerm:filterFunc" class="list-item">
-          <!--<div if.bind="newlyAdded" class="list-grid__column list-grid__column&#45;&#45;item"><span if.bind="$first"><b style="color:#337ab7;">${dude.name}</b></span></div>-->
-          <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.name}</span></div>
+          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
+            <span if.bind="$first">
+              <b style="color:#337ab7;">${dude.name}</b>
+            </span>
+            <span if.bind="!$first">${dude.name}</span>
+          </div>
+          <div if.bind="newlyAdded == false" class="list-grid__column list-grid__column--item">
+            <span>${dude.name}</span>
+          </div>
 
-          <!--<div if.bind="newlyAdded" class="list-grid__column list-grid__column&#45;&#45;item"><span if.bind="$first"><b style="color:#337ab7;">${dude.age}</b></span></div>-->
-          <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.age}</span></div>
+          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
+            <span if.bind="$first">
+              <b style="color:#337ab7;">${dude.age}</b>
+            </span>
+            <span if.bind="!$first">${dude.age}</span>
+          </div>
+          <div if.bind="newlyAdded == false" class="list-grid__column list-grid__column--item"><span>${dude.age}</span></div>
 
-          <!--<div if.bind="newlyAdded" class="list-grid__column list-grid__column&#45;&#45;item"><span if.bind="$first"><b style="color:#337ab7;">${dude.jobTitle}</b></span></div>-->
-          <div if.bind="!newlyAdded" class="list-grid__column list-grid__column--item"><span>${dude.jobTitle}</span></div>
+          <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
+            <span if.bind="$first">
+              <b style="color:#337ab7;">${dude.jobTitle}</b>
+            </span>
+            <span if.bind="!$first">${dude.jobTitle}</span>
+          </div>
+          <div if.bind="newlyAdded == false" class="list-grid__column list-grid__column--item"><span>${dude.jobTitle}</span></div>
 
           <div class="list-grid__column" style="margin-bottom:20px;">
             <button class="btn button leftButton btn-primary btn-primary--shadow" click.delegate="editPerson(dude)">Edit</button>

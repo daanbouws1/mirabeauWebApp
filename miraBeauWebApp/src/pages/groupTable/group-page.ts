@@ -76,39 +76,42 @@ export class groupPage {
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
             let index = this.people.indexOf(dude);
-            this.peopleApi.getPerson(dude.id).then(result => {
-              let age: string = result.userData.split(",")[0];
-              let jobTitle: string = result.userData.split(",")[1];
-              let id: string = result.personId;
-              let edittedDude: Person = new Person(id, result.name, age, jobTitle);
-              this.people.splice(index,1);
-              this.people.unshift(edittedDude);
-              this.newlyAdded = true;
-            });
+            this.updatePersonCallback(dude.id);
           });
           // Check if file was provided
           if (!(response.output.file == null)) {
-            this.storageRef = this.storage.ref(response.output.file.name);
-            this.busy.on();
-            //Upload file to firebase
-            this.storageRef.put(response.output.file).then(response => {
-              let filepath = this.storageRef.fullPath;
-              let faceData: any = {"personId": result.personId, "url": response.downloadURL};
-              // Upload url to file to Azure to add the face to a person.
-              this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(() => {
-                let filepath = this.storageRef.fullPath;
-                let personFaceUserData = {"userData": filepath};
-                this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), result.personId, result2.persistedFaceId);
-                this.peopleApi.trainGroup();
-                this.busy.off();
-              }).catch(() => {
-                // Giving user feedback he/she has uploaded a invalid image
-                this.invalidImageResponse();
-              });
-            });
+            this.updateFace(response.output.file);
           }
         }
       });
+    });
+  }
+
+  private updateFace(file: any) {
+    this.storageRef = this.storage.ref(response.output.file.name);
+    this.busy.on();
+    //Upload file to firebase
+    this.storageRef.put(file).then(response => {
+      let filepath = this.storageRef.fullPath;
+      let faceData: any = {"personId": result.personId, "url": response.downloadURL};
+      // Upload url to file to Azure to add the face to a person.
+      this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(result2 => {
+        this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
+      }).catch(() => {
+        // Giving user feedback he/she has uploaded a invalid image
+        this.invalidImageResponse();
+      });
+    });
+  }
+
+  private updatePersonCallback(id: any) {
+    this.peopleApi.getPerson(dude.id).then(result => {
+      let age: string = result.userData.split(",")[0];
+      let jobTitle: string = result.userData.split(",")[1];
+      let id: string = result.personId;
+      let edittedDude: Person = new Person(id, result.name, age, jobTitle);
+      this.people.splice(index,1);
+      this.updateTableAfterAdd(edittedDude);
     });
   }
 
@@ -154,37 +157,52 @@ export class groupPage {
         model: "Add a new person",
     }).whenClosed(response => {
       //Check if user clicked ok.
-      if(!response.wasCancelled) {
+      if (!response.wasCancelled) {
         this.storageRef = this.storage.ref(response.output.file.name);
         this.busy.on();
         //Upload file to firebase
         this.storageRef.put(response.output.file).then(snapshot => {
           //Check if file uploaded successfully
-          if(snapshot.state === "success") {
-            let userData: string = response.output.age + ", " + response.output.jobTitle;
-            let personData: any = {"name": response.output.name, "userData": userData};
-            // Upload new person to azure
-            this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
-              let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
-              this.people.unshift(newDude);
-              this.newlyAdded = true;
-              let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
-              // Add a reference to image in firebase to a person and call it their face.
-              this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result2 => {
-                let filepath = this.storageRef.fullPath;
-                let personFaceUserData = {"userData": filepath};
-                this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), result.personId, result2.persistedFaceId);
-                this.peopleApi.trainGroup();
-                this.busy.off();
-              }).catch(() => {
-                // Giving user feedback he/she has uploaded a invalid image
-                this.invalidImageResponse();
-              });
-            });
+          if (snapshot.state === "success") {
+            this.addFace(response);
           }
         });
       }
-    })
+    });
+  }
+
+  private addFace(response: any) {
+    //get data to be uploaded from response
+    let userData: string = response.output.age + ", " + response.output.jobTitle;
+    let personData: any = {"name": response.output.name, "userData": userData};
+    // Upload new person to azure
+    this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
+      let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
+      this.updateTableAfterAdd(newDude);
+      let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
+      // Add a reference to image in firebase to a person and call it their face.
+      this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result2 => {
+        this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
+      }).catch(() => {
+        // Giving user feedback he/she has uploaded a invalid image
+        this.invalidImageResponse();
+      });
+    });
+  }
+
+  private updateTableAfterAdd(dude: Person) {
+    this.people.unshift(dude);
+    this.newlyAdded = true;
+  }
+
+  private PersonFaceCallBack(id:string, faceId: string) {
+    let filepath = this.storageRef.fullPath;
+    let personFaceUserData = {"userData": filepath};
+    this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), id, faceId).catch(result => {
+      alert(result.message + "  UNKOWN ERROR 500");
+    });
+    this.peopleApi.trainGroup();
+    this.busy.off();
   }
 
 }

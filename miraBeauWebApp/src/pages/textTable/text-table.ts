@@ -24,9 +24,7 @@ export class TextTable {
     this.rooms = [];
     firebase.database().ref("rooms").once("value").then(result => {
       let resultArray = Object.keys(result.val()).map(function(roomIndex){
-        let room = result.val()[roomIndex];
-        // do something with room
-        return room;
+        return result.val()[roomIndex];
       });
       for (let item of resultArray) {
         let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location, item.key);
@@ -37,6 +35,13 @@ export class TextTable {
 
   private openUserView() {
     this.router.navigate('home');
+  }
+
+  private logout() {
+    //logout
+    firebase.auth().signOut().then(result => {
+      this.router.navigate("login-page");
+    });
   }
 
   private addNewText() {
@@ -52,7 +57,8 @@ export class TextTable {
           location: result.output.location,
           key: result.output.roomName + "-" + result.output.location
         }).then(() => {
-          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName, result.output.category, result.output.location, result.output.key);
+          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,
+            result.output.category, result.output.location, result.output.key);
           this.rooms.unshift(conferenceRoom);
           this.newlyAdded = true;
         }).catch(result => {
@@ -76,7 +82,8 @@ export class TextTable {
           key: room.key
         }).then(() => {
           // this.getRooms();
-          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName, result.output.category, result.output.location, result.output.key);
+          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,
+            result.output.category, result.output.location, result.output.key);
           let index = this.rooms.indexOf(room);
           this.rooms.splice(index,1);
           this.rooms.unshift(conferenceRoom);

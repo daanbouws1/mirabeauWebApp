@@ -44,6 +44,10 @@ export class TextTable {
     });
   }
 
+  private filterFunc(searchTerm, room) {
+    return room.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1;
+  }
+
   private addNewText() {
     this.dialogService.open({
       viewModel: TextFormDialog,

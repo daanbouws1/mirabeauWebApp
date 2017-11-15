@@ -59,6 +59,10 @@ export class groupPage {
     return person.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1;
   }
 
+  private openTextView() {
+    this.router.navigate('text');
+  }
+
   private editPerson(dude: Person) {
     //Get data person form azure.
     return this.peopleApi.getPerson(dude.id).then(result => {
@@ -73,13 +77,14 @@ export class groupPage {
           let userData: string = response.output.age + "," + response.output.jobTitle;
           let personData: any = {"name": response.output.name, "userData": userData};
           //Update persondata in azure
-          this.peopleApi.updatePerson(JSON.stringify(personData), response.output.id).then(() => {
+          this.peopleApi.updatePerson(JSON.stringify(personData), dude.id).then(() => {
             let index = this.people.indexOf(dude);
+            this.people.splice(index,1);
             this.updatePersonCallback(dude.id);
           });
           // Check if file was provided
           if (!(response.output.file == null)) {
-            this.updateFace(response.output.file);
+            this.updateFace(response.output.file, personId);
           }
         }
       });
@@ -122,31 +127,33 @@ export class groupPage {
         this.storageRef.put(response.output.file).then(snapshot => {
           //Check if file uploaded successfully
           if (snapshot.state === "success") {
-            this.addFace(response);
+            this.addFace(response, snapshot.downloadURL);
           }
         });
       }
     });
   }
 
-  private updateFace(file: any) {
-    this.storageRef = this.storage.ref(response.output.file.name);
+  private updateFace(file: any, id: any) {
+    this.storageRef = this.storage.ref(file.name);
     this.busy.on();
     //Upload file to firebase
     this.storageRef.put(file).then(response => {
+      console.log(response);
       let filepath = this.storageRef.fullPath;
-      let faceData: any = {"personId": result.personId, "url": response.downloadURL};
+      let faceData: any = {"personId": id, "url": response.downloadURL};
       // Upload url to file to Azure to add the face to a person.
-      this.peopleApi.addPersonFace(JSON.stringify(faceData), personId).then(result2 => {
-        this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
-      }).catch(() => {
+      this.peopleApi.addPersonFace(JSON.stringify(faceData), id).then(result2 => {
+        this.PersonFaceCallBack(id, result2.persistedFaceId);
+      }).catch(error => {
         // Giving user feedback he/she has uploaded a invalid image
+        console.log(error);
         this.invalidImageResponse();
       });
     });
   }
 
-  private addFace(response: any) {
+  private addFace(response: any, url: any) {
     //get data to be uploaded from response
     let userData: string = response.output.age + ", " + response.output.jobTitle;
     let personData: any = {"name": response.output.name, "userData": userData};
@@ -154,13 +161,15 @@ export class groupPage {
     this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
       let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
       this.updateTableAfterAdd(newDude);
-      let personFaceData = {"personId": result.personId, "url": snapshot.downloadURL};
+      let personFaceData = {"personId": result.personId, "url": url};
       // Add a reference to image in firebase to a person and call it their face.
       this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId).then(result2 => {
         this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
-      }).catch(() => {
+      }).catch(error => {
         // Giving user feedback he/she has uploaded a invalid image
-        this.invalidImageResponse();
+        if (error.code) {
+          this.invalidImageResponse();
+        }
       });
     });
   }
@@ -194,12 +203,10 @@ export class groupPage {
   }
 
   private updatePersonCallback(id: any) {
-    this.peopleApi.getPerson(dude.id).then(result => {
+    this.peopleApi.getPerson(id).then(result => {
       let age: string = result.userData.split(",")[0];
       let jobTitle: string = result.userData.split(",")[1];
-      let id: string = result.personId;
       let edittedDude: Person = new Person(id, result.name, age, jobTitle);
-      this.people.splice(index,1);
       this.updateTableAfterAdd(edittedDude);
     });
   }

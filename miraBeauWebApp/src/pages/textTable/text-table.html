@@ -1,0 +1,72 @@
+<template>
+  <require from="../groupTable/group-page.css"></require>
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="../../widgets/spinner/spinner.css"></require>
+
+  <div show.bind="busy.active">
+    <div class="spinner"></div>
+    <div class="spinner-blocker"></div>
+  </div>
+  <button style="width:50%; float:left; border:1px solid black;" click.delegate="openUserView()">Users</button>
+  <button style="width:50%; float:right; border:1px solid black;" >Text</button>
+  <img src="src/resources/assets/Mirabeau_cognizant.jpg" class="logo"><br/><br/><br/>
+  <span>
+      <br/>
+      <button class="button list-grid__button btn btn-warning logoutButton" click.delegate="logout()">Logout</button>
+      <h3>Clients</h3>
+      <h4 style="color:grey">Manage your clients here. Add/Edit/Delete</h4>
+      <br/>
+
+    </span>
+  <div>
+    <button click.delegate="addNewText()" class="addButton button list-grid__button btn btn-primary"><b>+</b></button>
+  </div>
+  <br/><br/>
+  <div class="c-filter-input">
+    <input type="text" class="c-filter-input__input" value.bind="searchTerm" placeholder="Filter...">
+    <!--anchor-->
+  </div>
+  <br/>
+  <div class="list-grid border border--round">
+    <div class="list-grid__header">
+      <div class="list-grid__column">Name</div>
+      <div class="list-grid__column">Age</div>
+      <div class="list-grid__column">Job Title</div>
+    </div>
+    <div class="list-grid__body">
+      <div repeat.for="room of rooms" class="list-item">
+        <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
+            <span if.bind="$first">
+              <b style="color:#337ab7;">${room.name}</b>
+            </span>
+          <span if.bind="!$first">${room.name}</span>
+        </div>
+        <div if.bind="newlyAdded == false" class="list-grid__column list-grid__column--item">
+          <span>${room.name}</span>
+        </div>
+
+        <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
+            <span if.bind="$first">
+              <b style="color:#337ab7;">${room.category}</b>
+            </span>
+          <span if.bind="!$first">${room.category}</span>
+        </div>
+        <div if.bind="newlyAdded == false" class="list-grid__column list-grid__column--item"><span>${room.category}</span></div>
+
+        <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
+            <span if.bind="$first">
+              <b style="color:#337ab7;">${room.location}</b>
+            </span>
+          <span if.bind="!$first">${room.location}</span>
+        </div>
+        <div if.bind="newlyAdded == false" class="list-grid__column list-grid__column--item"><span>${room.location}</span></div>
+
+        <div class="list-grid__column" style="margin-bottom:20px;">
+          <button class="btn button leftButton btn-primary btn-primary--shadow" click.delegate="editRoom(room)">Edit</button>
+          <button class="btn button btn-warning btn-warning--shadow" click.delegate="deleteRoom(room)">Delete</button>
+        </div>
+        <br><br>
+      </div>
+    </div>
+  </div>
+</template>

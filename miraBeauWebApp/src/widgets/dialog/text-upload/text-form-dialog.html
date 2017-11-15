@@ -1,0 +1,30 @@
+<template>
+  <require from="../file-upload/person-form-dialog.css"></require>
+  <ux-dialog>
+    <ux-dialog-header>
+      <img src="src/resources/assets/ext.jpeg" class="mirabeau_logo">
+      <h4 if.bind="createOrUpdate == false"><b>Add new Conference Room</b></h4>
+      <h4 if.bind="createOrUpdate == true"><b>Update this Conference Room</b></h4>
+      <hr>
+      <h5 if.bind="createOrUpdate == false">Fill in this form to upload a new Conference-room to the app.<br></h5>
+      <h5 if.bind="createOrUpdate == true">Fill in this form to update your data to the face recognition group.<br></h5>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <label for="namefield">Insert your text:</label><br>
+      <input id="namefield" focus.bind="hasFocus" class="inputField" type="text" value.bind="roomName" placeholder="Insert Conference-room name...  ">
+      <br />
+      <br />
+      <label>Insert the category:</label><br>
+      <input id="categoryfield" class="inputField" type="text" value.bind="category" readonly>
+      <br />
+      <br />
+      <label for="locationfield">Insert your location:</label><br>
+      <input type="text" class="inputField" id="locationfield" value.bind="location" placeholder="Insert Conference-room's location"/>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
+      <button class="btn btn-primary" if.bind="createOrUpdate == false" click.trigger="addConference() controller.ok()">Add</button>
+      <button class="btn btn-primary" if.bind="createOrUpdate == true" click.trigger="updateConference() controller.ok()">Update</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

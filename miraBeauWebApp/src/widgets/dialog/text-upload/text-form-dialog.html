@@ -11,20 +11,22 @@
     </ux-dialog-header>
     <ux-dialog-body>
       <label for="namefield">Insert your text:</label><br>
-      <input id="namefield" focus.bind="hasFocus" class="inputField" type="text" value.bind="roomName" placeholder="Insert Conference-room name...  ">
+      <div class="errorMessage" if.bind="validationController.results['0'].valid == false">A conference room must have a name</div>
+      <input id="namefield" focus.bind="hasFocus" class="inputField" type="text" value.bind="room.roomName" placeholder="Insert Conference-room name...  ">
       <br />
       <br />
       <label>Insert the category:</label><br>
-      <input id="categoryfield" class="inputField" type="text" value.bind="category" readonly>
+      <input id="categoryfield" class="inputField" type="text" value.bind="room.category" readonly>
       <br />
       <br />
       <label for="locationfield">Insert your location:</label><br>
-      <input type="text" class="inputField" id="locationfield" value.bind="location" placeholder="Insert Conference-room's location"/>
+      <div class="errorMessage" if.bind="validationController.results['1'].valid == false">A conference room must have a location</div>
+      <input type="text" class="inputField" id="locationfield" value.bind="room.location" placeholder="Insert Conference-room's location"/>
     </ux-dialog-body>
     <ux-dialog-footer>
       <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
-      <button class="btn btn-primary" if.bind="createOrUpdate == false" click.trigger="addConference() controller.ok()">Add</button>
-      <button class="btn btn-primary" if.bind="createOrUpdate == true" click.trigger="updateConference() controller.ok()">Update</button>
+      <button class="btn btn-primary" if.bind="createOrUpdate == false" click.trigger="submitForm()">Add</button>
+      <button class="btn btn-primary" if.bind="createOrUpdate == true" click.trigger="updateConference() submitForm()">Update</button>
     </ux-dialog-footer>
   </ux-dialog>
 </template>

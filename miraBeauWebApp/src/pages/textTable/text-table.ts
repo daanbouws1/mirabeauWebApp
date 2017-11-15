@@ -8,7 +8,7 @@ import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 export class TextTable {
 
   private rooms: ConferenceRoom[] = [];
-  private newlyAdded: boolean = false;
+  private newlyAdded: boolean;
 
   constructor(private router: Router,
               private dialogService: DialogService
@@ -16,17 +16,22 @@ export class TextTable {
 
   activate() {
     let database = firebase.database();
+    this.newlyAdded = false;
+    this.getRooms();
+  }
+
+  private getRooms() {
+    this.rooms = [];
     firebase.database().ref("rooms").once("value").then(result => {
-      var resultArray = Object.keys(result.val()).map(function(roomIndex){
-        var room = result.val()[roomIndex];
+      let resultArray = Object.keys(result.val()).map(function(roomIndex){
+        let room = result.val()[roomIndex];
         // do something with room
         return room;
       });
       for (let item of resultArray) {
-        let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location);
+        let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location, item.key);
         this.rooms.push(conferenceRoom);
       }
-      console.log(this.rooms[0]);
     });
   }
 
@@ -40,7 +45,19 @@ export class TextTable {
       model: "Add a new room to recognize"
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
-        console.log(result);
+        let database = firebase.database();
+        firebase.database().ref("rooms/" + result.output.roomName + "-" + result.output.location).set({
+          name: result.output.roomName,
+          type: result.output.category,
+          location: result.output.location,
+          key: result.output.roomName + "-" + result.output.location
+        }).then(() => {
+          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName, result.output.category, result.output.location, result.output.key);
+          this.rooms.unshift(conferenceRoom);
+          this.newlyAdded = true;
+        }).catch(result => {
+          console.log(result);
+        });
       }
     })
   }
@@ -52,22 +69,36 @@ export class TextTable {
       model: ["Update this room's data", room]
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
-        console.log(result);
+        firebase.database().ref("rooms/" + room.key).update({
+          name: result.output.roomName,
+          type: result.output.category,
+          location: result.output.location,
+          key: room.key
+        }).then(() => {
+          // this.getRooms();
+          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName, result.output.category, result.output.location, result.output.key);
+          let index = this.rooms.indexOf(room);
+          this.rooms.splice(index,1);
+          this.rooms.unshift(conferenceRoom);
+          this.newlyAdded = true;
+        }).catch(error => {
+          console.log(error);
+        });
       }
-    })
+    });
   }
 
   private deleteRoom(room: any) {
-    console.log(room);
     this.dialogService.open({
       viewModel: DeleteDialog,
       model: "are you sure you want to delete this room?"
     }).whenClosed(result => {
       if (!(result.wasCancelled)) {
-        console.log(result);
-        firebase.database().ref("rooms/" + room.name + "2-" + room.location).remove().then(error => {
+        firebase.database().ref("rooms").child(room.key).remove().catch(error => {
           console.log(error);
-        })
+        });
+        this.newlyAdded = false;
+        this.getRooms();
       }
     })
   }
@@ -78,11 +109,13 @@ class ConferenceRoom {
   public name: string;
   public category: any;
   public location: string;
+  public key: string;
 
 
-  constructor(name: string, category: any, location: string) {
+  constructor(name: string, category: any, location: string, key: string) {
     this.name = name;
     this.category = category;
     this.location = location;
+    this.key = key;
   }
 }

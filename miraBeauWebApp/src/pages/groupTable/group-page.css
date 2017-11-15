@@ -108,7 +108,7 @@
   box-shadow: 1px 1px 12px black;
   float: right;
   padding-top:0;
-  margin-top:-50px;
+  margin-top:-80px;
 }
 
 .button {
@@ -138,6 +138,22 @@
 .logo {
   width:300px;
   float:left;
+}
+
+.left-nav-item {
+  width:50%;
+  float:left;
+  border:1px solid darkgray;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.right-nav-item {
+  width:50%;
+  float:right;
+  border:1px solid darkgrey;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 @media only screen and (max-width: 760px) {

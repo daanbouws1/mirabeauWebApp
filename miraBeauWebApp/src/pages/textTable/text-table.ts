@@ -27,6 +27,7 @@ export class TextTable {
         return result.val()[roomIndex];
       });
       for (let item of resultArray) {
+        console.log(item);
         let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location, item.key);
         this.rooms.push(conferenceRoom);
       }

@@ -12,7 +12,7 @@ export class TextFormDialog {
   private createOrUpdate: boolean;
   private oldRoomName: any;
   private oldLocation: any;
-  private room: Room = new Room();
+  private room: Room;
   private roomName: any;
   private location: any;
   private message: any;
@@ -25,16 +25,14 @@ export class TextFormDialog {
     controller.settings.centerHorizontalOnly = true;
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
-    this.room.category = "Conference Room";
   }
 
   activate(message: any) {
     if (!(typeof message === "string")) {
       this.createOrUpdate = true;
-      this.room.roomName = message[1].name;
+      this.room = new Room(message[1].name, message[1].category, message[1].location, message[1].key);
       this.oldRoomName = message[1].name;
       this.oldLocation = message[1].location;
-      this.room.location = message[1].location;
     } else {
       this.createOrUpdate = false;
       this.message = message;
@@ -50,8 +48,7 @@ export class TextFormDialog {
     this.validationController.validate({object: this.room}).then(result => {
       console.log(result);
       if(result.valid === true) {
-        let room: Room = new Room(this.room.roomName, this.room.category, this.room.location);
-        this.controller.ok(room);
+        this.controller.ok(this.room);
       }
     });
   }
@@ -61,6 +58,7 @@ class Room {
   private roomName: any;
   private category: any;
   private location: any;
+  private key: any;
 
   constructor(roomName: any, category: any, location: any) {
     this.roomName = roomName;

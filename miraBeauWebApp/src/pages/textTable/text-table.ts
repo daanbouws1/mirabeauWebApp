@@ -85,7 +85,7 @@ export class TextTable {
           name: result.output.roomName,
           type: result.output.category,
           location: result.output.location,
-          key: room.key
+          key: result.output.location
         }).then(() => {
           // this.getRooms();
           let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,

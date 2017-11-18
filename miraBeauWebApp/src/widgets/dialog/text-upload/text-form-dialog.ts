@@ -8,13 +8,8 @@ import {ValidationRules, ValidationControllerFactory, validateTrigger, Validatio
 @autoinject
 export class TextFormDialog {
 
-  private category: any;
   private createOrUpdate: boolean;
-  private oldRoomName: any;
-  private oldLocation: any;
-  private room: Room;
-  private roomName: any;
-  private location: any;
+  private room: Room = new Room();
   private message: any;
   private validationController: ValidationController;
 
@@ -25,14 +20,16 @@ export class TextFormDialog {
     controller.settings.centerHorizontalOnly = true;
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
+    this.room.category = "Conference Room";
   }
 
   activate(message: any) {
     if (!(typeof message === "string")) {
       this.createOrUpdate = true;
-      this.room = new Room(message[1].name, message[1].category, message[1].location, message[1].key);
-      this.oldRoomName = message[1].name;
-      this.oldLocation = message[1].location;
+      console.log(message);
+      this.room.roomName = message[1].name;
+      this.room.location = message[1].location;
+      this.room.key = message[1].key;
     } else {
       this.createOrUpdate = false;
       this.message = message;
@@ -46,7 +43,6 @@ export class TextFormDialog {
 
   private submitForm() {
     this.validationController.validate({object: this.room}).then(result => {
-      console.log(result);
       if(result.valid === true) {
         this.controller.ok(this.room);
       }
@@ -60,9 +56,10 @@ class Room {
   private location: any;
   private key: any;
 
-  constructor(roomName: any, category: any, location: any) {
-    this.roomName = roomName;
-    this.category = category;
-    this.location = location;
+  constructor() {
+    this.roomNamen = null;
+    this.category = null;
+    this.location = null;
+    this.key = null;
   }
 }

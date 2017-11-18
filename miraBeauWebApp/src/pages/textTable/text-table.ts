@@ -63,7 +63,7 @@ export class TextTable {
           key: result.output.roomName + "-" + result.output.location
         }).then(() => {
           let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,
-            result.output.category, result.output.location, result.output.key);
+            result.output.category, result.output.location, result.output.roomName + "-" + result.output.location);
           this.rooms.unshift(conferenceRoom);
           this.newlyAdded = true;
         }).catch(result => {
@@ -85,7 +85,7 @@ export class TextTable {
           name: result.output.roomName,
           type: result.output.category,
           location: result.output.location,
-          key: result.output.location
+          key: result.output.key
         }).then(() => {
           // this.getRooms();
           let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,

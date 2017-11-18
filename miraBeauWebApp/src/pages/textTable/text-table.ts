@@ -74,6 +74,7 @@ export class TextTable {
 
   private editRoom(room: any) {
     console.log(room);
+
     this.dialogService.open({
       viewModel: TextFormDialog,
       model: ["Update this room's data", room]

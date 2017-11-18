@@ -26,7 +26,6 @@ export class TextFormDialog {
   activate(message: any) {
     if (!(typeof message === "string")) {
       this.createOrUpdate = true;
-      console.log(message);
       this.room.roomName = message[1].name;
       this.room.location = message[1].location;
       this.room.key = message[1].key;

@@ -27,7 +27,6 @@ export class TextTable {
         return result.val()[roomIndex];
       });
       for (let item of resultArray) {
-        console.log(item);
         let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location, item.key);
         this.rooms.push(conferenceRoom);
       }
@@ -46,7 +45,8 @@ export class TextTable {
   }
 
   private filterFunc(searchTerm, room) {
-    return room.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1;
+    return room.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1 ||
+      room.location.toUpperCase().lastIndexOf(searchTerm.toUpperCase()) !== -1;
   }
 
   private addNewText() {
@@ -74,8 +74,6 @@ export class TextTable {
   }
 
   private editRoom(room: any) {
-    console.log(room);
-
     this.dialogService.open({
       viewModel: TextFormDialog,
       model: ["Update this room's data", room]

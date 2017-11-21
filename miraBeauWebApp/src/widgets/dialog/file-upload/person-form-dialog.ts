@@ -60,7 +60,7 @@ export class PersonFormDialog {
     } else {
       this.createOrUpdate = false;
     }
-    // add keylistener + focus input field so enter wont trigger Add button again.
+    // add keylistener
     window.addEventListener('keypress', this.myKeypressCallback, false);
     this.hasFocus = true;
     // set validation rules
@@ -85,11 +85,13 @@ export class PersonFormDialog {
   }
 
   private openPhotoDialog() {
+    window.removeEventListener('keypress', this.myKeypressCallback);
     this.dialogService.open({
       viewModel: PictureManager,
       model: this.addForm.id
     }).whenClosed(result => {
       console.log(result);
+      window.addEventListener('keypress', this.myKeypressCallback, false);
     });
   }
 

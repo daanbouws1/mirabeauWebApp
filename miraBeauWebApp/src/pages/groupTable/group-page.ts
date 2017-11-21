@@ -44,7 +44,6 @@ export class groupPage {
         let guy: Person = new Person(id, result[item].name, age, jobTitle);
         this.people.push(guy);
       }
-      // console.log(result);
     });
   }
 

@@ -1,0 +1,21 @@
+<template>
+  <ux-dialog>
+    <ux-dialog-header>
+      <img src="src/resources/assets/ext.jpeg" class="mirabeau_logo">
+      <h4><b>Manage Pictures</b></h4>
+    </ux-dialog-header>
+    <ux-dialog-body>
+      <div repeat.for="image of personPictureUrls">
+        <br>
+        <div class="borderButton">
+          <img src="${image}" width="350">
+        </div>
+        <br>
+        <button click.delegate="deletePic(image)" class="btn btn-warning">Delete</button>
+      </div>
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button class="btn btn-primary" focus.bind="hasFocus" click.trigger="controller.ok()">Done</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

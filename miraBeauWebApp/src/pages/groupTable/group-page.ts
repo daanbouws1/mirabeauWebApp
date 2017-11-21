@@ -73,12 +73,10 @@ export class groupPage {
         viewModel: PersonFormDialog,
         model: ["Add a new person", dude]
       }).whenClosed(response => {
-        console.log(response);
         //Check if user clicked ok
         if(!response.wasCancelled) {
           let userData: string = response.output.age + "," + response.output.jobTitle + "," + response.output.message;
           let personData: any = {"name": response.output.name, "userData": userData};
-          console.log(personData);
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), dude.id).then(() => {
             let index = this.people.indexOf(dude);
@@ -122,7 +120,6 @@ export class groupPage {
         viewModel: PersonFormDialog,
         model: "Add a new person",
     }).whenClosed(response => {
-      console.log(response);
       //Check if user clicked ok.
       if (!response.wasCancelled) {
         this.storageRef = this.storage.ref(response.output.file.name);
@@ -143,7 +140,6 @@ export class groupPage {
     this.busy.on();
     //Upload file to firebase
     this.storageRef.put(file).then(response => {
-      console.log(response);
       let filepath = this.storageRef.fullPath;
       let faceData: any = {"personId": id, "url": response.downloadURL};
       // Upload url to file to Azure to add the face to a person.
@@ -208,7 +204,6 @@ export class groupPage {
 
   private updatePersonCallback(id: any) {
     this.peopleApi.getPerson(id).then(result => {
-      console.log(result);
       let age: string = result.userData.split(",")[0];
       let jobTitle: string = result.userData.split(",")[1];
       let message: string = result.userData.split(",")[2];

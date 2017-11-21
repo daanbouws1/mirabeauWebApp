@@ -33,6 +33,10 @@ export class TextTable {
     });
   }
 
+  private signUp() {
+    this.router.navigate("signup");
+  }
+
   private openUserView() {
     this.router.navigate('home');
   }

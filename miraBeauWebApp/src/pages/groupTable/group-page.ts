@@ -33,6 +33,10 @@ export class groupPage {
     }
   }
 
+  private signUp() {
+    this.router.navigate("signup");
+  }
+
   private getAllPeople() {
     this.people = [];
     //get list of people in group from azure

@@ -28,14 +28,14 @@ export class LoginPage {
     window.removeEventListener('keypress', this.myKeypressCallback);
   }
 
-  keypressInput(e) {
+  private keypressInput(e) {
     //listen for enter
     if (e.code === "Enter") {
       this.login();
     }
   }
 
-  login() {
+  private login() {
     //sign in
     if (!(this.email ==null) && !(this.password == null)){
       this.errorMessage = "";

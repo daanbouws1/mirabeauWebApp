@@ -47,12 +47,17 @@
         <option repeat.for="day of days" value.bind="day">${day}</option>
       </select>
 
-	  <br />
-	  <br />
+	    <br />
+	    <br />
       <label for="jobfunctionfield">Insert your Job title:</label><br>
       <div class="errorMessage" id="errorMessage2" if.bind="validationController.results['2'].valid == false"> Job title may not be empty</div>
       <div class="errorMessage" if.bind="validationController.results['3'].valid == false"> Job title must be under 20 characters long</div>
       <input type="text" class="inputField" id="jobfunctionfield" value.bind="addForm.jobTitle" placeholder="Insert your Job title"/>
+
+      <br />
+      <br />
+      <label for="jobfunctionfield">Insert a personal message:</label><br>
+      <input type="text" class="inputField" id="messagefield" value.bind="addForm.message" placeholder="Insert a personal message"/>
 
     </ux-dialog-body>
     <ux-dialog-footer>

@@ -53,6 +53,7 @@ export class PersonFormDialog {
       this.addForm.name = message[1].name;
       this.addForm.age = message[1].age;
       this.addForm.jobTitle = message[1].jobTitle;
+      this.addForm.message = message[1].message;
       this.selectedYear = message[1].age.substring(0,4);
       this.selectedMonth = message[1].age.substring(5,7);
       this.selectedDay = message[1].age.substring(8,10);
@@ -90,7 +91,6 @@ export class PersonFormDialog {
       viewModel: PictureManager,
       model: this.addForm.id
     }).whenClosed(result => {
-      console.log(result);
       window.addEventListener('keypress', this.myKeypressCallback, false);
     });
   }
@@ -146,4 +146,5 @@ export class AddForm {
 	public age: any;
 	public jobTitle: string = "";
 	public file: any;
+	public message: string = "";
 }

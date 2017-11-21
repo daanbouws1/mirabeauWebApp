@@ -41,9 +41,11 @@ export class groupPage {
         let age: string = result[item].userData.split(",")[0];
         let jobTitle: string = result[item].userData.split(",")[1];
         let id: string = result[item].personId;
-        let guy: Person = new Person(id, result[item].name, age, jobTitle);
+        let message: string = result[item].message;
+        let guy: Person = new Person(id, result[item].name, age, jobTitle, message);
         this.people.push(guy);
       }
+      console.log(this.people);
     });
   }
 
@@ -71,10 +73,12 @@ export class groupPage {
         viewModel: PersonFormDialog,
         model: ["Add a new person", dude]
       }).whenClosed(response => {
+        console.log(response);
         //Check if user clicked ok
         if(!response.wasCancelled) {
-          let userData: string = response.output.age + "," + response.output.jobTitle;
+          let userData: string = response.output.age + "," + response.output.jobTitle + "," + response.output.message;
           let personData: any = {"name": response.output.name, "userData": userData};
+          console.log(personData);
           //Update persondata in azure
           this.peopleApi.updatePerson(JSON.stringify(personData), dude.id).then(() => {
             let index = this.people.indexOf(dude);
@@ -118,6 +122,7 @@ export class groupPage {
         viewModel: PersonFormDialog,
         model: "Add a new person",
     }).whenClosed(response => {
+      console.log(response);
       //Check if user clicked ok.
       if (!response.wasCancelled) {
         this.storageRef = this.storage.ref(response.output.file.name);
@@ -154,11 +159,11 @@ export class groupPage {
 
   private addFace(response: any, url: any) {
     //get data to be uploaded from response
-    let userData: string = response.output.age + ", " + response.output.jobTitle;
+    let userData: string = response.output.age + ", " + response.output.jobTitle + "," + response.output.message;
     let personData: any = {"name": response.output.name, "userData": userData};
     // Upload new person to azure
     this.peopleApi.addPerson(JSON.stringify(personData)).then(result => {
-      let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle);
+      let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle, response.output.message);
       this.updateTableAfterAdd(newDude);
       let personFaceData = {"personId": result.personId, "url": url};
       // Add a reference to image in firebase to a person and call it their face.
@@ -182,7 +187,7 @@ export class groupPage {
     let filepath = this.storageRef.fullPath;
     let personFaceUserData = {"userData": filepath};
     this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), id, faceId).catch(result => {
-      alert(result.message + "  UNKOWN ERROR 500");
+      alert(result.message + "  AZURE STILL TRAINING, TRY AGAIN");
     });
     this.peopleApi.trainGroup();
     this.busy.off();
@@ -203,9 +208,11 @@ export class groupPage {
 
   private updatePersonCallback(id: any) {
     this.peopleApi.getPerson(id).then(result => {
+      console.log(result);
       let age: string = result.userData.split(",")[0];
       let jobTitle: string = result.userData.split(",")[1];
-      let edittedDude: Person = new Person(id, result.name, age, jobTitle);
+      let message: string = result.userData.split(",")[2];
+      let edittedDude: Person = new Person(id, result.name, age, jobTitle, message);
       this.updateTableAfterAdd(edittedDude);
     });
   }
@@ -217,11 +224,13 @@ class Person {
   public name: string;
   public age: string;
   public jobTitle: string;
+  public message: string;
 
-  constructor(id: string, name: string, age: string, jobTitle: string) {
+  constructor(id: string, name: string, age: string, jobTitle: string, message: string) {
     this.id = id;
     this.name = name;
     this.age = age;
     this.jobTitle = jobTitle;
+    this.message = message;
   }
 }

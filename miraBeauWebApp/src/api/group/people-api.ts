@@ -36,6 +36,10 @@ export class PeopleApi extends baseApi {
      return this._post(this.servicePath + "persons/" + personId + "/persistedFaces", params);
    }
 
+   deletePersonFace(personId: string, personFaceId: string) {
+     return this._delete(this.servicePath + "persons/" + personId + "/persistedFaces/" + personFaceId + "?");
+   }
+
    trainGroup() {
      return this._post(this.servicePath + "train?", null);
    }

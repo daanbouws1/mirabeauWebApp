@@ -210,7 +210,6 @@ export class groupPage {
       this.updateTableAfterAdd(edittedDude);
     });
   }
-
 }
 
 class Person {

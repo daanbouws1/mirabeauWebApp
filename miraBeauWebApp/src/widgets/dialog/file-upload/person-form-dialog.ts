@@ -2,6 +2,7 @@ import {autoinject} from "aurelia-framework";
 import {DialogController} from "aurelia-dialog";
 import {DialogService} from "aurelia-dialog";
 import {InvalidFileDialog} from "./invalid-file-dialog";
+import {PictureManager} from "../picture-manager/picture-manager";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
 
 @autoinject(DialogController)
@@ -76,14 +77,23 @@ export class PersonFormDialog {
     window.removeEventListener('keypress', this.myKeypressCallback);
   }
 
-  keypressInput(e) {
+  private keypressInput(e) {
     //listen for enter and submit form
     if (e.code === "Enter") {
       this.submitForm();
     }
   }
 
-  submitForm() {
+  private openPhotoDialog() {
+    this.dialogService.open({
+      viewModel: PictureManager,
+      model: this.addForm.id
+    }).whenClosed(result => {
+      console.log(result);
+    });
+  }
+
+  private submitForm() {
     //Send form to firebase and azure.
     this.validationController.validate({object: this.addForm}).then(result => {
       if(result.valid === true) {
@@ -97,7 +107,7 @@ export class PersonFormDialog {
     });
   }
 
-  onFileChange(event) {
+  private onFileChange(event) {
     //check if file has right extension
     if (event.detail.file) {
       const ext = event.detail.file.name.toString().substr(

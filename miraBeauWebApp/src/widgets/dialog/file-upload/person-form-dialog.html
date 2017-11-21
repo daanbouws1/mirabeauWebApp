@@ -56,6 +56,7 @@
 
     </ux-dialog-body>
     <ux-dialog-footer>
+      <button class="btn btn-default" if.bind="createOrUpdate == true" style="float:left;" click.trigger="openPhotoDialog()">Manage Photos</button>
       <button class="btn btn-default" click.trigger="controller.cancel()">Cancel</button>
       <button class="btn btn-primary" if.bind="createOrUpdate == false" click.trigger="submitForm()">Add</button>
       <button class="btn btn-primary" if.bind="createOrUpdate == true" click.trigger="submitForm()">Update</button>

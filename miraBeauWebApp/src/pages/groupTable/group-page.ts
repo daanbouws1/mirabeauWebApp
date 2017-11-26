@@ -4,6 +4,7 @@ import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
 import {Busy} from '../../widgets/spinner/busy';
+import {Router} from "aurelia-router";
 import {InvalidImageDialog} from "../../widgets/dialog/invalid-image/invalid-image-dialog";
 
 @autoinject
@@ -17,6 +18,7 @@ export class groupPage {
 
   constructor(private peopleApi: PeopleApi,
               private dialogService: DialogService,
+              private router: Router,
               private busy: Busy) {
   }
 
@@ -37,10 +39,9 @@ export class groupPage {
     //get list of people in group from azure
     let user: any = firebase.auth().currentUser;
     firebase.database().ref("Companies/" + user.uid).once("value").then(result => {
-      this.currentUser = Object.keys(result.val()).map(function (index) {
-        return result.val()[index];
-      });
-      this.peopleApi.getPeople(this.currentUser[0]).then(result => {
+      console.log(result.val());
+      this.currentUser = result.val();
+      this.peopleApi.getPeople(this.currentUser.group).then(result => {
         for(let item in result) {
           let age: string = result[item].userData.split(",")[0];
           let jobTitle: string = result[item].userData.split(",")[1];
@@ -60,7 +61,7 @@ export class groupPage {
 
   private editPerson(dude: Person) {
     //Get data person form azure.
-    return this.peopleApi.getPerson(dude.id, this.currentUser[0]).then(result => {
+    return this.peopleApi.getPerson(dude.id, this.currentUser.group).then(result => {
       let personId = result.personId;
       // Open Edit Dialog with person data.
       this.dialogService.open({
@@ -72,7 +73,7 @@ export class groupPage {
           let userData: string = response.output.age + "," + response.output.jobTitle + "," + response.output.message;
           let personData: any = {"name": response.output.name, "userData": userData};
           //Update persondata in azure
-          this.peopleApi.updatePerson(JSON.stringify(personData), dude.id, this.currentUser[0]).then(() => {
+          this.peopleApi.updatePerson(JSON.stringify(personData), dude.id, this.currentUser.group).then(() => {
             let index = this.people.indexOf(dude);
             this.people.splice(index,1);
             this.updatePersonCallback(dude.id);
@@ -92,14 +93,14 @@ export class groupPage {
       model: "Are you sure you want to delete this person?"
     }).whenClosed(result => {
       if (!result.wasCancelled) {
-        this.peopleApi.getPerson(dude.id, this.currentUser[0]).then(result => {
+        this.peopleApi.getPerson(dude.id, this.currentUser.group).then(result => {
           for (let item of result.persistedFaceIds) {
-            this.peopleApi.getPersonFace(dude.id, item, this.currentUser[0]).then(result => {
+            this.peopleApi.getPersonFace(dude.id, item, this.currentUser.group).then(result => {
               this.storageRef = this.storage.ref(result.userData);
               this.storageRef.delete();
             });
           }
-          this.peopleApi.deletePerson(dude.id, this.currentUser[0]).then(() => {
+          this.peopleApi.deletePerson(dude.id, this.currentUser.group).then(() => {
             this.newlyAdded = false;
             this.getAllPeople();
           });
@@ -137,7 +138,7 @@ export class groupPage {
       let filepath = this.storageRef.fullPath;
       let faceData: any = {"personId": id, "url": response.downloadURL};
       // Upload url to file to Azure to add the face to a person.
-      this.peopleApi.addPersonFace(JSON.stringify(faceData), id, this.currentUser[0]).then(result2 => {
+      this.peopleApi.addPersonFace(JSON.stringify(faceData), id, this.currentUser.group).then(result2 => {
         this.PersonFaceCallBack(id, result2.persistedFaceId);
       }).catch(error => {
         // Giving user feedback he/she has uploaded a invalid image
@@ -152,12 +153,12 @@ export class groupPage {
     let userData: string = response.output.age + ", " + response.output.jobTitle + "," + response.output.message;
     let personData: any = {"name": response.output.name, "userData": userData};
     // Upload new person to azure
-    this.peopleApi.addPerson(JSON.stringify(personData), this.currentUser[0]).then(result => {
+    this.peopleApi.addPerson(JSON.stringify(personData), this.currentUser.group).then(result => {
       let newDude: Person = new Person(result.personId, response.output.name, response.output.age, response.output.jobTitle, response.output.message);
       this.updateTableAfterAdd(newDude);
       let personFaceData = {"personId": result.personId, "url": url};
       // Add a reference to image in firebase to a person and call it their face.
-      this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId, this.currentUser[0]).then(result2 => {
+      this.peopleApi.addPersonFace(JSON.stringify(personFaceData), result.personId, this.currentUser.group).then(result2 => {
         this.PersonFaceCallBack(result.personId, result2.persistedFaceId);
       }).catch(error => {
         // Giving user feedback he/she has uploaded a invalid image
@@ -176,10 +177,10 @@ export class groupPage {
   private PersonFaceCallBack(id:string, faceId: string) {
     let filepath = this.storageRef.fullPath;
     let personFaceUserData = {"userData": filepath};
-    this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), id, faceId, this.currentUser[0]).catch(result => {
+    this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), id, faceId, this.currentUser.group).catch(result => {
       alert(result.message + "  AZURE STILL TRAINING, TRY AGAIN");
     });
-    this.peopleApi.trainGroup(this.currentUser[0]);
+    this.peopleApi.trainGroup(this.currentUser.group);
     this.busy.off();
   }
 
@@ -197,7 +198,7 @@ export class groupPage {
   }
 
   private updatePersonCallback(id: any) {
-    this.peopleApi.getPerson(id, this.currentUser[0]).then(result => {
+    this.peopleApi.getPerson(id, this.currentUser.group).then(result => {
       let age: string = result.userData.split(",")[0];
       let jobTitle: string = result.userData.split(",")[1];
       let message: string = result.userData.split(",")[2];

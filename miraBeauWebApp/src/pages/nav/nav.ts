@@ -11,11 +11,6 @@ export class Nav {
     firebase.database().ref("Companies/" + user.uid).once("value").then(result => {
       this.currentUser = result.val();
     });
-
-  }
-
-  activate() {
-
   }
 
   private signUp() {

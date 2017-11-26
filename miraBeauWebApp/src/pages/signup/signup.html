@@ -4,21 +4,29 @@
   <require from="../../resources/elements/main.css"></require>
   <div style="margin-top:5%;">
     <h1 class="centered title">Sign Up</h1> <br>
-    <div class="list-grid border border--round" style="height:450px;max-width: 400px;"> <br><br>
+    <div class="list-grid border border--round" style="height:600px;max-width: 400px;"> <br><br>
       <label class="centered"> Type in a new email-address: <br><br>
-        <input value.bind="email" type="text" class="inputField" placeholder="example@example.com">
+        <div class="errorMessage" id="errorMessage1" if.bind="validationController.results['3'].valid == false">Please insert a email address</div>
+        <input value.bind="signUpForm.email" type="text" class="inputField" placeholder="example@example.com">
       </label>
       <label class="centered"> Type in a new password: <br><br>
-        <input value.bind="password" class="inputField" type="password" placeholder="***********">
+        <div class="errorMessage" id="errorMessage2" if.bind="validationController.results['0'].valid == false">Please insert a password</div>
+        <input value.bind="signUpForm.password" class="inputField" type="password" placeholder="***********">
+      </label>
+      <label class="centered"> Confirm new password: <br><br>
+        <div class="errorMessage" id="errorMessage3" if.bind="validationController.results['1'].valid == false">Please insert a password</div>
+        <div class="errorMessage" id="errorMessage4" if.bind="validationController.results['2'].valid == false">Passwords must be equal</div>
+        <input value.bind="signUpForm.password2" class="inputField" type="password" placeholder="***********">
       </label>
       <label class="centered"> Type in name of the new group: <br><br>
-        <input value.bind="newGroupName" class="inputField" type="text" placeholder="x_group">
+        <div class="errorMessage" id="errorMessage5" if.bind="validationController.results['4'].valid == false">Please insert a group name for Azure</div>
+        <input value.bind="signUpForm.newGroupName" class="inputField" type="text" placeholder="x_group">
       </label>
       <label class="centered"> Type in the new company its name: <br><br>
-        <input value.bind="companyName" class="inputField" type="text" placeholder="Mirabeau">
+        <div class="errorMessage" id="errorMessage6" if.bind="validationController.results['5'].valid == false">Please insert a compnay name</div>
+        <input value.bind="signUpForm.companyName" class="inputField" type="text" placeholder="Mirabeau">
       </label>
       <br>
-      <div class="errorMessage centered" if.bind="passBool == false">${errorMessage}</div>
       <button class="btn button btn-primary btn-primary--shadow submitButton" click.delegate="submit()">Submit</button><br/>
     </div>
   </div>

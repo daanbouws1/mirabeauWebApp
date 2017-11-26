@@ -10,6 +10,7 @@ export class PictureManager {
   private personPictureReferences: any[];
   private personId: string;
   private hasFocus: boolean;
+  private currentUser: any;
 
   constructor(private peopleApi: PeopleApi,
               public controller: DialogController){
@@ -21,7 +22,13 @@ export class PictureManager {
 
   activate(message){
     this.personId = message;
-    this.getPictureData();
+    let user: any = firebase.auth().currentUser;
+    firebase.database().ref("Users/" + user.uid).once("value").then(result => {
+      this.currentUser = Object.keys(result.val()).map(function (index) {
+        return result.val()[index];
+      });
+      this.getPictureData();
+    });
     window.addEventListener('keypress', this.myKeypressCallback, false);
     this.hasFocus = true;
   }
@@ -39,10 +46,9 @@ export class PictureManager {
   private getPictureData() {
     this.personPictureUrls = [];
     this.personPictureReferences = [];
-    this.peopleApi.getPerson(this.personId).then(result => {
-      console.log(result);
+    this.peopleApi.getPerson(this.personId, this.currentUser[1]).then(result => {
       for(const item of result.persistedFaceIds) {
-        this.peopleApi.getPersonFace(this.personId, item).then(result => {
+        this.peopleApi.getPersonFace(this.personId, item, this.currentUser[1]).then(result => {
           this.storageRef.child(result.userData).getDownloadURL().then(url => {
             this.personPictureUrls.push(url);
             this.personPictureReferences.push(result.userData);
@@ -57,11 +63,11 @@ export class PictureManager {
   private deletePic(pic: any) {
     let index = this.personPictureUrls.indexOf(pic);
     const firebaseImageRef = this.personPictureReferences[index];
-    this.peopleApi.getPerson(this.personId).then(result => {
+    this.peopleApi.getPerson(this.personId, this.currentUser[1]).then(result => {
       for (const item of result.persistedFaceIds) {
-        this.peopleApi.getPersonFace(this.personId, item).then(response => {
+        this.peopleApi.getPersonFace(this.personId, item, this.currentUser[1]).then(response => {
           if (response.userData == firebaseImageRef) {
-            this.peopleApi.deletePersonFace(this.personId, item).then(() => {
+            this.peopleApi.deletePersonFace(this.personId, item, this.currentUser[1]).then(() => {
               this.storageRef.child(firebaseImageRef).delete();
               this.getPictureData();
             });

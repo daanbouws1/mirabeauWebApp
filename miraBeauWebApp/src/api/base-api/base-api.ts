@@ -28,6 +28,12 @@ export class baseApi {
     });
   }
 
+  protected _put(path: string, params: any) : Promise<any> {
+    return this.fetchWithMethod("PUT", path, {
+      body: params
+    })
+  }
+
   protected _patch(path: string, params: any) : Promise<any> {
     return this.fetchWithMethod("PATCH", path, {
       body: params

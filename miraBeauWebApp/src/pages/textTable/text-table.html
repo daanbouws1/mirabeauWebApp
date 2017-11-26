@@ -15,7 +15,8 @@
 
   <span>
       <br/>
-      <button class="button list-grid__button btn btn-default signupButton" click.delegate="signUp()">Sign-Up</button>
+      <button class="button list-grid__button btn btn-default signupButton" click.delegate="signUp()"
+              if.bind="currentUser[3] == 'admin'">Sign-Up</button>
       <button class="button list-grid__button btn btn-warning logoutButton" click.delegate="logout()">Logout</button>
       <h3>Conference Rooms</h3>
       <h4 style="color:grey">Manage your conference rooms here. Add/Edit/Delete</h4>

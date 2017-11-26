@@ -9,10 +9,10 @@ export class TextTable {
 
   private rooms: ConferenceRoom[] = [];
   private newlyAdded: boolean;
+  private user: any;
 
   constructor(private router: Router,
-              private dialogService: DialogService
-  ){}
+              private dialogService: DialogService){}
 
   activate() {
     let database = firebase.database();
@@ -22,7 +22,8 @@ export class TextTable {
 
   private getRooms() {
     this.rooms = [];
-    firebase.database().ref("rooms").once("value").then(result => {
+    this.user = firebase.auth().currentUser;
+    firebase.database().ref("Companies/" + this.user.uid+ "/rooms").once("value").then(result => {
       let resultArray = Object.keys(result.val()).map(function(roomIndex){
         return result.val()[roomIndex];
       });
@@ -60,8 +61,9 @@ export class TextTable {
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
         let database = firebase.database();
-        firebase.database().ref("rooms/" + result.output.roomName + "-" + result.output.location).set({
+        firebase.database().ref("Companies/" + this.user.uid+ "/rooms/" + result.output.roomName + "-" + result.output.location).set({
           name: result.output.roomName,
+          uppername: result.output.roomName.toUpperCase(),
           type: result.output.category,
           location: result.output.location,
           key: result.output.roomName + "-" + result.output.location
@@ -83,8 +85,9 @@ export class TextTable {
       model: ["Update this room's data", room]
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
-        firebase.database().ref("rooms/" + room.key).update({
+        firebase.database().ref("Companies/" + this.user.uid+ "/rooms/" + room.key).update({
           name: result.output.roomName,
+          uppername: result.output.roomName.toUpperCase(),
           type: result.output.category,
           location: result.output.location,
           key: result.output.key
@@ -109,7 +112,7 @@ export class TextTable {
       model: "are you sure you want to delete this room?"
     }).whenClosed(result => {
       if (!(result.wasCancelled)) {
-        firebase.database().ref("rooms").child(room.key).remove().catch(error => {
+        firebase.database().ref("Companies/" + this.user.uid+ "/rooms").child(room.key).remove().catch(error => {
           console.log(error);
         });
         this.newlyAdded = false;
@@ -118,7 +121,6 @@ export class TextTable {
     })
   }
 }
-
 
 class ConferenceRoom {
   public name: string;

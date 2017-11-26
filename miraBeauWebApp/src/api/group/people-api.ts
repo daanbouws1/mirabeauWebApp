@@ -2,45 +2,55 @@ import {baseApi} from "../base-api/base-api";
 
 export class PeopleApi extends baseApi {
 
-  servicePath = "persongroups/mirabeaugroup_mobile/";
+  // TODO dynamically check which group based on logged in user to use instead of hardcoded.
+  servicePath = "persongroups/";
  
-   getPeople() {
-    return this._get(this.servicePath + "persons?");
-   }
- 
-   deletePerson(id: string) {
-     return this._delete(this.servicePath + "persons/" + id);
+   getPeople(group: any) {
+    return this._get(this.servicePath + group + "/persons?");
    }
  
-   updatePerson(params: any, id: string) {
-     return this._patch(this.servicePath + "persons/" + id + "?", params);
-   }
-
-   getPerson(id: string) {
-     return this._get(this.servicePath + "persons/" + id);
+   deletePerson(id: string, group: any) {
+     return this._delete(this.servicePath + group + "/persons/" + id);
    }
  
-   addPerson(params: any) {
-     return this._post(this.servicePath + "persons?", params)
+   updatePerson(params: any, id: string, group: any) {
+     return this._patch(this.servicePath + group + "/persons/" + id + "?", params);
    }
 
-   updatePersonFace(params: any, personId: string, personFaceId: string) {
-     return this._patch(this.servicePath + "persons/" + personId + "/persistedFaces/" + personFaceId + "?", params);
+   getPerson(id: string, group: any) {
+     return this._get(this.servicePath + group + "/persons/" + id);
+   }
+ 
+   addPerson(params: any, group: any) {
+     return this._post(this.servicePath + group + "/persons?", params)
    }
 
-   getPersonFace(personId: string, personFaceId: string) {
-     return this._get(this.servicePath + "persons/" + personId + "/persistedFaces/" + personFaceId + "?");
+   updatePersonFace(params: any, personId: string, personFaceId: string, group: any) {
+     return this._patch(this.servicePath + group + "/persons/" + personId + "/persistedFaces/" + personFaceId + "?", params);
    }
 
-   addPersonFace(params: any, personId: string) {
-     return this._post(this.servicePath + "persons/" + personId + "/persistedFaces", params);
+   getPersonFace(personId: string, personFaceId: string, group: any) {
+     return this._get(this.servicePath + group + "/persons/" + personId + "/persistedFaces/" + personFaceId + "?");
    }
 
-   deletePersonFace(personId: string, personFaceId: string) {
-     return this._delete(this.servicePath + "persons/" + personId + "/persistedFaces/" + personFaceId + "?");
+   addPersonFace(params: any, personId: string, group: any) {
+     return this._post(this.servicePath + group + "/persons/" + personId + "/persistedFaces", params);
    }
 
-   trainGroup() {
-     return this._post(this.servicePath + "train?", null);
+   deletePersonFace(personId: string, personFaceId: string, group: any) {
+     return this._delete(this.servicePath + group + "/persons/" + personId + "/persistedFaces/" + personFaceId + "?");
+   }
+
+   trainGroup(group: any) {
+     return this._post(this.servicePath + group + "/train?", null);
+   }
+
+   createGroup(group: any) {
+     let groupdata = {"name": group};
+     return this._put(this.servicePath + group + "?", JSON.stringify(groupdata));
+   }
+
+   deleteGroup(group: any) {
+     return this._delete(this.servicePath + group + "?");
    }
 }

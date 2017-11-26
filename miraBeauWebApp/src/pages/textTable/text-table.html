@@ -2,27 +2,16 @@
   <require from="../../resources/elements/main.css"></require>
   <require from="bootstrap/css/bootstrap.css"></require>
   <require from="../../widgets/spinner/spinner.css"></require>
+  <require from="../nav/nav"></require>
 
   <div show.bind="busy.active">
     <div class="spinner"></div>
     <div class="spinner-blocker"></div>
   </div>
-  <div style="width:100%; height:100px;">
-    <img src="src/resources/assets/Mirabeau_cognizant.jpg" class="logo"><br/><br/><br/><br/><br/>
-    <button class="left-nav-item" click.delegate="openUserView()">Clients</button>
-    <button class="right-nav-item" style="border-color: black;">Conference Rooms</button>
-  </div>
-
-  <span>
-      <br/>
-      <button class="button list-grid__button btn btn-default signupButton" click.delegate="signUp()"
-              if.bind="currentUser[3] == 'admin'">Sign-Up</button>
-      <button class="button list-grid__button btn btn-warning logoutButton" click.delegate="logout()">Logout</button>
-      <h3>Conference Rooms</h3>
-      <h4 style="color:grey">Manage your conference rooms here. Add/Edit/Delete</h4>
-      <br/>
-
-    </span>
+  <nav></nav>
+  <h3>Conference Rooms</h3>
+  <h4 style="color:grey">Manage your conference rooms here. Add/Edit/Delete</h4>
+  <br/>
   <div>
     <button click.delegate="addNewText()" class="addButton button list-grid__button btn btn-primary"><b>+</b></button>
   </div>

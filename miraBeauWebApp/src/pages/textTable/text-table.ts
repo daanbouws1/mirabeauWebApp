@@ -1,5 +1,4 @@
 import {autoinject} from "aurelia-framework";
-import {Router} from 'aurelia-router';
 import {DialogService} from "aurelia-dialog";
 import {TextFormDialog} from "../../widgets/dialog/text-upload/text-form-dialog"
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
@@ -11,11 +10,10 @@ export class TextTable {
   private newlyAdded: boolean;
   private user: any;
 
-  constructor(private router: Router,
-              private dialogService: DialogService){}
+  constructor(private dialogService: DialogService){}
 
   activate() {
-    let database = firebase.database();
+
     this.newlyAdded = false;
     this.getRooms();
   }
@@ -31,21 +29,6 @@ export class TextTable {
         let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location, item.key);
         this.rooms.push(conferenceRoom);
       }
-    });
-  }
-
-  private signUp() {
-    this.router.navigate("signup");
-  }
-
-  private openUserView() {
-    this.router.navigate('home');
-  }
-
-  private logout() {
-    //logout
-    firebase.auth().signOut().then(result => {
-      this.router.navigate("login-page");
     });
   }
 

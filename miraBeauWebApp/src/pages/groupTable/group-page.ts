@@ -3,7 +3,6 @@ import {PeopleApi} from "../../api/group/people-api";
 import {DialogService} from "aurelia-dialog";
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {PersonFormDialog} from "../../widgets/dialog/file-upload/person-form-dialog";
-import {Router} from 'aurelia-router';
 import {Busy} from '../../widgets/spinner/busy';
 import {InvalidImageDialog} from "../../widgets/dialog/invalid-image/invalid-image-dialog";
 
@@ -18,7 +17,6 @@ export class groupPage {
 
   constructor(private peopleApi: PeopleApi,
               private dialogService: DialogService,
-              private router: Router,
               private busy: Busy) {
   }
 
@@ -34,10 +32,6 @@ export class groupPage {
     }
   }
 
-  private signUp() {
-    this.router.navigate("signup");
-  }
-
   private getAllPeople() {
     this.people = [];
     //get list of people in group from azure
@@ -46,7 +40,6 @@ export class groupPage {
       this.currentUser = Object.keys(result.val()).map(function (index) {
         return result.val()[index];
       });
-      console.log(this.currentUser);
       this.peopleApi.getPeople(this.currentUser[0]).then(result => {
         for(let item in result) {
           let age: string = result[item].userData.split(",")[0];
@@ -61,19 +54,8 @@ export class groupPage {
     });
   }
 
-  private logout() {
-    //logout
-    firebase.auth().signOut().then(result => {
-      this.router.navigate("login-page");
-    });
-  }
-
   private filterFunc(searchTerm, person) {
     return person.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1;
-  }
-
-  private openTextView() {
-    this.router.navigate('text');
   }
 
   private editPerson(dude: Person) {

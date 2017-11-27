@@ -9,8 +9,9 @@ export class LoginPage {
 
   private passBool: boolean;
   private errorMessage: string;
+  private myKeypressCallback: any;
 
-  constructor(private router: Router) {
+  constructor( private router: Router) {
     this.myKeypressCallback = this.keypressInput.bind(this);
   }
 
@@ -45,6 +46,7 @@ export class LoginPage {
         this.router.navigate("home");
       }).catch(error => {
         //set feedback sign in failed.
+        console.log(error);
         if (error.code) {
           this.passBool = false;
           this.errorMessage = error.message;

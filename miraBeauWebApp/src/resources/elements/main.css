@@ -111,6 +111,12 @@
   margin-top:-100px;
 }
 
+.cog {
+  margin-top: -100px;
+  float: right;
+  width:30px;
+}
+
 .signupButton {
   box-shadow: 1px 1px 12px black;
   float: right;

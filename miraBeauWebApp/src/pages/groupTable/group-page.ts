@@ -39,7 +39,6 @@ export class groupPage {
     //get list of people in group from azure
     let user: any = firebase.auth().currentUser;
     firebase.database().ref("Companies/" + user.uid).once("value").then(result => {
-      console.log(result.val());
       this.currentUser = result.val();
       this.peopleApi.getPeople(this.currentUser.group).then(result => {
         for(let item in result) {
@@ -50,7 +49,6 @@ export class groupPage {
           let guy: Person = new Person(id, result[item].name, age, jobTitle, message);
           this.people.push(guy);
         }
-        console.log(this.people);
       });
     });
   }

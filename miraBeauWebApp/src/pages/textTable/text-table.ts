@@ -21,7 +21,7 @@ export class TextTable {
   private getRooms() {
     this.rooms = [];
     this.user = firebase.auth().currentUser;
-    firebase.database().ref("Companies/" + this.user.uid+ "/rooms").once("value").then(result => {
+    firebase.database().ref("Companies/" + this.user.uid + "/rooms").once("value").then(result => {
       let resultArray = Object.keys(result.val()).map(function(roomIndex){
         return result.val()[roomIndex];
       });

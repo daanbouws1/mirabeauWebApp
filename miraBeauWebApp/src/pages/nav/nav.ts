@@ -25,7 +25,6 @@ export class Nav {
     });
     this.storage = firebase.storage();
     this.navBarState = this.router.currentInstruction.config.name;
-    console.log(this.navBarState);
   }
 
   private signUp() {
@@ -49,6 +48,10 @@ export class Nav {
   private sendChangePasswordEmail() {
     firebase.auth().sendPasswordResetEmail(this.user.email);
     alert("check your email, as change password mail has been sent.")
+  }
+
+  private openBranding() {
+    this.router.navigate('branding');
   }
 
   private deleteAccount() {

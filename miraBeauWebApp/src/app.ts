@@ -17,7 +17,8 @@ export class App {
       {route: ['login-page'], name: 'login-page', moduleId: './pages/login/login-page', nav: true, title: 'Login Page'},
       {route: ['home'], name: 'home', moduleId: './pages/groupTable/group-page', nav: true, title: 'Home'},
       {route: ['text'], name: 'text', moduleId: './pages/textTable/text-table', nav: true, title: 'Text'},
-      {route: ['signup'], name: 'signup', moduleId: './pages/signup/signup', nav: true, title: 'Sign Up'}
+      {route: ['signup'], name: 'signup', moduleId: './pages/signup/signup', nav: true, title: 'Sign Up'},
+      {route: ['branding'], name: 'branding', moduleId: './pages/branding/branding', nav: true, title: 'Branding'}
     ]);
 
   }

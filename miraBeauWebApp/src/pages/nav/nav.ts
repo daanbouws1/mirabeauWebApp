@@ -44,8 +44,15 @@ export class Nav {
   }
 
   private sendChangePasswordEmail() {
-    firebase.auth().sendPasswordResetEmail(this.user.email);
-    alert("check your email, as change password mail has been sent.");
+    this.dialogService.open({
+      viewModel: DeleteDialog,
+      model: "Are you sure you want to change your password? if so a link to do so is being send by email"
+    }).whenClosed(result => {
+      if (!result.wasCancelled) {
+        firebase.auth().sendPasswordResetEmail(this.user.email);
+        alert("check your email, as change password mail has been sent.");
+      }
+    });
   }
 
   private openBranding() {

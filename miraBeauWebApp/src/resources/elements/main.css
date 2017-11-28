@@ -169,7 +169,7 @@
   border-top-right-radius: 5px;
 }
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 770px) {
   .list-grid__column {
     color: #999;
     float:left;
@@ -194,5 +194,34 @@
     height:24px;
     margin-bottom:4px !important;
     /*margin-top:4px;*/
+    margin-top:14px;
+  }
+}
+
+@media only screen and (max-width: 530px) {
+  .list-grid__column {
+    color: #999;
+    float:left;
+    font-size: 11px;
+    padding: 5px 9px 17px;
+    width:25%;
+    vertical-align: middle;
+    text-align:center;
+    height: 40px;
+  }
+
+  .leftButton{
+    margin-right:0px;
+  }
+
+  .logo {
+    width:250px;
+    float:left;
+  }
+
+  .button {
+    height:24px;
+    margin-bottom:4px !important;
+    margin-top:0;
   }
 }

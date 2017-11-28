@@ -94,6 +94,7 @@ export class groupPage {
         this.peopleApi.getPerson(dude.id, this.currentUser.group).then(result => {
           for (let item of result.persistedFaceIds) {
             this.peopleApi.getPersonFace(dude.id, item, this.currentUser.group).then(result => {
+              console.log(result);
               this.storageRef = this.storage.ref(result.userData);
               this.storageRef.delete();
             });
@@ -115,10 +116,13 @@ export class groupPage {
     }).whenClosed(response => {
       //Check if user clicked ok.
       if (!response.wasCancelled) {
-        this.storageRef = this.storage.ref(response.output.file.name);
+        console.log(this.currentUser.name + "/" + response.output.file.name);
+        this.storageRef = this.storage.ref(this.currentUser.name + "/" + response.output.file.name);
+        console.log(this.storageRef);
         this.busy.on();
         //Upload file to firebase
         this.storageRef.put(response.output.file).then(snapshot => {
+          console.log(snapshot);
           //Check if file uploaded successfully
           if (snapshot.state === "success") {
             this.addFace(response, snapshot.downloadURL);
@@ -129,7 +133,7 @@ export class groupPage {
   }
 
   private updateFace(file: any, id: any) {
-    this.storageRef = this.storage.ref(file.name);
+    this.storageRef = this.storage.ref(this.currentUser.name + "/" + file.name);
     this.busy.on();
     //Upload file to firebase
     this.storageRef.put(file).then(response => {

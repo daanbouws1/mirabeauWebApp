@@ -19,11 +19,17 @@ export class Signup {
     ValidationRules
       .ensure("password").required().withMessage("password must be filled in")
       .ensure("password2").required().withMessage("password must be filled in")
-      .equals(this.signUpForm.password).withMessage("passwords must be equal")
+      // .equals("password").withMessage("passwords must be equal")
       .ensure("email").required().withMessage("must insert a email-address")
       .ensure("companyName").required().withMessage("must insert a company name")
       .ensure("newGroupName").required().withMessage("must insert a group name for Azure")
       .on(SignUpForm);
+  }
+
+  private logout() {
+    firebase.auth().signOut().then(result => {
+      this.router.navigate("login-page");
+    });
   }
 
   private submit() {
@@ -34,9 +40,10 @@ export class Signup {
             name: this.signUpForm.companyName,
             group: this.signUpForm.newGroupName,
             role: "user"
-          }).then(result => {
-            this.peopleApi.createGroup(this.signUpForm.newGroupName).then(result => {
-              // TODO
+          }).then(() => {
+            this.peopleApi.createGroup(this.signUpForm.newGroupName).then(() => {
+              firebase.storage().put(this.signUpForm.companyName);
+              this.logout();
             }).catch(error => {
               // TODO
               console.log(error);

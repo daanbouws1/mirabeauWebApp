@@ -193,5 +193,6 @@
   .button {
     height:24px;
     margin-bottom:4px !important;
+    /*margin-top:4px;*/
   }
 }

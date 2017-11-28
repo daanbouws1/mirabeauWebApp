@@ -42,7 +42,6 @@ export class Signup {
             role: "user"
           }).then(() => {
             this.peopleApi.createGroup(this.signUpForm.newGroupName).then(() => {
-              firebase.storage().put(this.signUpForm.companyName);
               this.logout();
             }).catch(error => {
               // TODO

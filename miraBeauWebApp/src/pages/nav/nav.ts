@@ -5,6 +5,7 @@ import {DialogService} from "aurelia-dialog";
 import {PeopleApi} from "../../api/group/people-api";
 import {Busy} from '../../widgets/spinner/busy';
 
+
 @autoinject
 export class Nav {
 
@@ -55,7 +56,8 @@ export class Nav {
               for(let attr of item.persistedFaceIds) {
                 this.peopleApi.getPersonFace(item.personId, attr, this.currentUser.group).then(response => {
                   //TODO delete firebase storage directory.
-                  this.storage.ref(this.currentUser.name).delete();
+                  console.log(response);
+                  this.storage.ref(response.userData).delete();
                 });
               }
             }

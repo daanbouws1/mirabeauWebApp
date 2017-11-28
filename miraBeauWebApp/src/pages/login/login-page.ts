@@ -42,7 +42,12 @@ export class LoginPage {
     if (!(this.email ==null) && !(this.password == null)){
       this.errorMessage = "";
       this.passBool = true;
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(result => {
+        console.log(result.emailVerified);
+        if (!(result.emailVerified)) {
+          let user = firebase.auth().currentUser;
+          user.sendEmailVerification();
+        }
         this.router.navigate("home");
       }).catch(error => {
         //set feedback sign in failed.

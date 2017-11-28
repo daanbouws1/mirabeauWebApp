@@ -31,6 +31,7 @@ export class PersonFormDialog {
   private validationController: ValidationController;
   private filePresent: boolean;
   private hasFocus: any;
+  private messageBool: boolean;
 
   constructor(public controller: DialogController,
               private dialogService: DialogService,
@@ -71,6 +72,8 @@ export class PersonFormDialog {
       .ensure("jobTitle").required().withMessage("Function may not be empty")
       .maxLength(25).withMessage("Job title can't contain more than 25 characters")
       .on(AddForm);
+
+    this.messageBool = false;
   }
 
   deactivate() {
@@ -99,11 +102,15 @@ export class PersonFormDialog {
     //Send form to firebase and azure.
     this.validationController.validate({object: this.addForm}).then(result => {
       if(result.valid === true) {
-        this.addForm.age = this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
-        if (this.addForm.file == null && this.createOrUpdate == false) {
-          this.filePresent = false;
+        if (this.addForm.message.indexOf(",") == -1) {
+          this.addForm.age = this.selectedYear + "-" + this.selectedMonth + "-" + this.selectedDay;
+          if (this.addForm.file == null && this.createOrUpdate == false) {
+            this.filePresent = false;
+          } else {
+            this.controller.ok(this.addForm);
+          }
         } else {
-          this.controller.ok(this.addForm);
+          this.messageBool = true;
         }
       }
     });

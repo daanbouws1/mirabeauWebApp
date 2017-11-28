@@ -1,6 +1,7 @@
 import {autoinject} from "aurelia-framework";
 import {ValidationRules, ValidationControllerFactory, validateTrigger, ValidationController} from "aurelia-validation";
 import {PeopleApi} from "../../api/group/people-api";
+import {Router} from 'aurelia-router';
 
 @autoinject
 export class Signup {
@@ -9,6 +10,7 @@ export class Signup {
   private validationController: ValidationController;
 
   constructor(private controllerFactory: ValidationControllerFactory,
+              private router: Router,
               private peopleApi: PeopleApi) {
     this.validationController = controllerFactory.createForCurrentScope();
     this.validationController.validateTrigger = validateTrigger.manual;
@@ -36,6 +38,7 @@ export class Signup {
     this.validationController.validate({object: this.signUpForm}).then(result => {
       if(result.valid === true) {
         firebase.auth().createUserWithEmailAndPassword(this.signUpForm.email, this.signUpForm.password).then(result => {
+          console.log(result);
           firebase.database().ref("Companies/" + result.uid).set({
             name: this.signUpForm.companyName,
             group: this.signUpForm.newGroupName,

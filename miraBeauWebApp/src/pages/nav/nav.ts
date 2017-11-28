@@ -13,6 +13,7 @@ export class Nav {
   private storageRef: any;
   private storage: any;
   private user: any;
+  private navBarState: any;
 
   constructor(private dialogService: DialogService,
               private peopleApi: PeopleApi,
@@ -23,6 +24,8 @@ export class Nav {
       this.currentUser = result.val();
     });
     this.storage = firebase.storage();
+    this.navBarState = this.router.currentInstruction.config.name;
+    console.log(this.navBarState);
   }
 
   private signUp() {
@@ -43,6 +46,11 @@ export class Nav {
     this.router.navigate('home');
   }
 
+  private sendChangePasswordEmail() {
+    firebase.auth().sendPasswordResetEmail(this.user.email);
+    alert("check your email, as change password mail has been sent.")
+  }
+
   private deleteAccount() {
     this.dialogService.open({
       viewModel: DeleteDialog,
@@ -50,13 +58,11 @@ export class Nav {
     }).whenClosed(result => {
       if (!result.wasCancelled) {
         this.busy.on();
-        if (!(this.currentUser.role === "")) { //admin
+        if (!(this.currentUser.role === "admin")) {
           this.peopleApi.getPeople(this.currentUser.group).then(result => {
             for (let item of result) {
               for(let attr of item.persistedFaceIds) {
                 this.peopleApi.getPersonFace(item.personId, attr, this.currentUser.group).then(response => {
-                  //TODO delete firebase storage directory.
-                  console.log(response);
                   this.storage.ref(response.userData).delete();
                 });
               }
@@ -69,6 +75,7 @@ export class Nav {
         this.peopleApi.deleteGroup(this.currentUser.group);
         firebase.database().ref("Companies/" + this.user.uid).remove();
         this.user.delete();
+        this.logout();
       }
     })
   }

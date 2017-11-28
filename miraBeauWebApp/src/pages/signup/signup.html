@@ -4,7 +4,7 @@
   <require from="../../resources/elements/main.css"></require>
   <div style="margin-top:5%;">
     <h1 class="centered title">Sign Up</h1> <br>
-    <div class="list-grid border border--round" style="height:600px;max-width: 400px;"> <br><br>
+    <div class="list-grid border border--round" style="height:520px;max-width: 400px;"> <br><br>
       <label class="centered"> Type in a new email-address: <br><br>
         <div class="errorMessage" id="errorMessage1" if.bind="validationController.results['3'].valid == false">Please insert a email address</div>
         <input value.bind="signUpForm.email" type="text" class="inputField" placeholder="example@example.com">
@@ -27,7 +27,7 @@
         <input value.bind="signUpForm.companyName" class="inputField" type="text" placeholder="Mirabeau">
       </label>
       <br>
-      <button class="btn button btn-primary btn-primary--shadow submitButton" click.delegate="submit()">Submit</button><br/>
+      <button class="btn button btn-primary btn-primary--shadow submitButton" click.delegate="submit()">Submit</button>
     </div>
   </div>
 </template>

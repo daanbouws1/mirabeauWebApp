@@ -5,12 +5,10 @@ import {DialogService} from "aurelia-dialog";
 import {PeopleApi} from "../../api/group/people-api";
 import {Busy} from '../../widgets/spinner/busy';
 
-
 @autoinject
 export class Nav {
 
   private currentUser: any;
-  private storageRef: any;
   private storage: any;
   private user: any;
   private navBarState: any;
@@ -47,7 +45,7 @@ export class Nav {
 
   private sendChangePasswordEmail() {
     firebase.auth().sendPasswordResetEmail(this.user.email);
-    alert("check your email, as change password mail has been sent.")
+    alert("check your email, as change password mail has been sent.");
   }
 
   private openBranding() {
@@ -74,22 +72,12 @@ export class Nav {
         } else {
           alert("cant delete original admin account");
         }
-        this.busy.off();
         this.peopleApi.deleteGroup(this.currentUser.group);
         firebase.database().ref("Companies/" + this.user.uid).remove();
         this.user.delete();
+        this.busy.off();
         this.logout();
       }
     })
   }
 }
-
-
-
-
-
-
-
-
-
-

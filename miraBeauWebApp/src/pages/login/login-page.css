@@ -23,6 +23,7 @@ body {
 
 .submitButton {
   margin: auto;
+  margin-top:50px;
   width:80px;
 }
 

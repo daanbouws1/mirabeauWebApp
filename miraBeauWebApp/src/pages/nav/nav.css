@@ -17,5 +17,5 @@
   padding: 0 !important;
   /* disable visibility by default, delay to enable clicks */
   visibility: hidden;
-  transition: visibility 0.5s;
+  transition: visibility 0.1s;
 }

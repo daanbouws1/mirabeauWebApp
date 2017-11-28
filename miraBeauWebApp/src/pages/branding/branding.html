@@ -1,3 +1,40 @@
 <template>
-  branding page
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="../login/login-page.css"></require>
+  <require from="../../resources/elements/main.css"></require>
+  <require from="../../widgets/dialog/file-upload/upload-file"></require>
+
+  <div style="margin-top:5%;">
+    <h1 class="centered title">Branding</h1>
+    <br>
+    <div class="list-grid border border--round" style="height:520px;max-width: 400px;"> <br><br>
+      <label class="centered"> Fill in your house color: <br><br>
+        <div class="errorMessage" id="errorMessage1" if.bind="false">Please insert a valid color</div>
+        <input value.bind="color" type="text" class="inputField" placeholder="#fff">
+      </label>
+
+      <upload-file
+        class="upload-file"
+        filechange.delegate="onLogoFileChange($event)"
+        filename.bind="bigLogoFilename"
+        file.bind="bigLogoFile"
+        name="file"
+        id="myFileField"
+        view-model.ref="uploader">
+      </upload-file><br>
+
+      <upload-file
+        class="upload-file"
+        filechange.delegate="onSmallLogoFileChange($event)"
+        filename.bind="smallLogoFilename"
+        file.bind="smallLogoFile"
+        name="file"
+        id="myFileField2"
+        view-model.ref="uploader">
+      </upload-file>
+
+      <button class="btn button btn-primary btn-primary--shadow submitButton" click.delegate="submit()">Submit</button>
+    </div>
+  </div>
 </template>
+

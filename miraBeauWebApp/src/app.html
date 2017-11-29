@@ -1,9 +1,19 @@
 <template>
-  <!--<require from='./navigation'></require>-->
+  <require from='./app.css'></require>
+  <require from='./nav/nav'></require>
 
   <nav-bar router.bind="router"></nav-bar>
 
-  <div class="container">
+  <div class="header">
+    <img src="src/resources/assets/Mirabeau_cognizant.jpg" style="" class="logo">
+  </div>
+
+  <div class="navigationbar">
+    <nav style="height: 100px;"
+          navToggle = true></nav>
+  </div>
+
+  <div class="container mycontainer">
     <router-view></router-view>
   </div>
 

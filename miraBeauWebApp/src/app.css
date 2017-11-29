@@ -1,0 +1,25 @@
+.mycontainer {
+  margin-left:20% !important;
+  padding-top:90px;
+}
+
+.header {
+  position: absolute;
+  width:100%;
+  background-color: #f8f8f8;
+  z-index: 1;
+}
+
+.navigationbar {
+  width:15%;
+  min-width:90px;
+  height: 100%;
+  background-color: #f8f8f8;
+  position: absolute;
+}
+
+.navItem {
+  width:100%;
+  min-width:90px;
+  height:50px;
+}

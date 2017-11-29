@@ -1,28 +1,33 @@
-import {autoinject} from "aurelia-framework"
+import {autoinject, bindable} from "aurelia-framework";
 import {Router} from 'aurelia-router';
-import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 import {DialogService} from "aurelia-dialog";
-import {PeopleApi} from "../../api/group/people-api";
-import {Busy} from '../../widgets/spinner/busy';
+import {DeleteDialog  } from "../widgets/dialog/delete/delete-dialog";
 
 @autoinject
 export class Nav {
 
-  private currentUser: any;
-  private storage: any;
-  private user: any;
-  private navBarState: any;
+  @bindable private navToggle: boolean;
 
-  constructor(private dialogService: DialogService,
-              private peopleApi: PeopleApi,
-              private router: Router,
-              private busy: Busy) {
+  constructor(private router: Router,
+              private dialogService: DialogService){
+    this.checkUser();
+  }
+
+  bind() {
+    console.log("1");
+  }
+
+  public checkUser() {
     this.user = firebase.auth().currentUser;
-    firebase.database().ref("Companies/" + this.user.uid).once("value").then(result => {
-      this.currentUser = result.val();
-    });
+    if (!(this.user == null)) {
+      firebase.database().ref("Companies/" + this.user.uid).once("value").then(result => {
+          this.currentUser = result.val();
+      });
+      this.navToggle = true;
+    } else {
+      this.navToggle = false;
+    }
     this.storage = firebase.storage();
-    this.navBarState = this.router.currentInstruction.config.name;
   }
 
   private signUp() {
@@ -30,8 +35,16 @@ export class Nav {
   }
 
   private logout() {
-    firebase.auth().signOut().then(result => {
-      this.router.navigate("login-page");
+    this.dialogService.open({
+      viewModel: DeleteDialog,
+      model: "Are you sure you want to change log-out?"
+    }).whenClosed(result => {
+      if (!result.wasCancelled) {
+        firebase.auth().signOut().then(result => {
+          this.checkUser();
+          this.router.navigate("login-page");
+        });
+      }
     });
   }
 

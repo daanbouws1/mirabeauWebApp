@@ -2,6 +2,7 @@
   <require from="bootstrap/css/bootstrap.css"></require>
   <require from="./login-page.css"></require>
   <require from="../../resources/elements/main.css"></require>
+
   <div style="margin-top:10%;">
     <h1 class="centered title">Login Page</h1> <br>
     <div class="list-grid border border--round loginCard"> <br><br>
@@ -14,7 +15,9 @@
       </label>
       <br>
       <div class="errorMessage centered" if.bind="passBool == false">${errorMessage}</div>
-      <button class="btn button btn-primary btn-primary--shadow submitButton" click.delegate="login(email,password)">Submit</button><br/>
+      <button class="btn button btn-primary btn-primary--shadow submitButton" click.delegate="login(email,password)" >Submit</button><br/>
+      <!--onclick="afterLogin()"-->
+      <button click.delegate="test()">clickme</button>
     </div>
   </div>
 </template>

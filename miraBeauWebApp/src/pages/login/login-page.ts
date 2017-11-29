@@ -1,4 +1,4 @@
-import {autoinject} from "aurelia-framework";
+import {autoinject, Aurelia} from "aurelia-framework";
 import {Router} from 'aurelia-router';
 
 @autoinject
@@ -11,7 +11,9 @@ export class LoginPage {
   private errorMessage: string;
   private myKeypressCallback: any;
 
-  constructor( private router: Router) {
+  constructor(private router: Router,
+              private system: System,
+              private aurelia: Aurelia) {
     this.myKeypressCallback = this.keypressInput.bind(this);
   }
 
@@ -31,10 +33,14 @@ export class LoginPage {
   }
 
   private keypressInput(e) {
-    //listen for enter
     if (e.code === "Enter") {
       this.login();
     }
+  }
+
+  private test() {
+    let nav = this.router.routes.find(x => x.name === 'nav');
+    console.log(nav);
   }
 
   private login() {
@@ -43,12 +49,13 @@ export class LoginPage {
       this.errorMessage = "";
       this.passBool = true;
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(result => {
-        console.log(result.emailVerified);
         if (!(result.emailVerified)) {
           let user = firebase.auth().currentUser;
           user.sendEmailVerification();
         }
-        this.router.navigate("home");
+        this.router.reset();
+        this.aurelia.setRoot('app');
+        // this.router.navigate('home');
       }).catch(error => {
         //set feedback sign in failed.
         console.log(error);
@@ -63,3 +70,5 @@ export class LoginPage {
     }
   }
 }
+
+

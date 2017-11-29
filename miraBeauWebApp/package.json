@@ -26,6 +26,8 @@
     "jquery": "^3.2.1",
     "less": "^2.7.3",
     "requirejs": "^2.3.2",
+    "system": "^2.0.1",
+    "systemjs": "^0.20.19",
     "text": "github:requirejs/text#latest",
     "typings": "^2.1.1"
   },

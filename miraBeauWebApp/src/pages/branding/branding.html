@@ -3,6 +3,7 @@
   <require from="../login/login-page.css"></require>
   <require from="../../resources/elements/main.css"></require>
   <require from="../../widgets/dialog/file-upload/upload-file"></require>
+  <require from="./branding.css"></require>
 
   <div >
     <h1 class="centered title">Branding</h1>
@@ -11,7 +12,7 @@
         <div class="errorMessage" id="errorMessage1" if.bind="false">Please insert a valid color</div>
         <input value.bind="color" type="text" class="inputField" placeholder="#fff">
       </label>
-
+      <label style="margin:auto;">Upload a big logo</label>
       <upload-file
         class="upload-file"
         filechange.delegate="onLogoFileChange($event)"
@@ -20,8 +21,8 @@
         name="file"
         id="myFileField"
         view-model.ref="uploader">
-      </upload-file><br>
-
+      </upload-file>
+      <label style="margin:auto;">Upload a small logo</label>
       <upload-file
         class="upload-file"
         filechange.delegate="onSmallLogoFileChange($event)"

@@ -19,7 +19,9 @@
 }
 
 .navItem {
+  margin-bottom:3px;
   width:100%;
   min-width:90px;
+  background-color: #f8f8f8;
   height:50px;
 }

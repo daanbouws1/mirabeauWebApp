@@ -38,11 +38,6 @@ export class LoginPage {
     }
   }
 
-  private test() {
-    let nav = this.router.routes.find(x => x.name === 'nav');
-    console.log(nav);
-  }
-
   private login() {
     //sign in
     if (!(this.email ==null) && !(this.password == null)){
@@ -55,7 +50,7 @@ export class LoginPage {
         }
         this.router.reset();
         this.aurelia.setRoot('app');
-        // this.router.navigate('home');
+        this.router.navigate('home');
       }).catch(error => {
         //set feedback sign in failed.
         console.log(error);

@@ -68,10 +68,6 @@ export class Nav {
     });
   }
 
-  private openBranding() {
-    this.router.navigate('branding');
-  }
-
   private deleteAccount() {
     this.dialogService.open({
       viewModel: DeleteDialog,

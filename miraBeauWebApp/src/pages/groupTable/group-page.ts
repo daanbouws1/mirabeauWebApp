@@ -116,13 +116,10 @@ export class groupPage {
     }).whenClosed(response => {
       //Check if user clicked ok.
       if (!response.wasCancelled) {
-        console.log(this.currentUser.name + "/" + response.output.file.name);
         this.storageRef = this.storage.ref(this.currentUser.name + "/" + response.output.file.name);
-        console.log(this.storageRef);
         this.busy.on();
         //Upload file to firebase
         this.storageRef.put(response.output.file).then(snapshot => {
-          console.log(snapshot);
           //Check if file uploaded successfully
           if (snapshot.state === "success") {
             this.addFace(response, snapshot.downloadURL);

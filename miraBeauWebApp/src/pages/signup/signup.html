@@ -4,8 +4,8 @@
   <require from="../../resources/elements/main.css"></require>
   <div>
     <h3>Signup</h3>
-    <h4 style="color:grey">Signup a new admin to manage seperate data.</h4><br><br>
-    <div class="list-grid border border--round" style="height:520px; max-width: 400px;"> <br><br>
+    <h4 class="subHeader">Signup a new admin to manage seperate data.</h4><br><br>
+    <div class="list-grid border border--round signupCard"> <br><br>
       <label class="centered"> Type in a new email-address: <br><br>
         <div class="errorMessage" id="errorMessage1" if.bind="validationController.results['3'].valid == false">Please insert a email address</div>
         <input value.bind="signUpForm.email" type="text" class="inputField" placeholder="example@example.com">

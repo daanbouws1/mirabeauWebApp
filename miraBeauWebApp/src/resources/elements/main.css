@@ -1,3 +1,21 @@
+.wrapper {
+  position: relative;
+  margin-right:10%;
+}
+
+.signupCard {
+  height:520px;
+  max-width: 500px;
+}
+
+.subHeader {
+  color:grey;
+}
+
+.selected {
+  color:#337ab7;
+}
+
 .list-grid {
   border-radius: 3px;
   margin-left: auto;

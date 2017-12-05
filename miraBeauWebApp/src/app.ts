@@ -6,6 +6,7 @@ export class App {
   private router;
   private user: any;
   private navtoggle: boolean;
+  private currentUser: any;
 
   constructor() {
   }

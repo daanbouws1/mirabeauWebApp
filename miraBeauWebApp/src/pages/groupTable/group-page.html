@@ -3,13 +3,13 @@
   <require from="bootstrap/css/bootstrap.css"></require>
   <require from="../../widgets/spinner/spinner.css"></require>
 
-  <div style="position: relative; margin-right:10%;">
+  <div class="wrapper">
     <div show.bind="busy.active">
       <div class="spinner"></div>
       <div class="spinner-blocker"></div>
     </div>
     <h3>Clients</h3>
-    <h4 style="color:grey">Manage your clients here. Add/Edit/Delete</h4>
+    <h4 class="subHeader">Manage your clients here. Add/Edit/Delete</h4>
     <br/>
     <div>
       <button click.delegate="addPerson()" class="addButton button list-grid__button btn btn-primary"><b>+</b></button>
@@ -30,7 +30,7 @@
         <div repeat.for="dude of people | filter:searchTerm:filterFunc" class="list-item">
           <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
                 <span if.bind="$first">
-                  <b style="color:#337ab7;">${dude.name}</b>
+                  <b class="selected">${dude.name}</b>
                 </span>
             <span if.bind="!$first">${dude.name}</span>
           </div>
@@ -40,7 +40,7 @@
 
           <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
                 <span if.bind="$first">
-                  <b style="color:#337ab7;">${dude.age}</b>
+                  <b class="selected">${dude.age}</b>
                 </span>
             <span if.bind="!$first">${dude.age}</span>
           </div>
@@ -48,7 +48,7 @@
 
           <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
                 <span if.bind="$first">
-                  <b style="color:#337ab7;">${dude.jobTitle}</b>
+                  <b class="selected">${dude.jobTitle}</b>
                 </span>
             <span if.bind="!$first">${dude.jobTitle}</span>
           </div>

@@ -8,7 +8,7 @@
     <div class="spinner-blocker"></div>
   </div>
   <h3>Conference Rooms</h3>
-  <h4 style="color:grey">Manage your conference rooms here. Add/Edit/Delete</h4>
+  <h4 class="subHeader">Manage your conference rooms here. Add/Edit/Delete</h4>
   <br/>
   <div>
     <button click.delegate="addNewText()" class="addButton button list-grid__button btn btn-primary"><b>+</b></button>
@@ -29,7 +29,7 @@
       <div repeat.for="room of rooms | filter:searchTerm:filterFunc" class="list-item">
         <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
             <span if.bind="$first">
-              <b style="color:#337ab7;">${room.name}</b>
+              <b class="selected">${room.name}</b>
             </span>
           <span if.bind="!$first">${room.name}</span>
         </div>
@@ -39,7 +39,7 @@
 
         <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
             <span if.bind="$first">
-              <b style="color:#337ab7;">${room.category}</b>
+              <b class="selected">${room.category}</b>
             </span>
           <span if.bind="!$first">${room.category}</span>
         </div>
@@ -47,7 +47,7 @@
 
         <div if.bind="newlyAdded" class="list-grid__column list-grid__column--item">
             <span if.bind="$first">
-              <b style="color:#337ab7;">${room.location}</b>
+              <b class="selected">${room.location}</b>
             </span>
           <span if.bind="!$first">${room.location}</span>
         </div>

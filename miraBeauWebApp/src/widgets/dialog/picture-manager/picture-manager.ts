@@ -11,6 +11,7 @@ export class PictureManager {
   private personId: string;
   private hasFocus: boolean;
   private currentUser: any;
+  private myKeypressCallback: any;
 
   constructor(private peopleApi: PeopleApi,
               public controller: DialogController){

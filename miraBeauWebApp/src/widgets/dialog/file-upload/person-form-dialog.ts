@@ -32,6 +32,7 @@ export class PersonFormDialog {
   private filePresent: boolean;
   private hasFocus: any;
   private messageBool: boolean;
+  private myKeypressCallback: any;
 
   constructor(public controller: DialogController,
               private dialogService: DialogService,

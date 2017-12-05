@@ -62,11 +62,11 @@ export class Signup {
 }
 
 class SignUpForm {
-  private email: string;
-  private password: string;
-  private password2: string;
-  private newGroupName: string;
-  private companyName: string;
+  public email: string;
+  public password: string;
+  public password2: string;
+  public newGroupName: string;
+  public companyName: string;
 
 
   constructor() {

@@ -1,40 +1,47 @@
 import {autoinject, bindable} from "aurelia-framework";
 import {Router} from 'aurelia-router';
 import {DialogService} from "aurelia-dialog";
-import {DeleteDialog  } from "../widgets/dialog/delete/delete-dialog";
+import {DeleteDialog} from "../widgets/dialog/delete/delete-dialog";
+import {Busy} from '../widgets/spinner/busy';
+import {PeopleApi} from "../api/group/people-api";
 
 @autoinject
 export class Nav {
 
   @bindable private navToggle: boolean;
+  private isSelected: string;
+  private user: any;
+  private currentUser: any;
+  private storage: any;
 
   constructor(private router: Router,
-              private dialogService: DialogService){
+              private dialogService: DialogService,
+              private busy: Busy,
+              private peopleApi: PeopleApi){
     this.checkUser();
-  }
-
-  bind() {
-    console.log("1");
   }
 
   public checkUser() {
     this.user = firebase.auth().currentUser;
     if (!(this.user == null)) {
       firebase.database().ref("Companies/" + this.user.uid).once("value").then(result => {
-          this.currentUser = result.val();
+        this.currentUser = result.val();
       });
       this.navToggle = true;
     } else {
       this.navToggle = false;
     }
     this.storage = firebase.storage();
+    this.isSelected = "client";
   }
 
   private signUp() {
+    this.isSelected = "signup";
     this.router.navigate("signup");
   }
 
   private logout() {
+    this.isSelected = "logout";
     this.dialogService.open({
       viewModel: DeleteDialog,
       model: "Are you sure you want to change log-out?"
@@ -49,14 +56,17 @@ export class Nav {
   }
 
   private openTextView() {
+    this.isSelected = "room";
     this.router.navigate('text');
   }
 
   private openUserView() {
+    this.isSelected = "client";
     this.router.navigate('home');
   }
 
   private sendChangePasswordEmail() {
+    this.isSelected = "reset";
     this.dialogService.open({
       viewModel: DeleteDialog,
       model: "Are you sure you want to change your password? if so a link to do so is being send by email"
@@ -69,6 +79,7 @@ export class Nav {
   }
 
   private deleteAccount() {
+    this.isSelected = "delete";
     this.dialogService.open({
       viewModel: DeleteDialog,
       model: "Are you sure you want to permanently delete your account?"
@@ -80,7 +91,7 @@ export class Nav {
             for (let item of result) {
               for(let attr of item.persistedFaceIds) {
                 this.peopleApi.getPersonFace(item.personId, attr, this.currentUser.group).then(response => {
-                  this.storage.ref(response.userData).delete();
+                  firebase.storage.ref(response.userData).delete();
                 });
               }
             }

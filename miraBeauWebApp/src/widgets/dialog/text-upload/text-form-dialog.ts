@@ -50,13 +50,13 @@ export class TextFormDialog {
 }
 
 class Room {
-  private roomName: any;
-  private category: any;
-  private location: any;
-  private key: any;
+  public roomName: any;
+  public category: any;
+  public location: any;
+  public key: any;
 
   constructor() {
-    this.roomNamen = null;
+    this.roomName = null;
     this.category = null;
     this.location = null;
     this.key = null;

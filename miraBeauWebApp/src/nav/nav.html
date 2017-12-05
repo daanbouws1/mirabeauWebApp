@@ -1,10 +1,12 @@
 <template>
-  <div style="margin-top:140px; padding-left:10px; padding-right:5px;" if.bind="navToggle">
-    <button class="navItem" click.delegate="openUserView()">Clients</button>
-    <button class="navItem" click.delegate="openTextView()">Conference Rooms</button>
-    <button class="navItem" click.delegate="signUp()">Sign-up</button>
-    <button class="navItem" click.delegate="sendChangePasswordEmail()">Reset password</button>
-    <button class="navItem" click.delegate="deleteAccount()">Delete Account</button>
-    <button class="navItem" click.delegate="logout()">Log-out</button>
+  <require from="./nav.css"></require>
+
+  <div class="navbar" if.bind="navToggle">
+    <button class="${isSelected == 'client' ? 'active' : ''} navItem" click.delegate="openUserView()">Clients</button>
+    <button class="${isSelected == 'room' ? 'active' : ''} navItem" click.delegate="openTextView()">Conference Rooms</button>
+    <button class="${isSelected == 'signup' ? 'active' : ''} navItem" click.delegate="signUp()">Sign-up</button>
+    <button class="${isSelected == 'reset' ? 'active' : ''} navItem" click.delegate="sendChangePasswordEmail()">Reset password</button>
+    <button class="${isSelected == 'delete' ? 'active' : ''} navItem" click.delegate="deleteAccount()">Delete Account</button>
+    <button class="${isSelected == 'logout' ? 'active' : ''} navItem" click.delegate="logout()">Log-out</button>
   </div>
 </template>

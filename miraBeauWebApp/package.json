@@ -18,6 +18,7 @@
     "aurelia-validation": "^1.1.2",
     "bluebird": "^3.4.1",
     "bootstrap": "^3.3.7",
+    "chart.js": "^2.7.1",
     "eonasdan-bootstrap-datetimepicker": "github:eonasdan/bootstrap-datetimepicker",
     "fbh-firebase-util": "github:djindjic/fbh-firebase-util",
     "firebase": "github:djindjic/fbh-firebase-util",

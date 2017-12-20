@@ -8,6 +8,7 @@ export class Signup {
 
   private signUpForm: SignUpForm;
   private validationController: ValidationController;
+  private company: any;
 
   constructor(private controllerFactory: ValidationControllerFactory,
               private router: Router,
@@ -39,7 +40,10 @@ export class Signup {
       if(result.valid === true) {
         firebase.auth().createUserWithEmailAndPassword(this.signUpForm.email, this.signUpForm.password).then(result => {
           console.log(result);
-          firebase.database().ref("Companies/" + result.uid).set({
+          firebase.database().ref("Users/" + result.uid).once("value").set({
+            name: this.signUpForm.companyName
+          });
+          firebase.database().ref("Companies/" + this.signUpForm.companyName + "/" + result.uid).set({
             name: this.signUpForm.companyName,
             group: this.signUpForm.newGroupName,
             role: "user"
@@ -47,7 +51,6 @@ export class Signup {
             this.peopleApi.createGroup(this.signUpForm.newGroupName).then(() => {
               this.logout();
             }).catch(error => {
-              // TODO
               console.log(error);
             });
           }).catch(error => {

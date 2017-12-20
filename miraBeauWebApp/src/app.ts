@@ -7,43 +7,26 @@ export class App {
   private user: any;
   private navtoggle: boolean;
   private currentUser: any;
+  private company: string;
 
   constructor() {
+    // this.user = firebase.auth().currentUser;
+    // console.log(this.user);
   }
 
   configureRouter(config, router) {
-    this.user = firebase.auth().currentUser;
-    if (!(this.user == null)) {
-      firebase.database().ref("Companies/" + this.user.uid).once("value").then(result => {
-        this.currentUser = result.val();
-      });
-      this._configureRouter(config, router, true)
-    } else {
-      this._configureRouter(config, router, false);
-      this.navtoggle = false;
-    }
-  }
-
-  _configureRouter(config, router, loggedin) {
     this.router = router;
     config.title = "Mirabeau Web App";
     const navStrat = instruction => {
-      instruction.config.redirect = router.navigation[1].config.route;
+      instruction.config.redirect = router.navigation[0].config.route;
     };
     this.navtoggle = true;
-    if (loggedin) {
     config.map([
-      {route: "", navigationStrategy: navStrat},
-      {route: ['login-page'], name: 'login-page', moduleId: './pages/login/login-page', nav: true, title: 'Login Page'},
-      {route: ['home'], name: 'home', moduleId: './pages/groupTable/group-page', nav: true, title: 'Home'},
+      {route: ["", "/", 'home'], name: 'home', moduleId: './pages/groupTable/group-page', nav: true, title: 'Home'},
       {route: ['text'], name: 'text', moduleId: './pages/textTable/text-table', nav: true, title: 'Text'},
       {route: ['signup'], name: 'signup', moduleId: './pages/signup/signup', nav: true, title: 'Sign Up'},
-      {route: ['nav'], name: 'nav', moduleId: './nav/nav', nav: false, title: 'Navigation'}
+      {route: ['nav'], name: 'nav', moduleId: './nav/nav', nav: false, title: 'Navigation'},
+      {route: ['calls'], name: 'calls', moduleId: './pages/calls/calls', nav: false, title: 'callcounter'}
     ]);
-    } else {
-      config.map([
-        {route: ['login-page'], name: 'login-page', moduleId: './pages/login/login-page', nav: true, title: 'Login Page'},
-      ]);
-    }
   }
 }

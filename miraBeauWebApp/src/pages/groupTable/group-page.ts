@@ -15,6 +15,7 @@ export class groupPage {
   private storage: any;
   private newlyAdded: boolean;
   private currentUser: any;
+  private company: any;
 
   constructor(private peopleApi: PeopleApi,
               private dialogService: DialogService,
@@ -26,9 +27,12 @@ export class groupPage {
     // check if user really is logged in and redirect if not.
     let user: any = firebase.auth().currentUser;
     if (user) {
-      this.newlyAdded = false;
-      this.getAllPeople();
-      this.storage = firebase.storage();
+      firebase.database().ref("Users/" + user.uid).once("value").then(result => {
+        this.company = result.val().name;
+        this.newlyAdded = false;
+        this.getAllPeople();
+        this.storage = firebase.storage();
+      });
     } else {
       this.router.navigate('login-page');
     }
@@ -38,7 +42,7 @@ export class groupPage {
     this.people = [];
     //get list of people in group from azure
     let user: any = firebase.auth().currentUser;
-    firebase.database().ref("Companies/" + user.uid).once("value").then(result => {
+    firebase.database().ref("Companies/" + this.company + "/" + user.uid).once("value").then(result => {
       this.currentUser = result.val();
       this.peopleApi.getPeople(this.currentUser.group).then(result => {
         for(let item in result) {
@@ -179,8 +183,9 @@ export class groupPage {
     this.peopleApi.updatePersonFace(JSON.stringify(personFaceUserData), id, faceId, this.currentUser.group).catch(result => {
       alert(result.message + "  AZURE STILL TRAINING, TRY AGAIN");
     });
-    this.peopleApi.trainGroup(this.currentUser.group);
-    this.busy.off();
+    this.peopleApi.trainGroup(this.currentUser.group).then(() => {
+      this.busy.off();
+    });
   }
 
   private invalidImageResponse() {

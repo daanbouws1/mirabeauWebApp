@@ -4,25 +4,28 @@ import {TextFormDialog} from "../../widgets/dialog/text-upload/text-form-dialog"
 import {DeleteDialog} from "../../widgets/dialog/delete/delete-dialog";
 
 @autoinject
-export class TextTable {
+export class textTable {
 
-  private rooms: ConferenceRoom[] = [];
+  private rooms: ConferenceRoom[];
   private newlyAdded: boolean;
   private user: any;
+  private company: any;
 
   constructor(private dialogService: DialogService){}
 
   activate() {
-
     this.newlyAdded = false;
-    this.getRooms();
+    this.user = firebase.auth().currentUser;
+    firebase.database().ref("Users/" + this.user.uid).once('value').then(result => {
+      this.company = result.val().name;
+      this.getRooms();
+    });
   }
 
   private getRooms() {
     this.rooms = [];
-    this.user = firebase.auth().currentUser;
-    firebase.database().ref("Companies/" + this.user.uid + "/rooms").once("value").then(result => {
-      let resultArray = Object.keys(result.val()).map(function(roomIndex){
+    firebase.database().ref("Companies/" + this.company + "/" + this.user.uid + "/rooms").once('value').then(result => {
+      let resultArray = Object.keys(result.val()).map(function(roomIndex) {
         return result.val()[roomIndex];
       });
       for (let item of resultArray) {
@@ -44,7 +47,7 @@ export class TextTable {
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
         let database = firebase.database();
-        firebase.database().ref("Companies/" + this.user.uid+ "/rooms/" + result.output.roomName + "-" + result.output.location).set({
+        firebase.database().ref("Companies/" + this.company + "/" + this.user.uid+ "/rooms/" + result.output.roomName + "-" + result.output.location).set({
           name: result.output.roomName,
           uppername: result.output.roomName.toUpperCase(),
           type: result.output.category,
@@ -68,7 +71,7 @@ export class TextTable {
       model: ["Update this room's data", room]
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
-        firebase.database().ref("Companies/" + this.user.uid+ "/rooms/" + room.key).update({
+        firebase.database().ref("Companies/" + this.company + "/" + this.user.uid+ "/rooms/" + room.key).update({
           name: result.output.roomName,
           uppername: result.output.roomName.toUpperCase(),
           type: result.output.category,
@@ -95,7 +98,7 @@ export class TextTable {
       model: "are you sure you want to delete this room?"
     }).whenClosed(result => {
       if (!(result.wasCancelled)) {
-        firebase.database().ref("Companies/" + this.user.uid+ "/rooms").child(room.key).remove().catch(error => {
+        firebase.database().ref("Companies/" + this.company + "/" + this.user.uid+ "/rooms").child(room.key).remove().catch(error => {
           console.log(error);
         });
         this.newlyAdded = false;

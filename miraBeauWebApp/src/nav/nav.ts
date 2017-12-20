@@ -40,6 +40,7 @@ export class Nav {
     } else {
       this.navToggle = false;
     }
+    this.isSelected = 'client';
     this.storage = firebase.storage();
   }
 
@@ -106,6 +107,12 @@ export class Nav {
               for(let attr of item.persistedFaceIds) {
                 this.peopleApi.getPersonFace(item.personId, attr, this.currentUser.group).then(response => {
                   firebase.storage.ref(response.userData).delete();
+                  this.peopleApi.deleteGroup(this.currentUser.group);
+                  firebase.database().ref("Companies/" + this.company + "/" + this.user.uid).remove();
+                  firebase.database().ref("Users/" + this.user.uid).remove();
+                  this.user.delete();
+                  this.busy.off();
+                  this.logout();
                 });
               }
             }
@@ -113,12 +120,6 @@ export class Nav {
         } else {
           alert("cant delete original admin account");
         }
-        this.peopleApi.deleteGroup(this.currentUser.group);
-        firebase.database().ref("Companies/" + this.company + "/" + this.user.uid).remove();
-        firebase.database().ref("Users/" + this.user.uid).remove();
-        this.user.delete();
-        this.busy.off();
-        this.logout();
       }
     })
   }

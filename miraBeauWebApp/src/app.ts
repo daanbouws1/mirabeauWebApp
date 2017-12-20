@@ -10,8 +10,6 @@ export class App {
   private company: string;
 
   constructor() {
-    // this.user = firebase.auth().currentUser;
-    // console.log(this.user);
   }
 
   configureRouter(config, router) {

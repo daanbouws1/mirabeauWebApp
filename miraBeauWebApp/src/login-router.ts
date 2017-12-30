@@ -19,7 +19,7 @@ export class LoginRouter {
       instruction.config.redirect = router.navigation[0].config.route;
     };
     config.map([
-      {route: ["", "/", 'login-page'], name: 'login-page', moduleId: './pages/login/login-page', nav: true, title: 'Login Page'},
+      {route: ["", "/", 'text', 'signup', 'calls', 'home', 'login-page'], name: 'login-page', moduleId: './pages/login/login-page', nav: true, title: 'Login Page'},
     ]);
   }
 }

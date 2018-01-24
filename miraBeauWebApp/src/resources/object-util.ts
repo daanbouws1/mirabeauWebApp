@@ -2,6 +2,7 @@ import * as jQuery from "jquery";
 
 export class ObjectUtil {
 
+  // not gonna lie. copied all this stuff.
   static deepAssign(target, ...object) {
     return jQuery.extend(true, target, ...object);
   }

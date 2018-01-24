@@ -102,14 +102,17 @@ export class Nav {
       if (!result.wasCancelled) {
         this.busy.on();
         if (!(this.currentUser.role === "admin")) {
+          // get all people in the group of this user
           this.peopleApi.getPeople(this.currentUser.group).then(result => {
             for (let item of result) {
               for(let attr of item.persistedFaceIds) {
+                //delete all firebase data related to this user.
                 this.peopleApi.getPersonFace(item.personId, attr, this.currentUser.group).then(response => {
                   firebase.storage.ref(response.userData).delete();
                   this.peopleApi.deleteGroup(this.currentUser.group);
                   firebase.database().ref("Companies/" + this.company + "/" + this.user.uid).remove();
                   firebase.database().ref("Users/" + this.user.uid).remove();
+                  // delete Account
                   this.user.delete();
                   this.busy.off();
                   this.logout();

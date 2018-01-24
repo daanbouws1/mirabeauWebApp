@@ -8,7 +8,6 @@ export class Signup {
 
   private signUpForm: SignUpForm;
   private validationController: ValidationController;
-  private company: any;
 
   constructor(private controllerFactory: ValidationControllerFactory,
               private router: Router,
@@ -30,7 +29,7 @@ export class Signup {
   }
 
   private logout() {
-    firebase.auth().signOut().then(result => {
+    firebase.auth().signOut().then(() => {
       this.router.navigate("login-page");
     });
   }
@@ -38,18 +37,21 @@ export class Signup {
   private submit() {
     this.validationController.validate({object: this.signUpForm}).then(result => {
       if(result.valid === true) {
+        //Create new user
         firebase.auth().createUserWithEmailAndPassword(this.signUpForm.email, this.signUpForm.password).then(result => {
-          console.log(result);
           firebase.database().ref("Users/" + result.uid).once("value").set({
             name: this.signUpForm.companyName
           });
+          //Create company folder in firebase.
           firebase.database().ref("Companies/" + this.signUpForm.companyName + "/" + result.uid).set({
             name: this.signUpForm.companyName,
             group: this.signUpForm.newGroupName,
             role: "user"
           }).then(() => {
+            //Create new Azure group.
             this.peopleApi.createGroup(this.signUpForm.newGroupName).then(() => {
               this.logout();
+              // It'd be cool if on of these errors spawned once
             }).catch(error => {
               console.log(error);
             });

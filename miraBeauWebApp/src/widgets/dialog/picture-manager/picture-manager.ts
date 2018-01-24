@@ -47,14 +47,11 @@ export class PictureManager {
     this.personPictureUrls = [];
     this.personPictureReferences = [];
     this.peopleApi.getPerson(this.personId, this.currentUser.group).then(result => {
-      console.log(result.persistedFaceIds);
-      for(const item of result.persistedFaceIds) {
+      for (const item of result.persistedFaceIds) {
         this.peopleApi.getPersonFace(this.personId, item, this.currentUser.group).then(result => {
           this.storageRef.child(result.userData).getDownloadURL().then(url => {
             this.personPictureUrls.push(url);
             this.personPictureReferences.push(result.userData);
-          }).catch(error => {
-            console.log(error);
           });
         });
       }

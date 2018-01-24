@@ -1,5 +1,5 @@
-import {autoinject} from "aurelia-framework";
-import {DialogController} from "aurelia-dialog";
+import { autoinject } from "aurelia-framework";
+import { DialogController } from "aurelia-dialog";
 
 @autoinject(DialogController)
 

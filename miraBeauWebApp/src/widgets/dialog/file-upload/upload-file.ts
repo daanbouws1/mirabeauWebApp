@@ -13,10 +13,6 @@ export class UploadFile {
   constructor(private element: Element) {
   }
 
-  get selectedFiles() {
-    return this._selectedFiles;
-  }
-
   set selectedFiles(value) {
     this._selectedFiles = value;
     this.element.dispatchEvent(new CustomEvent("filechange", {

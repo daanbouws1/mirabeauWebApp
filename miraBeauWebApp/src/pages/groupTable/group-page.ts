@@ -45,14 +45,15 @@ export class groupPage {
     firebase.database().ref("Companies/" + this.company + "/" + user.uid).once("value").then(result => {
       this.currentUser = result.val();
       this.peopleApi.getPeople(this.currentUser.group).then(result => {
-        for(let item in result) {
-          let age: string = result[item].userData.split(",")[0];
-          let jobTitle: string = result[item].userData.split(",")[1];
-          let id: string = result[item].personId;
-          let message: string = result[item].userData.split(",")[2];
-          let guy: Person = new Person(id, result[item].name, age, jobTitle, message);
+        // fill array of people
+        result.map(item => {
+          let age: string = item.userData.split(",")[0];
+          let jobTitle: string = item.userData.split(",")[1];
+          let id: string = item.personId;
+          let message: string = item.userData.split(",")[2];
+          let guy: Person = new Person(id, item.name, age, jobTitle, message);
           this.people.push(guy);
-        }
+        });
       });
     });
   }
@@ -95,14 +96,16 @@ export class groupPage {
       model: "Are you sure you want to delete this person?"
     }).whenClosed(result => {
       if (!result.wasCancelled) {
+        //get person from azure.
         this.peopleApi.getPerson(dude.id, this.currentUser.group).then(result => {
           for (let item of result.persistedFaceIds) {
+            // delete all pictures related to person retrieved from azure from firebase.
             this.peopleApi.getPersonFace(dude.id, item, this.currentUser.group).then(result => {
-              console.log(result);
               this.storageRef = this.storage.ref(result.userData);
               this.storageRef.delete();
             });
           }
+          // delete person from azure.
           this.peopleApi.deletePerson(dude.id, this.currentUser.group).then(() => {
             this.newlyAdded = false;
             this.getAllPeople();

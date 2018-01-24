@@ -19,7 +19,7 @@ export class Calls {
         this.callsData = result.val();
         this.getThisMonthCalls();
         this.getThisYearCalls();
-    });
+      });
     });
   }
 
@@ -34,7 +34,4 @@ export class Calls {
       }
     }
   }
-
-
-
 }

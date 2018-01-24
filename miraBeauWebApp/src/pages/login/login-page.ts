@@ -12,17 +12,11 @@ export class LoginPage {
   private myKeypressCallback: any;
 
   constructor(private router: Router,
-              private system: System,
               private aurelia: Aurelia) {
     this.myKeypressCallback = this.keypressInput.bind(this);
   }
 
   activate() {
-    //check if user is already loggin in and redirect if so.
-    let user = firebase.auth().currentUser;
-    if (user) {
-      this.router.navigate('home');
-    }
     //Add keylistener
     window.addEventListener('keypress', this.myKeypressCallback, false);
   }
@@ -48,6 +42,7 @@ export class LoginPage {
           let user = firebase.auth().currentUser;
           user.sendEmailVerification();
         }
+        //load new router with the routes included.
         this.router.reset();
         this.aurelia.setRoot('app');
         this.router.navigate('home');

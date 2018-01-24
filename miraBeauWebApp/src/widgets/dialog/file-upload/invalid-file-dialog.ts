@@ -12,14 +12,15 @@ export class InvalidFileDialog {
 
 	constructor(public controller: DialogController) {
 		this.controller = controller;
-		//controller.settings.centerHorizontalOnly = true;
 	}
 
 	activate(model) {
 		this.model = model;
 	}
 
-	browse(){
+	// WHY DAFUCK does this find the browse function in upload-file.ts??
+  // something about outer environment link of person-form-dialog??
+	browse() {
 		this.model.browse();
 		this.controller.ok();
 	}

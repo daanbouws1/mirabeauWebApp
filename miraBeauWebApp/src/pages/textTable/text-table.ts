@@ -25,9 +25,11 @@ export class textTable {
   private getRooms() {
     this.rooms = [];
     firebase.database().ref("Companies/" + this.company + "/" + this.user.uid + "/rooms").once('value').then(result => {
-      let resultArray = Object.keys(result.val()).map(function(roomIndex) {
+      // pls don't ask.
+      let resultArray = Object.keys(result.val()).map(roomIndex => {
         return result.val()[roomIndex];
       });
+      // fill array for ui.
       for (let item of resultArray) {
         let conferenceRoom: ConferenceRoom = new ConferenceRoom(item.name, item.type, item.location, item.key);
         this.rooms.push(conferenceRoom);
@@ -36,6 +38,7 @@ export class textTable {
   }
 
   private filterFunc(searchTerm, room) {
+    //search on name and location.
     return room.name.toUpperCase().indexOf(searchTerm.toUpperCase()) !== -1 ||
       room.location.toUpperCase().lastIndexOf(searchTerm.toUpperCase()) !== -1;
   }
@@ -47,6 +50,7 @@ export class textTable {
     }).whenClosed(result => {
       if(!(result.wasCancelled)) {
         let database = firebase.database();
+        // add new room to firebase.
         firebase.database().ref("Companies/" + this.company + "/" + this.user.uid+ "/rooms/" + result.output.roomName + "-" + result.output.location).set({
           name: result.output.roomName,
           uppername: result.output.roomName.toUpperCase(),
@@ -54,15 +58,13 @@ export class textTable {
           location: result.output.location,
           key: result.output.roomName + "-" + result.output.location
         }).then(() => {
-          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,
-            result.output.category, result.output.location, result.output.roomName + "-" + result.output.location);
+          let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName, result.output.category,
+            result.output.location, result.output.roomName + "-" + result.output.location);
           this.rooms.unshift(conferenceRoom);
           this.newlyAdded = true;
-        }).catch(result => {
-          console.log(result);
         });
       }
-    })
+    });
   }
 
   private editRoom(room: any) {
@@ -78,7 +80,6 @@ export class textTable {
           location: result.output.location,
           key: result.output.key
         }).then(() => {
-          // this.getRooms();
           let conferenceRoom: ConferenceRoom = new ConferenceRoom(result.output.roomName,
             result.output.category, result.output.location, result.output.key);
           let index = this.rooms.indexOf(room);
@@ -99,6 +100,7 @@ export class textTable {
     }).whenClosed(result => {
       if (!(result.wasCancelled)) {
         firebase.database().ref("Companies/" + this.company + "/" + this.user.uid+ "/rooms").child(room.key).remove().catch(error => {
+          //still waiting for this one.
           console.log(error);
         });
         this.newlyAdded = false;
